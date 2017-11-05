@@ -1,25 +1,43 @@
-<mat-card class="example-card">
+<mat-card class="create-card">
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>Create asset</mat-card-title>
+    <mat-card-title><h2 title>Create asset</h2></mat-card-title>
     <mat-card-subtitle>{{ path }}</mat-card-subtitle>
   </mat-card-header>
-  <img #img mat-card-image [src]="url" alt="Image source: {{ path }}">
+
   <mat-card-content>
-    <form class="example-container">
-      <mat-form-field>
-        <input matInput placeholder="Title" [(ngModel)]="asset.title" name="title">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-select placeholder="Category" [(ngModel)]="asset.category" name="category">
-          <mat-option [value]="null">Select one</mat-option>
-          <mat-option *ngFor="let category of categories" [value]="category._id">
-            {{ category.title }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-checkbox class="example-margin" [(ngModel)]="asset.monochrome" name="monochrome">Monochrome</mat-checkbox>
-    </form>
+    <mat-grid-list cols="2" rowHeight="1:1">
+      <mat-grid-tile>
+        <div *ngIf="!url" class="upload-asset">
+          <p>Select asset</p>
+          <file-upload (image)="setImageData($event)" (url)="setPathData($event)"></file-upload>
+        </div>
+
+        <img *ngIf="url" mat-card-image [src]="url" alt="Image source: {{ path }}">
+      </mat-grid-tile>
+      <mat-grid-tile class="form-tile">
+        <form class="asset-form">
+          <mat-form-field>
+            <input matInput placeholder="Title" [(ngModel)]="asset.title" name="title">
+          </mat-form-field>
+
+          <mat-checkbox matCheckbox class="example-margin" [(ngModel)]="asset.monochrome" name="monochrome">Monochrome</mat-checkbox>
+
+          <mat-form-field>
+            <mat-select placeholder="Category" [(ngModel)]="asset.category" name="category">
+              <mat-option [value]="null">Select one</mat-option>
+              <mat-option *ngFor="let category of categories" [value]="category._id">
+                {{ category.title }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <h4 subheading-2>Tags</h4>
+          <mat-chip-list>
+            <mat-chip *ngFor="let tag of tags">{{ tag.title }}</mat-chip>
+          </mat-chip-list>
+        </form>
+      </mat-grid-tile>
+    </mat-grid-list>
   </mat-card-content>
   <mat-card-actions>
     <button mat-button (click)="saveAsset()">Save</button>

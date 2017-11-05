@@ -9,6 +9,8 @@ import { SettingsViewComponent } from './view/settings-view.component';
 import { ImageViewComponent } from './view/image/image-view.component';
 import { ImageCreateViewComponent } from './view/image/image-create-view.component';
 
+import { ImageCreateResolve } from './view/image/image-create.resolve';
+
 const appRoutes: Routes = [
   {
     path: '',
@@ -40,6 +42,7 @@ const appRoutes: Routes = [
       },
       {
         path: 'create',
+        resolve: [ImageCreateResolve],
         component: ImageCreateViewComponent
       }
     ]
@@ -52,6 +55,9 @@ const appRoutes: Routes = [
   ],
   exports: [
     RouterModule
+  ],
+  providers: [
+    ImageCreateResolve
   ]
 })
 export class AppRoutingModule {}

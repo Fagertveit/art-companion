@@ -4,7 +4,7 @@ import { Category } from './Category';
 export interface asset {
   url: string;
   title: string;
-  tags: Tag[];
+  tags: string[];
   category: string;
   size: number;
   dimensions: Dimension;
@@ -21,7 +21,7 @@ export interface Dimension {
 export class Asset {
   public url: string;
   public title: string;
-  public tags: Tag[];
+  public tags: string[];
   public category: string;
   public size: number;
   public dimensions: Dimension;
@@ -29,7 +29,17 @@ export class Asset {
   public format: string;
   public id: string;
 
-  constructor() { }
+  constructor(url: string, category: string, tags: string[], title?: string, size?: number, dimensions?: Dimension, monochrome?: boolean, format?: string, id?: string) {
+    this.url = url;
+    this.category = category;
+    this.tags = tags;
+    this.title = title;
+    this.size = size;
+    this.dimensions = dimensions;
+    this.monochrome = monochrome;
+    this.format = format;
+    this.id = id;
+  }
 
   public get(): asset {
     return {

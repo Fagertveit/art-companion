@@ -1,1 +1,17 @@
-<h1>Dashboard</h1>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Dashboard</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      The art companion is a set of tools that will make life a bit easier on the artist.
+      At first we only have a reference library function that will make it easy to build your own artistic library of visual inspiration.
+      At later stages there'll also be tools for sketching and project planing.
+      Why not start at once and add images to your visual library?!
+    </p>
+  </mat-card-content>
+</mat-card>
+
+<div class="add-btn" matTooltip="Add Asset" matTooltipPosition="before">
+  <button mat-fab (click)="createAsset()"><mat-icon>add</mat-icon></button>
+</div>

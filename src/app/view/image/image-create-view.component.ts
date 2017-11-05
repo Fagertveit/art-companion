@@ -1,19 +1,19 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgZone } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ElectronService } from 'ngx-electron';
 
 import { AssetService } from '../../service/asset.service';
 import { CategoryService } from '../../service/category.service';
 import { TagService } from '../../service/tag.service';
-import { category, tag, asset } from '../../model';
+import { category, tag, Asset, asset } from '../../model';
+import { MatStepper } from '@angular/material';
 
 @Component({
   selector: 'ac-image-create-view',
   templateUrl: './image-create.html'
 })
 export class ImageCreateViewComponent {
-  @ViewChild('img') img: HTMLImageElement;
-
   public url: SafeResourceUrl;
   public path: string;
   public categories: category[] = [];
@@ -30,7 +30,7 @@ export class ImageCreateViewComponent {
     },
     monochrome: false,
     format: '',
-    _id: ''
+    _id: null
   }
 
   constructor(
@@ -39,27 +39,81 @@ export class ImageCreateViewComponent {
     private sanitizer: DomSanitizer,
     private assetService: AssetService,
     private categoryService: CategoryService,
-    private tagService: TagService
+    private tagService: TagService,
+    private electron: ElectronService,
+    private zone: NgZone
   ) { }
 
   ngOnInit() {
-    this.path = this.assetService.getImagePath();
-    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.assetService.getBase64());
-
-    this.categoryService.list().subscribe(result => {
-      this.categories = result;
+    this.route.data.subscribe((data) => {
+      this.categories = data[0].categories as category[];
+      this.tags = data[0].tags as tag[];
     });
 
-    this.tagService.list().subscribe(result => {
-      this.tags = result;
+    if (this.assetService.getImagePath()) {
+      this.path = this.assetService.getImagePath();
+    }
+
+    if (this.assetService.getBase64()) {
+      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.assetService.getBase64());
+    }
+
+    if (this.electron.isElectronApp) {
+      this.electron.ipcRenderer.on('resource-saved', (event, fileName) => {
+        this.zone.runOutsideAngular(() => {
+          console.log('Got a relative path: ', fileName);
+
+          this.zone.runTask(() => {
+            this.storeAsset(fileName);
+          });
+        });
+      })
+    }
+  }
+
+  public storeAsset(path: string): void {
+    this.asset.url = path;
+
+    console.log('Storing asset: ', this.asset);
+    this.assetService.create(new Asset(
+      this.asset.url,
+      this.asset.category,
+      this.asset.tags,
+      this.asset.title,
+      this.asset.size,
+      this.asset.dimensions,
+      this.asset.monochrome,
+      this.asset.format)).subscribe(result => {
+      console.log('Saved Asset: ', result);
     });
   }
 
   public saveAsset(): void {
-    this.asset.dimensions.width = this.img.width;
-    this.asset.dimensions.height = this.img.height;
-    this.asset.format = this.path.split('.')[1];
+    let json = {
+      base64: this.assetService.getBase64(),
+      category: this.categories.find(category => category._id == this.asset.category).title,
+      fileName: 'test2'
+    };
 
-    console.log('Save Asset:', this.asset);
+    if(this.electron.isElectronApp) {
+      this.electron.ipcRenderer.send('save-resource', JSON.stringify(json));
+    }
+  }
+
+  public setImageData(data: string): void {
+    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(data);
+    this.assetService.setBase64(data);
+  }
+
+  public setPathData(url: string): void {
+    console.log('Image path:', url);
+    this.assetService.setImagePath(url);
+  }
+
+  public cancel() {
+    this.assetService.setBase64(null);
+    this.assetService.setImagePath(null);
+
+    this.router.navigate(['']);
   }
 }

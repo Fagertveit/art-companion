@@ -1,1 +1,5 @@
-<h1>Library</h1>
+<div *ngFor="let asset of assets">
+  <p>{{ asset.title }}</p>
+  <p>{{ asset.category }}</p>
+  <img [src]="asset.url" style="max-width: 300px; max-height: 300px;" />
+</div>

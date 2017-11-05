@@ -10,11 +10,7 @@ const fs = require('fs');
 // Path helper
 const path = require('path');
 // url to base64
-//const i2b = require("imageurl-base64");
-
 const base64Img = require('base64-img');
-// Module to recive messages from web app
-//const ipcMain = require('electron');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -83,8 +79,16 @@ function createWindow () {
     ).catch(console.error);*/
   });
 
-  electron.ipcMain.on('save-resource', (event, url) => {
-    console.log('Save the resource', url);
+  electron.ipcMain.on('save-resource', (event, data) => {
+    let json = JSON.parse(data);
+
+    console.log('Save resource', app.getAppPath() + '\\' + json.category, json.fileName);
+
+    base64Img.img(json.base64, app.getAppPath() + '\\library\\' + json.category, json.fileName, (err, fileName) => {
+      let relative = path.relative(app.getAppPath(), fileName);
+      console.log('Resource saved: ', fileName, relative);
+      mainWindow.webContents.send('resource-saved', relative);
+    });
   });
 }
 

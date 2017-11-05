@@ -15,6 +15,9 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatSelectModule,
+  MatStepperModule,
+  MatGridListModule,
+  MatChipsModule,
   MatCheckboxModule
 } from '@angular/material';
 import { CdkTableModule } from '@angular/cdk/table';
@@ -36,6 +39,7 @@ import { ImageCreateViewComponent } from './view/image/image-create-view.compone
 import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { TagDialogComponent } from './component/tag-dialog/tag-dialog.component';
 import { CategoryDialogComponent } from './component/category-dialog/category-dialog.component';
+import { FileUploadComponent } from './component/file-upload/file-upload.component';
 
 // Service
 import { CategoryService } from './service/category.service';
@@ -56,7 +60,8 @@ import { AppRoutingModule } from './app.routes';
     ImageCreateViewComponent,
     SidebarComponent,
     TagDialogComponent,
-    CategoryDialogComponent
+    CategoryDialogComponent,
+    FileUploadComponent
   ],
   imports: [
     BrowserModule,
@@ -76,6 +81,9 @@ import { AppRoutingModule } from './app.routes';
     MatSelectModule,
     MatFormFieldModule,
     MatCheckboxModule,
+    MatStepperModule,
+    MatGridListModule,
+    MatChipsModule,
     CdkTableModule,
     NgxElectronModule
   ],
