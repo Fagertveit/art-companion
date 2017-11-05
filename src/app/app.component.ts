@@ -1,4 +1,4 @@
-import { Component, ViewChild, ApplicationRef } from '@angular/core';
+import { Component, ViewChild, ApplicationRef, ChangeDetectorRef, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { ElectronService } from 'ngx-electron';
 
@@ -14,7 +14,9 @@ export class AppComponent {
     private router: Router,
     private electronService: ElectronService,
     private assetService: AssetService,
-    private applicationRef: ApplicationRef
+    private applicationRef: ApplicationRef,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
   ) { }
 
   ngOnInit() {
@@ -26,11 +28,7 @@ export class AppComponent {
         this.assetService.setBase64(json.imgStr);
         this.assetService.setImagePath(json.url);
 
-        this.electronService.ipcRenderer.send('save-resource', json.url);
         this.navigateTo('/image/create');
-        setTimeout(() => {
-          this.applicationRef.tick();
-        }, 100);
       });
     }
   }
