@@ -1,0 +1,32 @@
+<div class="table-container">
+  <mat-table #table [dataSource]="tags" class="mat-elevation-z8">
+    <!-- ID Column -->
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.title }} </mat-cell>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.description }} </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef style="text-align: center;"> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+
+        <button mat-button (click)="editTag(row._id)"><mat-icon>edit</mat-icon></button>
+        <button mat-button color="warn" (click)="removeTag(row._id)"><mat-icon>delete</mat-icon></button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['title', 'description', 'actions']" class="example-header-row"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['title', 'description', 'actions'];" class="example-row"></mat-row>
+  </mat-table>
+</div>
+
+<div class="add-btn" matTooltip="Add Tag" matTooltipPosition="before">
+  <button mat-fab (click)="openDialog()"><mat-icon>add</mat-icon></button>
+</div>

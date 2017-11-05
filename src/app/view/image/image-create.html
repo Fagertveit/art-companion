@@ -1,0 +1,28 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>Create asset</mat-card-title>
+    <mat-card-subtitle>{{ path }}</mat-card-subtitle>
+  </mat-card-header>
+  <img #img mat-card-image [src]="url" alt="Image source: {{ path }}">
+  <mat-card-content>
+    <form class="example-container">
+      <mat-form-field>
+        <input matInput placeholder="Title" [(ngModel)]="asset.title" name="title">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Category" [(ngModel)]="asset.category" name="category">
+          <mat-option [value]="null">Select one</mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category._id">
+            {{ category.title }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-checkbox class="example-margin" [(ngModel)]="asset.monochrome" name="monochrome">Monochrome</mat-checkbox>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button (click)="saveAsset()">Save</button>
+    <button mat-button (click)="cancel()">Cancel</button>
+  </mat-card-actions>
+</mat-card>
