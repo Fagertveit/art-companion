@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CATEGORY_SEED } from '../model/category.seed';
 import { Category } from '../model/Category';
 import { Observable } from 'rxjs';
+import { ElectronService } from 'ngx-electron';
 
 import { CategoryService } from '../service';
 
@@ -10,7 +11,7 @@ import { CategoryService } from '../service';
   templateUrl: './settings.html'
 })
 export class SettingsViewComponent {
-  constructor(private categoryService: CategoryService) { }
+  constructor(private categoryService: CategoryService, private electron: ElectronService) { }
 
   public seedCategories(): void {
     let observables = [];
@@ -26,5 +27,15 @@ export class SettingsViewComponent {
 
   public seedTags(): void {
 
+  }
+
+  public setLibraryPath(): void {
+    if (this.electron.isElectronApp) {
+      this.electron.ipcRenderer.once('set-library-path', (event, data) => {
+        console.log('Setting lib path to: ', data);
+      });
+
+      this.electron.ipcRenderer.send('select-library');
+    }
   }
 }

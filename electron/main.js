@@ -1,6 +1,8 @@
 const electron = require('electron');
 // Module to control application life.
 const app = electron.app;
+const clipboard = electron.clipboard;
+const dialog = electron.dialog;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 // Module for file download
@@ -11,6 +13,8 @@ const fs = require('fs');
 const path = require('path');
 // url to base64
 const base64Img = require('base64-img');
+// Local shortcut electron module
+const localShortcut = require('electron-localshortcut');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -23,7 +27,8 @@ function createWindow () {
       height: 800,
       minWidth: 800,
       minHeight: 600
-  })
+  });
+
   mainWindow.setMenu(null);
 
   // and load the index.html of the app.
@@ -40,6 +45,7 @@ function createWindow () {
     mainWindow = null
   });
 
+  // Register ipc listeners
   mainWindow.webContents.on('will-navigate', (event, url) => {
     event.preventDefault();
     console.log('Wants to navigate to ' + url);
@@ -48,54 +54,51 @@ function createWindow () {
       var path = url.substr(8, url.length);
 
       base64Img.base64(path, (err, data) => {
-        mainWindow.webContents.send('url-activated', JSON.stringify({ url: url, imgStr: data }));
+        mainWindow.webContents.send('url-activated', { url: url, imgStr: data });
       });
     } else {
       base64Img.requestBase64(url, (err, res, body) => {
-        mainWindow.webContents.send('url-activated', JSON.stringify({ url: url, imgStr: body }));
+        mainWindow.webContents.send('url-activated', { url: url, imgStr: body });
       });
     }
-    /*fs.readFile(path.normalize(url), (err, data) => {
-      //error handle
-      if (err) {
-        console.error(err);
-      }
-
-      //get image file extension name
-      let extensionName = path.extname(url);
-
-      //convert image file to base64-encoded string
-      let base64Image = new Buffer(data, 'binary').toString('base64');
-
-      //combine all strings
-      let imgSrcString = `data:image/${extensionName.split('.').pop()};base64,${base64Image}`;
-
-      //send image src string into jade compiler
-      mainWindow.webContents.send('url-activated', imgSrcString);
-    })*/
-
-    /*download.download(mainWindow, url).then(dl =>
-      console.log(dl.getSavePath())
-    ).catch(console.error);*/
   });
 
   electron.ipcMain.on('save-resource', (event, data) => {
-    let json = JSON.parse(data);
+    console.log('Save resource', app.getAppPath() + '\\' + data.category, data.fileName);
 
-    console.log('Save resource', app.getAppPath() + '\\' + json.category, json.fileName);
-
-    base64Img.img(json.base64, app.getAppPath() + '\\library\\' + json.category, json.fileName, (err, fileName) => {
+    base64Img.img(data.base64, app.getAppPath() + '\\library\\' + data.category, data.fileName, (err, fileName) => {
       let relative = path.relative(app.getAppPath(), fileName);
       console.log('Resource saved: ', fileName, relative);
       mainWindow.webContents.send('resource-saved', relative);
     });
+  });
+
+  electron.ipcMain.on('select-library', (event, data) => {
+    let options = {
+      title: 'Select library location',
+      message: 'Please specify which path you want to use as your library path, library path should always have the pattern "library/[CATEGORIES]".',
+      buttonLabel: 'Select library',
+      properties: ['openDirectory']
+    }
+
+    dialog.showOpenDialog(options, (path) => {
+      mainWindow.webContents.send('set-library-path', path);
+    });
+  });
+
+  // Register local shortcuts
+  localShortcut.register('CommandOrControl+V', () => {
+    console.log('Paste shortcut activated!');
+    let img = clipboard.readImage('PNG').toDataURL();
+
+    mainWindow.webContents.send('url-activated', { url: 'clipboard.png', imgStr: img });
   });
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -104,7 +107,7 @@ app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
     app.quit()
   }
-})
+});
 
 app.on('activate', function () {
   // On OS X it's common to re-create a window in the app when the
@@ -112,7 +115,7 @@ app.on('activate', function () {
   if (mainWindow === null) {
     createWindow()
   }
-})
+});
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

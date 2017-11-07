@@ -24,11 +24,10 @@ export class AppComponent {
     if (this.electronService.isElectronApp) {
       this.electronService.ipcRenderer.on('url-activated', (event, data) => {
         this.ngZone.runOutsideAngular(() => {
-          let json = JSON.parse(data);
-          console.log('We\'ve gotten an url from the main process', json.url);
+          console.log('We\'ve gotten an url from the main process', data.url);
 
-          this.assetService.setBase64(json.imgStr);
-          this.assetService.setImagePath(json.url);
+          this.assetService.setBase64(data.imgStr);
+          this.assetService.setImagePath(data.url);
         });
 
         this.ngZone.runTask(() => {

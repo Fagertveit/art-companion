@@ -57,18 +57,6 @@ export class ImageCreateViewComponent {
     if (this.assetService.getBase64()) {
       this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.assetService.getBase64());
     }
-
-    if (this.electron.isElectronApp) {
-      this.electron.ipcRenderer.on('resource-saved', (event, fileName) => {
-        this.zone.runOutsideAngular(() => {
-          console.log('Got a relative path: ', fileName);
-
-          this.zone.runTask(() => {
-            this.storeAsset(fileName);
-          });
-        });
-      })
-    }
   }
 
   public storeAsset(path: string): void {
@@ -89,14 +77,24 @@ export class ImageCreateViewComponent {
   }
 
   public saveAsset(): void {
-    let json = {
+    let data = {
       base64: this.assetService.getBase64(),
       category: this.categories.find(category => category._id == this.asset.category).title,
       fileName: 'test2'
     };
 
-    if(this.electron.isElectronApp) {
-      this.electron.ipcRenderer.send('save-resource', JSON.stringify(json));
+    if (this.electron.isElectronApp) {
+      this.electron.ipcRenderer.once('resource-saved', (event, fileName) => {
+        this.zone.runOutsideAngular(() => {
+          console.log('Got a relative path: ', fileName);
+
+          this.zone.runTask(() => {
+            this.storeAsset(fileName);
+          });
+        });
+      });
+
+      this.electron.ipcRenderer.send('save-resource', data);
     }
   }
 
