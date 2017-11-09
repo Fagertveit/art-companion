@@ -1,5 +1,11 @@
-@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+$fa-font-path: '~font-awesome-sass/assets/fonts/font-awesome/';
 
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "~font-awesome-sass/assets/stylesheets/font-awesome";
+
+@import "base/typography";
+@import "base/colors";
+@import "base/base";
 @import "base/layout";
 @import "base/table";
 @import "base/button";

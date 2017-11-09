@@ -38,7 +38,7 @@ export class AppComponent {
   }
 
   public navigateTo(route: string) {
-    this.sidenav.close();
+    //this.sidenav.close();
 
     this.router.navigate([route]);
   }

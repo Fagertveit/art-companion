@@ -1,5 +1,14 @@
-<h1>Settings</h1>
-
-<button mat-button (click)="seedCategories()">Seed Categories</button>
-
-<button mat-button (click)="setLibraryPath()">Set Library Path</button>
+<mat-list>
+  <mat-list-item>
+    <mat-icon mat-list-icon>folder</mat-icon>
+    <p matLine>Library path: {{ libraryPath }}</p>
+    <button mat-button (click)="setLibraryPath()">
+      Select
+    </button>
+  </mat-list-item>
+  <mat-list-item>
+    <mat-icon mat-list-icon>storage</mat-icon>
+    <p matLine>Seed Categories</p>
+    <button mat-button (click)="seedCategories()">Seed</button>
+  </mat-list-item>
+</mat-list>

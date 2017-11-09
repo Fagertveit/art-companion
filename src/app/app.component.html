@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<!--<mat-toolbar color="primary">
   <button class="menu-btn" mat-icon-button (click)="sidenav.open()">
     <mat-icon>more_vert</mat-icon>
   </button>
@@ -14,4 +14,12 @@
   <div class="content">
     <router-outlet></router-outlet>
   </div>
-</mat-sidenav-container>
+</mat-sidenav-container>-->
+
+<div class="container">
+  <ac-sidebar (navigate)="navigateTo($event)" class="open"></ac-sidebar>
+
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

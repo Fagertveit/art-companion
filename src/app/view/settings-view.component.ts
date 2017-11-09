@@ -4,14 +4,24 @@ import { Category } from '../model/Category';
 import { Observable } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 
-import { CategoryService } from '../service';
+import { CategoryService, SettingsService } from '../service';
 
 @Component({
   selector: 'ac-settings',
   templateUrl: './settings.html'
 })
 export class SettingsViewComponent {
-  constructor(private categoryService: CategoryService, private electron: ElectronService) { }
+  public libraryPath: string;
+
+  constructor(
+    private categoryService: CategoryService,
+    private settingsService: SettingsService,
+    private electron: ElectronService
+  ) { }
+
+  public ngOnInit() {
+    this.libraryPath = this.settingsService.getLibraryPath();
+  }
 
   public seedCategories(): void {
     let observables = [];
@@ -32,7 +42,9 @@ export class SettingsViewComponent {
   public setLibraryPath(): void {
     if (this.electron.isElectronApp) {
       this.electron.ipcRenderer.once('set-library-path', (event, data) => {
-        console.log('Setting lib path to: ', data);
+        if (data && data.length > 0) {
+          this.settingsService.setLibraryPath(data[0]);
+        }
       });
 
       this.electron.ipcRenderer.send('select-library');

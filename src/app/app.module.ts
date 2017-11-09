@@ -45,6 +45,7 @@ import { FileUploadComponent } from './component/file-upload/file-upload.compone
 import { CategoryService } from './service/category.service';
 import { TagService } from './service/tag.service';
 import { AssetService } from './service/asset.service';
+import { SettingsService} from './service/settings.service';
 
 import { AppRoutingModule } from './app.routes';
 
@@ -88,7 +89,7 @@ import { AppRoutingModule } from './app.routes';
     NgxElectronModule
   ],
   entryComponents: [TagDialogComponent, CategoryDialogComponent],
-  providers: [TagService, CategoryService, AssetService],
+  providers: [TagService, CategoryService, AssetService, SettingsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
