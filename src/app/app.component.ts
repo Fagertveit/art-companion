@@ -11,8 +11,6 @@ import { AssetService } from './service/asset.service';
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  @ViewChild('sidenav') sidenav: MatSidenav;
-
   constructor(
     private router: Router,
     private electronService: ElectronService,
@@ -38,8 +36,6 @@ export class AppComponent {
   }
 
   public navigateTo(route: string) {
-    //this.sidenav.close();
-
     this.router.navigate([route]);
   }
 }

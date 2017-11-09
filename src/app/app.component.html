@@ -1,21 +1,3 @@
-<!--<mat-toolbar color="primary">
-  <button class="menu-btn" mat-icon-button (click)="sidenav.open()">
-    <mat-icon>more_vert</mat-icon>
-  </button>
-  <span>Art Companion</span>
-  <span class="spacer"></span>
-</mat-toolbar>
-
-<mat-sidenav-container class="container">
-  <mat-sidenav #sidenav class="sidenav">
-    <ac-sidebar #sidebar (navigate)="navigateTo($event)"></ac-sidebar>
-  </mat-sidenav>
-
-  <div class="content">
-    <router-outlet></router-outlet>
-  </div>
-</mat-sidenav-container>-->
-
 <div class="container">
   <ac-sidebar (navigate)="navigateTo($event)" class="open"></ac-sidebar>
 

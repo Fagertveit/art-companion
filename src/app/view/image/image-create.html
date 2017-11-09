@@ -1,3 +1,4 @@
+<!--
 <mat-card class="create-card">
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
@@ -44,3 +45,22 @@
     <button mat-button (click)="cancel()">Cancel</button>
   </mat-card-actions>
 </mat-card>
+-->
+<div class="ac-create-image">
+  <div class="ac-card">
+    <h4>Image</h4>
+    <div *ngIf="!url" class="upload-asset">
+      <p>Select asset</p>
+      <file-upload (image)="setImageData($event)" (url)="setPathData($event)"></file-upload>
+    </div>
+
+    <div *ngIf="url" class="image-container">
+      <img *ngIf="url" mat-card-image [src]="url" alt="Image source: {{ path }}">
+    </div>
+  </div>
+
+  <div class="ac-card">
+    <h4>Metadata</h4>
+
+  </div>
+</div>

@@ -1,0 +1,13 @@
+.ac-card {
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #000;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
+  background: $lightBackground;
+
+  h4 {
+    margin: 4px;
+  }
+}
