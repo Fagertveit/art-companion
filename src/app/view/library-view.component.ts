@@ -1,21 +1,37 @@
 import { Component } from '@angular/core';
 
-import { AssetService } from '../service';
-import { Asset, asset } from '../model';
+import { AssetService, CategoryService, TagService } from '../service';
+import { Asset, Category, Tag } from '../model';
 
 @Component({
   selector: 'ac-library',
   templateUrl: './library.html'
 })
 export class LibraryViewComponent {
-  public assets: asset[] = [];
+  public assets: Asset[] = [];
+  public categories: Category[] = [];
+  public tags: Tag[] = [];
 
-  constructor(private assetService: AssetService) { }
+  constructor(
+    private assetService: AssetService,
+    private categoryService: CategoryService,
+    private tagService: TagService
+  ) { }
 
   ngOnInit() {
+    this.getCategories();
+    this.getAssets();
+  }
+
+  public getAssets(): void {
     this.assetService.list().subscribe(result => {
-      console.log('Assets: ', result);
       this.assets = result;
+    });
+  }
+
+  public getCategories(): void {
+    this.categoryService.list().subscribe(result => {
+      this.categories = result;
     });
   }
 }

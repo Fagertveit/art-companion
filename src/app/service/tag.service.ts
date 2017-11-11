@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as Nedb from 'nedb';
 
-import { Tag, tag } from '../model';
+import { Tag } from '../model';
 
 @Injectable()
 export class TagService {
@@ -17,7 +17,7 @@ export class TagService {
     this.db.loadDatabase();
   }
 
-  public list(): Observable<tag[]> {
+  public list(): Observable<Tag[]> {
     return Observable.create(obs => {
       this.db.find({}, (err, tags) => {
         if (err) {
@@ -30,9 +30,9 @@ export class TagService {
     });
   }
 
-  public create(tag: Tag): Observable<tag> {
+  public create(tag: Tag): Observable<Tag> {
     return Observable.create(obs => {
-      this.db.insert(tag.get(), (err: Error, newTag: tag) => {
+      this.db.insert(tag, (err: Error, newTag: Tag) => {
         if (err) {
           console.error('Failed to create tag.', err);
           obs.complete(err);

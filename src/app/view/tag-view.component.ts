@@ -3,9 +3,8 @@ import { DataSource } from '@angular/cdk/collections';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { MatDialog } from '@angular/material';
 
-import { Tag, tag } from '../model';
+import { Tag } from '../model';
 import { TagService } from '../service';
-import { TagDataSource } from '../service/tag.datasource';
 
 import { TagDialogComponent } from '../component/tag-dialog/tag-dialog.component';
 
@@ -14,18 +13,26 @@ import { TagDialogComponent } from '../component/tag-dialog/tag-dialog.component
   templateUrl: './tag.html'
 })
 export class TagViewComponent {
-  public tags: TagDataSource;
+  public tags: Tag[] = [];
 
-  constructor(private tagService: TagService, public dialog: MatDialog) { }
+  constructor(private tagService: TagService) { }
 
   ngOnInit() {
-    this.tags = new TagDataSource(this.tagService);
+    this.listTags();
+  }
+
+  public listTags(): void {
+    this.tagService.list().subscribe(result => {
+      this.tags = result;
+    });
   }
 
   public removeTag(id: string): void {
-    this.tags.remove(id);
+    this.tagService.remove(id).subscribe(result => {
+      this.listTags();
+    });
   }
-
+  /*
   openDialog(): void {
     let dialogRef = this.dialog.open(TagDialogComponent, {
       width: '250px',
@@ -40,4 +47,5 @@ export class TagViewComponent {
       }
     });
   }
+  */
 }

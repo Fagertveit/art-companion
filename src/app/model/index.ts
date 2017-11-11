@@ -1,5 +1,5 @@
-import { Asset, asset } from './Asset';
-import { Tag, tag } from './Tag';
-import { Category, category } from './Category';
+import { Asset } from './Asset';
+import { Tag } from './Tag';
+import { Category } from './Category';
 
-export { Asset, asset, Tag, tag, Category, category };
+export { Asset, Tag, Category };

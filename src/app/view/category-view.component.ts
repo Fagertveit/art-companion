@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material';
 
-import { CategoryDataSource } from '../service/category.datasource';
 import { CategoryService } from '../service/category.service';
-import { Category, category } from '../model';
+import { Category } from '../model';
 
 import { CategoryDialogComponent } from '../component/category-dialog/category-dialog.component';
 
@@ -12,18 +10,26 @@ import { CategoryDialogComponent } from '../component/category-dialog/category-d
   templateUrl: './category.html'
 })
 export class CategoryViewComponent {
-  public categories: CategoryDataSource;
+  public categories: Category[] = [];
 
-  constructor(private categoryService: CategoryService, public dialog: MatDialog) { }
+  constructor(private categoryService: CategoryService) { }
 
   ngOnInit() {
-    this.categories = new CategoryDataSource(this.categoryService);
+    this.listCategories();
+  }
+
+  public listCategories(): void {
+    this.categoryService.list().subscribe(result => {
+      this.categories = result;
+    });
   }
 
   public removeCategory(id: string): void {
-    this.categories.remove(id);
+    this.categoryService.remove(id).subscribe(result => {
+      this.listCategories();
+    });
   }
-
+  /*
   openDialog(): void {
     let dialogRef = this.dialog.open(CategoryDialogComponent, {
       width: '250px',
@@ -38,4 +44,5 @@ export class CategoryViewComponent {
       }
     });
   }
+  */
 }

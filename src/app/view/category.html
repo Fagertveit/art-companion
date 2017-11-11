@@ -1,18 +1,17 @@
+<!--
 <div class="table-container">
   <mat-table #table [dataSource]="categories" class="mat-elevation-z8">
-    <!-- ID Column -->
+
     <ng-container matColumnDef="title">
       <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.title }} </mat-cell>
     </ng-container>
 
-    <!-- Progress Column -->
     <ng-container matColumnDef="description">
       <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.description }} </mat-cell>
     </ng-container>
 
-    <!-- Name Column -->
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef style="text-align: center;"> Actions </mat-header-cell>
       <mat-cell *matCellDef="let row">
@@ -30,3 +29,4 @@
 <div class="add-btn" matTooltip="Add Category" matTooltipPosition="before">
   <button mat-fab (click)="openDialog()"><mat-icon>add</mat-icon></button>
 </div>
+-->

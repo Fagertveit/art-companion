@@ -6,7 +6,7 @@ import { ElectronService } from 'ngx-electron';
 import { AssetService } from '../../service/asset.service';
 import { CategoryService } from '../../service/category.service';
 import { TagService } from '../../service/tag.service';
-import { category, tag, Asset, asset } from '../../model';
+import { Category, Tag, Asset } from '../../model';
 import { MatStepper } from '@angular/material';
 
 @Component({
@@ -16,9 +16,9 @@ import { MatStepper } from '@angular/material';
 export class ImageCreateViewComponent {
   public url: SafeResourceUrl;
   public path: string;
-  public categories: category[] = [];
-  public tags: tag[] = [];
-  public asset: asset = {
+  public categories: Category[] = [];
+  public tags: Tag[] = [];
+  public asset: Asset = {
     url: '',
     title: '',
     tags: [],
@@ -46,8 +46,8 @@ export class ImageCreateViewComponent {
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
-      this.categories = data[0].categories as category[];
-      this.tags = data[0].tags as tag[];
+      this.categories = data[0].categories as Category[];
+      this.tags = data[0].tags as Tag[];
     });
 
     if (this.assetService.getImagePath()) {
@@ -59,19 +59,15 @@ export class ImageCreateViewComponent {
     }
   }
 
+  public getCategoryIcon(icon: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(icon);
+  }
+
   public storeAsset(path: string): void {
     this.asset.url = path;
 
     console.log('Storing asset: ', this.asset);
-    this.assetService.create(new Asset(
-      this.asset.url,
-      this.asset.category,
-      this.asset.tags,
-      this.asset.title,
-      this.asset.size,
-      this.asset.dimensions,
-      this.asset.monochrome,
-      this.asset.format)).subscribe(result => {
+    this.assetService.create(this.asset).subscribe(result => {
       console.log('Saved Asset: ', result);
     });
   }
@@ -80,16 +76,16 @@ export class ImageCreateViewComponent {
     let data = {
       base64: this.assetService.getBase64(),
       category: this.categories.find(category => category._id == this.asset.category).title,
-      fileName: 'test2'
+      filename: 'test2'
     };
 
     if (this.electron.isElectronApp) {
-      this.electron.ipcRenderer.once('resource-saved', (event, fileName) => {
+      this.electron.ipcRenderer.once('resource-saved', (event, filename) => {
         this.zone.runOutsideAngular(() => {
-          console.log('Got a relative path: ', fileName);
+          console.log('Got a relative path: ', filename);
 
           this.zone.runTask(() => {
-            this.storeAsset(fileName);
+            this.storeAsset(filename);
           });
         });
       });

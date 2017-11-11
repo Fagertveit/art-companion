@@ -1,54 +1,54 @@
-import { category } from './';
+import { Category } from './';
 
-export const CATEGORY_SEED: category[] = [
+export const CATEGORY_SEED: Category[] = [
   {
     title: 'People',
-    description: '',
-    icon: '',
+    icon: 'assets/library/People/icon.png',
+    _id: 'people'
   },
   {
     title: 'Animal',
-    description: '',
-    icon: '',
+    icon: 'assets/library/Animal/icon.png',
+    _id: 'animal'
   },
   {
     title: 'Landscape',
-    description: '',
-    icon: '',
+    icon: 'assets/library/Landscape/icon.png',
+    _id: 'landscape'
   },
   {
     title: 'Machinery',
-    description: '',
-    icon: '',
+    icon: 'assets/library/Machinery/icon.png',
+    _id: 'machinery'
   },
   {
     title: 'Vehicle',
-    description: '',
-    icon: '',
+    icon: 'assets/library/Vehicle/icon.png',
+    _id: 'vehicle'
   },
   {
     title: 'Weapon',
-    description: '',
-    icon: '',
+    icon: 'assets/library/Weapon/icon.png',
+    _id: 'weapon'
   },
   {
     title: 'Architecture',
-    description: '',
-    icon: '',
+    icon: 'assets/library/Architecture/icon.png',
+    _id: 'architecture'
   },
   {
     title: 'Design',
-    description: '',
-    icon: '',
+    icon: 'assets/library/Design/icon.png',
+    _id: 'design'
   },
   {
     title: 'Concept Art',
-    description: '',
-    icon: '',
+    icon: 'assets/library/Concept%20Art/icon.png',
+    _id: 'conceptart'
   },
   {
-    title: 'Misc',
-    description: '',
-    icon: '',
+    title: 'Uncategorized',
+    icon: 'assets/library/Uncategorized/icon.png',
+    _id: 'uncategorized'
   }
 ];

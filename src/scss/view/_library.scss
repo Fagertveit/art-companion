@@ -1,0 +1,43 @@
+ac-library {
+  display: flex;
+  flex: 1 auto;
+  flex-direction: column;
+
+  .category-selection {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .tag-selection {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .library-container {
+    display: flex;
+    flex: 1 auto;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    overflow-y: auto;
+  }
+
+  .asset {
+    display: flex;
+    flex-direction: column;
+    width: calc(20% - 10px);
+    margin: 5px;
+    padding: 4px;
+    background: $lightBackground;
+    border: 1px solid #000;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
+
+    img {
+      max-width: 100%;
+      border: 1px solid #000;
+    }
+  }
+}

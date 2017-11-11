@@ -20,7 +20,7 @@ export class AppComponent {
 
   ngOnInit() {
     if (this.electronService.isElectronApp) {
-      this.electronService.ipcRenderer.on('url-activated', (event, data) => {
+      this.electronService.ipcRenderer.on('import-resource', (event, data) => {
         this.ngZone.runOutsideAngular(() => {
           console.log('We\'ve gotten an url from the main process', data.url);
 

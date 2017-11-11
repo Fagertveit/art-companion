@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as Nedb from 'nedb';
 
-import { Category, category } from '../model';
+import { Category } from '../model';
 
 @Injectable()
 export class CategoryService {
@@ -17,7 +17,7 @@ export class CategoryService {
     this.db.loadDatabase();
   }
 
-  public list(): Observable<category[]> {
+  public list(): Observable<Category[]> {
     return Observable.create(obs => {
       this.db.find({}, (err, categories) => {
         if (err) {
@@ -30,9 +30,9 @@ export class CategoryService {
     });
   }
 
-  public create(category: Category): Observable<category> {
+  public create(category: Category): Observable<Category> {
     return Observable.create(obs => {
-      this.db.insert(category.get(), (err: Error, newCategory: category) => {
+      this.db.insert(category, (err: Error, newCategory: Category) => {
         if (err) {
           console.error('Failed to create category.', err);
           obs.complete(err);

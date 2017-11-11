@@ -1,5 +1,17 @@
-<div *ngFor="let asset of assets">
-  <p>{{ asset.title }}</p>
-  <p>{{ asset.category }}</p>
-  <img [src]="asset.url" style="max-width: 300px; max-height: 300px;" />
+<div class="category-selection">
+  <div class="category-btn" *ngFor="let category of categories">
+    <p>{{ category.title }}</p>
+  </div>
+</div>
+
+<div class="tag-selection">
+  <div class="tag-btn" *ngFor="let tag of tags">
+    <p>{{ tag.title }}</p>
+  </div>
+</div>
+
+<div class="library-container">
+  <div class="asset" *ngFor="let asset of assets">
+    <img [src]="asset.url" />
+  </div>
 </div>

@@ -1,66 +1,22 @@
-<!--
-<mat-card class="create-card">
-  <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title><h2 title>Create asset</h2></mat-card-title>
-    <mat-card-subtitle>{{ path }}</mat-card-subtitle>
-  </mat-card-header>
-
-  <mat-card-content>
-    <mat-grid-list cols="2" rowHeight="1:1">
-      <mat-grid-tile>
-        <div *ngIf="!url" class="upload-asset">
-          <p>Select asset</p>
-          <file-upload (image)="setImageData($event)" (url)="setPathData($event)"></file-upload>
-        </div>
-
-        <img *ngIf="url" mat-card-image [src]="url" alt="Image source: {{ path }}">
-      </mat-grid-tile>
-      <mat-grid-tile class="form-tile">
-        <form class="asset-form">
-          <mat-form-field>
-            <input matInput placeholder="Title" [(ngModel)]="asset.title" name="title">
-          </mat-form-field>
-
-          <mat-checkbox matCheckbox class="example-margin" [(ngModel)]="asset.monochrome" name="monochrome">Monochrome</mat-checkbox>
-
-          <mat-form-field>
-            <mat-select placeholder="Category" [(ngModel)]="asset.category" name="category">
-              <mat-option [value]="null">Select one</mat-option>
-              <mat-option *ngFor="let category of categories" [value]="category._id">
-                {{ category.title }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <h4 subheading-2>Tags</h4>
-          <mat-chip-list>
-            <mat-chip *ngFor="let tag of tags">{{ tag.title }}</mat-chip>
-          </mat-chip-list>
-        </form>
-      </mat-grid-tile>
-    </mat-grid-list>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-button (click)="saveAsset()">Save</button>
-    <button mat-button (click)="cancel()">Cancel</button>
-  </mat-card-actions>
-</mat-card>
--->
 <div class="ac-create-image">
   <div class="ac-card">
     <h4>Image</h4>
-    <div *ngIf="!url" class="upload-asset">
+    <div *ngIf="!url" class="ac-card-content">
       <p>Select asset</p>
       <file-upload (image)="setImageData($event)" (url)="setPathData($event)"></file-upload>
     </div>
 
-    <div *ngIf="url" class="image-container">
+    <div *ngIf="url" class="ac-card-content">
       <img *ngIf="url" mat-card-image [src]="url" alt="Image source: {{ path }}">
     </div>
   </div>
 
   <div class="ac-card">
-    <h4>Metadata</h4>
-
+    <h4>Select category</h4>
+    <div class="category-btn-list">
+      <div class="category-btn" [style.background-image]="'url(' + category.icon + ')'" *ngFor="let category of categories">
+        {{ category.title }}
+      </div>
+    </div>
   </div>
 </div>

@@ -51,24 +51,27 @@ function createWindow () {
     console.log('Wants to navigate to ' + url);
 
     if (url.match('file:///')) {
-      var path = url.substr(8, url.length);
+      let path = url.substr(8, url.length);
+      let filename = path.parse(url).fileName;
 
       base64Img.base64(path, (err, data) => {
-        mainWindow.webContents.send('url-activated', { url: url, imgStr: data });
+        mainWindow.webContents.send('import-resource', { url: url, base64: data, filename: filename});
       });
     } else {
+      let filename = url.split('/').pop();
+
       base64Img.requestBase64(url, (err, res, body) => {
-        mainWindow.webContents.send('url-activated', { url: url, imgStr: body });
+        mainWindow.webContents.send('import-respurce', { url: url, base64: body, filename: filename });
       });
     }
   });
 
   electron.ipcMain.on('save-resource', (event, data) => {
-    console.log('Save resource', app.getAppPath() + '\\' + data.category, data.fileName);
+    console.log('Save resource', app.getAppPath() + '\\' + data.category, data.filename);
 
-    base64Img.img(data.base64, app.getAppPath() + '\\library\\' + data.category, data.fileName, (err, fileName) => {
-      let relative = path.relative(app.getAppPath(), fileName);
-      console.log('Resource saved: ', fileName, relative);
+    base64Img.img(data.base64, app.getAppPath() + '\\library\\' + data.category, data.filename, (err, path) => {
+      let relative = path.relative(app.getAppPath(), path);
+      console.log('Resource saved: ', path, relative);
       mainWindow.webContents.send('resource-saved', relative);
     });
   });
@@ -82,16 +85,20 @@ function createWindow () {
     }
 
     dialog.showOpenDialog(options, (path) => {
-      mainWindow.webContents.send('set-library-path', path);
+      let relative = path.relative(app.getAppPath(), path);
+
+      console.log('Changed library path to: ', path, relative);
+
+      mainWindow.webContents.send('set-library-path', relative);
     });
   });
 
   // Register local shortcuts
   localShortcut.register('CommandOrControl+V', () => {
-    console.log('Paste shortcut activated!');
     let img = clipboard.readImage('PNG').toDataURL();
+    let filename = 'clipboard-' + Date.now() + '.png';
 
-    mainWindow.webContents.send('url-activated', { url: 'clipboard.png', imgStr: img });
+    mainWindow.webContents.send('import-resource', { url: filename, base64: img, filename: filename });
   });
 }
 

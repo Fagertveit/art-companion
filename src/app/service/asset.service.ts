@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as Nedb from 'nedb';
 
-import { Asset, asset } from '../model';
+import { Asset } from '../model';
 
 @Injectable()
 export class AssetService {
@@ -35,7 +35,7 @@ export class AssetService {
     return this.imgPath;
   }
 
-  public list(): Observable<asset[]> {
+  public list(): Observable<Asset[]> {
     return Observable.create(obs => {
       this.db.find({}, (err, assets) => {
         if (err) {
@@ -48,9 +48,9 @@ export class AssetService {
     });
   }
 
-  public create(asset: Asset): Observable<asset> {
+  public create(asset: Asset): Observable<Asset> {
     return Observable.create(obs => {
-      this.db.insert(asset.get(), (err: Error, newAsset: asset) => {
+      this.db.insert(asset, (err: Error, newAsset: Asset) => {
         if (err) {
           console.error('Failed to create asset.', err);
           obs.complete(err);
