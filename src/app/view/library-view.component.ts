@@ -101,24 +101,15 @@ export class LibraryViewComponent {
   }
 
   public toggleTag(selectedTag: Tag): void {
-    let activeTag = this.selectedTags.find(tag => tag._id == selectedTag._id);
+    this.selectedTags = this.selectedTags.splice(0, this.selectedTags.indexOf(selectedTag));
 
-    if (activeTag) {
-      // Iterate over all selected tags and remove all tags that has the
-      // active tag as parent.
-      for (let tag of this.selectedTags) {
-        if (tag.parentTag == activeTag._id) {
-          this.selectedTags.splice(this.selectedTags.indexOf(tag), 1);
-        }
-      }
-
-      // And last we remove the actual tag we toggled
-      this.selectedTags.splice(this.selectedTags.indexOf(activeTag), 1);
+    if (this.selectedTags.length > 0) {
+      this.tagId = this.selectedTags[this.selectedTags.length - 1]._id;
     } else {
-      // Else we just add the toggled tag to the selected tags list
-      this.selectedTags.push(selectedTag);
+      this.tagId = null;
     }
 
     this.refreshAssets();
+    this.getTags();
   }
 }

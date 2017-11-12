@@ -31,10 +31,6 @@ const appRoutes: Routes = [
     component: CategoryViewComponent
   },
   {
-    path: 'category/:id',
-    component: CategoryViewComponent
-  },
-  {
     path: 'tag',
     component: TagViewComponent
   },

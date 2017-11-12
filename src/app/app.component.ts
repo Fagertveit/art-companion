@@ -1,7 +1,6 @@
 import { Component, ViewChild, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { ElectronService } from 'ngx-electron';
-import { MatSidenav } from '@angular/material';
 
 import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { AssetService } from './service/asset.service';
@@ -24,8 +23,7 @@ export class AppComponent {
         this.ngZone.runOutsideAngular(() => {
           console.log('We\'ve gotten an url from the main process', data.url);
 
-          this.assetService.setBase64(data.imgStr);
-          this.assetService.setImagePath(data.url);
+          this.assetService.setImportedData(data);
         });
 
         this.ngZone.runTask(() => {

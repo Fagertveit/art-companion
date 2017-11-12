@@ -1,28 +1,26 @@
 <div class="ac-card">
   <h4>Settings</h4>
 
-  <mat-list>
-    <mat-list-item>
-      <mat-icon mat-list-icon>folder</mat-icon>
-      <p matLine>Library path: {{ libraryPath }}</p>
-      <button mat-button (click)="setLibraryPath()">
-        Select
-      </button>
-    </mat-list-item>
-    <mat-list-item>
-      <mat-icon mat-list-icon>storage</mat-icon>
-      <p matLine>Seed Categories</p>
-      <button mat-button (click)="seedCategories()">Seed</button>
-    </mat-list-item>
-    <mat-list-item>
-      <mat-icon mat-list-icon>storage</mat-icon>
-      <p matLine>Seed Assets</p>
-      <button mat-button (click)="seedAssets()">Seed</button>
-    </mat-list-item>
-    <mat-list-item>
-      <mat-icon mat-list-icon>storage</mat-icon>
-      <p matLine>Tag Assets</p>
-      <button mat-button (click)="seedTags()">Seed</button>
-    </mat-list-item>
-  </mat-list>
+  <ul>
+    <li>
+      <i class="fa fa-folder"></i>
+      <p>Library Path: {{ libraryPath }}</p>
+      <button class="btn" (click)="setLibraryPath()">Select</button>
+    </li>
+    <li>
+      <i class="fa fa-folder"></i>
+      <p>Seed Cetegories</p>
+      <button class="btn" (click)="seedCategories()">Seed</button>
+    </li>
+    <li>
+      <i class="fa fa-folder"></i>
+      <p>Seed Assets</p>
+      <button class="btn" (click)="seedAssets()">Seed</button>
+    </li>
+    <li>
+      <i class="fa fa-folder"></i>
+      <p>Seed Tags</p>
+      <button class="btn" (click)="seedTags()">Seed</button>
+    </li>
+  </ul>
 </div>

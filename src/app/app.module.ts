@@ -2,28 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {
-  MatSidenavModule,
-  MatButtonModule,
-  MatToolbarModule,
-  MatIconModule,
-  MatTableModule,
-  MatListModule,
-  MatTooltipModule,
-  MatDialogModule,
-  MatCardModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatSelectModule,
-  MatStepperModule,
-  MatGridListModule,
-  MatChipsModule,
-  MatCheckboxModule
-} from '@angular/material';
-import { CdkTableModule } from '@angular/cdk/table';
 import { NgxElectronModule } from 'ngx-electron';
-
-import 'hammerjs';
 
 // Views
 import { AppComponent } from './app.component';
@@ -38,8 +17,6 @@ import { ImageCreateViewComponent } from './view/image/image-create-view.compone
 
 // Component
 import { SidebarComponent } from './component/sidebar/sidebar.component';
-import { TagDialogComponent } from './component/tag-dialog/tag-dialog.component';
-import { CategoryDialogComponent } from './component/category-dialog/category-dialog.component';
 import { FileUploadComponent } from './component/file-upload/file-upload.component';
 
 // Service
@@ -62,8 +39,6 @@ import { AppRoutingModule } from './app.routes';
     ImageViewComponent,
     ImageCreateViewComponent,
     SidebarComponent,
-    TagDialogComponent,
-    CategoryDialogComponent,
     FileUploadComponent
   ],
   imports: [
@@ -71,26 +46,8 @@ import { AppRoutingModule } from './app.routes';
     BrowserAnimationsModule,
     FormsModule,
     AppRoutingModule,
-    MatSidenavModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatTableModule,
-    MatListModule,
-    MatTooltipModule,
-    MatDialogModule,
-    MatInputModule,
-    MatCardModule,
-    MatSelectModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatStepperModule,
-    MatGridListModule,
-    MatChipsModule,
-    CdkTableModule,
     NgxElectronModule
   ],
-  entryComponents: [TagDialogComponent, CategoryDialogComponent],
   providers: [TagService, CategoryService, AssetService, SettingsService],
   bootstrap: [AppComponent]
 })

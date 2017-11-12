@@ -5,7 +5,7 @@
 </div>
 
 <div class="tag-selection">
-  <div class="tag-btn selected" *ngFor="let tag of selectedTags">
+  <div class="tag-btn selected" *ngFor="let tag of selectedTags" (click)="toggleTag(tag)">
     <p>{{ tag.title }}</p>
   </div>
 

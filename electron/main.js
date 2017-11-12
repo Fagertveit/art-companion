@@ -15,10 +15,13 @@ const path = require('path');
 const base64Img = require('base64-img');
 // Local shortcut electron module
 const localShortcut = require('electron-localshortcut');
+// regex for supported image formats
+const fileMatch = /(.jpg|.png|.gif|.jpeg|.svg)/gi;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+let mainWindow;
+let libraryPath = app.getAppPath() + '\\assets\\library\\';
 
 function createWindow () {
   // Create the browser window.
@@ -32,17 +35,17 @@ function createWindow () {
   mainWindow.setMenu(null);
 
   // and load the index.html of the app.
-  mainWindow.loadURL(`file://${__dirname}/index.html`)
+  mainWindow.loadURL(`file://${__dirname}/index.html`);
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    mainWindow = null
+    mainWindow = null;
   });
 
   // Register ipc listeners
@@ -50,28 +53,42 @@ function createWindow () {
     event.preventDefault();
     console.log('Wants to navigate to ' + url);
 
-    if (url.match('file:///')) {
-      let path = url.substr(8, url.length);
-      let filename = path.parse(url).fileName;
+    if (!url.match(fileMatch)) {
+      mainWindow.webContents.send('import-failed', 'Cannot import image data from url: ' + url);
+      return console.error('Unsupported image format', url);
+    }
 
-      base64Img.base64(path, (err, data) => {
+    if (url.match('file:///')) {
+      let imgPath = url.substr(8, url.length);
+      let filename = Date.now() + '-' + path.parse(url).base;
+
+      base64Img.base64(imgPath, (err, data) => {
+        if (err) {
+          return console.error(err);
+        }
+
         mainWindow.webContents.send('import-resource', { url: url, base64: data, filename: filename});
       });
     } else {
-      let filename = url.split('/').pop();
+      let filename = Date.now() + '-' + url.split('/').pop();
+      console.log('Filename: ', filename);
 
       base64Img.requestBase64(url, (err, res, body) => {
-        mainWindow.webContents.send('import-respurce', { url: url, base64: body, filename: filename });
+        if (err) {
+          return console.error(err);
+        }
+
+        mainWindow.webContents.send('import-resource', { url: url, base64: body, filename: filename });
       });
     }
   });
 
   electron.ipcMain.on('save-resource', (event, data) => {
-    console.log('Save resource', app.getAppPath() + '\\' + data.category, data.filename);
+    console.log('Save resource', path.resolve(libraryPath, data.category, data.filename));
 
-    base64Img.img(data.base64, app.getAppPath() + '\\library\\' + data.category, data.filename, (err, path) => {
-      let relative = path.relative(app.getAppPath(), path);
-      console.log('Resource saved: ', path, relative);
+    base64Img.img(data.base64, path.resolve(libraryPath, data.category), path.parse(data.filename).name, (err, imgPath) => {
+      let relative = path.relative(app.getAppPath(), imgPath);
+      console.log('Resource saved: ', imgPath, relative);
       mainWindow.webContents.send('resource-saved', relative);
     });
   });
@@ -84,10 +101,10 @@ function createWindow () {
       properties: ['openDirectory']
     }
 
-    dialog.showOpenDialog(options, (path) => {
-      let relative = path.relative(app.getAppPath(), path);
+    dialog.showOpenDialog(options, (libPath) => {
+      let relative = path.relative(app.getAppPath(), libPath);
 
-      console.log('Changed library path to: ', path, relative);
+      console.log('Changed library path to: ', libPath, relative);
 
       mainWindow.webContents.send('set-library-path', relative);
     });
@@ -96,7 +113,7 @@ function createWindow () {
   // Register local shortcuts
   localShortcut.register('CommandOrControl+V', () => {
     let img = clipboard.readImage('PNG').toDataURL();
-    let filename = 'clipboard-' + Date.now() + '.png';
+    let filename = Date.now() + '-clipboard' + '.png';
 
     mainWindow.webContents.send('import-resource', { url: filename, base64: img, filename: filename });
   });

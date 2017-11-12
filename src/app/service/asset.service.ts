@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as Nedb from 'nedb';
 
-import { Asset } from '../model';
+import { Asset, ImportedData } from '../model';
 
 @Injectable()
 export class AssetService {
@@ -11,28 +11,27 @@ export class AssetService {
   private options: Nedb.DataStoreOptions = {
     filename: './db/assets.db'
   };
-  private base64img: string;
-  private imgPath: string;
+  private tempImport: ImportedData;
 
   constructor() {
     this.db = new Nedb(this.options);
     this.db.loadDatabase();
   }
 
-  public setBase64(base64img: string): void {
-    this.base64img = base64img;
+  public setImportedData(data: ImportedData): void {
+    this.tempImport = data;
   }
 
-  public getBase64(): string {
-    return this.base64img;
+  public getImportedData(): ImportedData {
+    return this.tempImport;
   }
 
-  public setImagePath(path: string): void {
-    this.imgPath = path;
+  public clearImportedData(): void {
+    this.tempImport = null;
   }
 
-  public getImagePath(): string {
-    return this.imgPath;
+  public haveImport(): boolean {
+    return this.tempImport != null;
   }
 
   public list(): Observable<Asset[]> {
