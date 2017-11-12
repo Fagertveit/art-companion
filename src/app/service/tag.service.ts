@@ -30,6 +30,19 @@ export class TagService {
     });
   }
 
+  public filter(filter: any): Observable<Tag[]> {
+    return Observable.create(obs => {
+      this.db.find(filter, (err, tags) => {
+        if (err) {
+          obs.complete(err);
+        } else {
+          obs.next(tags);
+          obs.complete();
+        }
+      });
+    });
+  }
+
   public create(tag: Tag): Observable<Tag> {
     return Observable.create(obs => {
       this.db.insert(tag, (err: Error, newTag: Tag) => {

@@ -1,17 +1,21 @@
 <div class="category-selection">
-  <div class="category-btn" *ngFor="let category of categories">
+  <div class="category-btn" [class.selected]="category == selectedCategory" *ngFor="let category of categories" (click)="setCategory(category)">
     <p>{{ category.title }}</p>
   </div>
 </div>
 
 <div class="tag-selection">
-  <div class="tag-btn" *ngFor="let tag of tags">
+  <div class="tag-btn selected" *ngFor="let tag of selectedTags">
+    <p>{{ tag.title }}</p>
+  </div>
+
+  <div class="tag-btn" *ngFor="let tag of tags" (click)="setTag(tag)">
     <p>{{ tag.title }}</p>
   </div>
 </div>
 
 <div class="library-container">
-  <div class="asset" *ngFor="let asset of assets">
+  <div class="asset" *ngFor="let asset of assets" (click)="gotoImage(asset._id)">
     <img [src]="asset.url" />
   </div>
 </div>

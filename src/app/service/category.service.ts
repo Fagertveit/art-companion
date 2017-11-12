@@ -30,6 +30,19 @@ export class CategoryService {
     });
   }
 
+  public get(id: string): Observable<Category> {
+    return Observable.create(obs => {
+      this.db.findOne({ _id: id}, (err: Error, category: Category) => {
+        if (err) {
+          obs.complete(err);
+        } else {
+          obs.next(category);
+          obs.complete();
+        }
+      });
+    });
+  }
+
   public create(category: Category): Observable<Category> {
     return Observable.create(obs => {
       this.db.insert(category, (err: Error, newCategory: Category) => {

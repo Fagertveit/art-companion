@@ -6,10 +6,12 @@ import { LibraryViewComponent } from './view/library-view.component';
 import { CategoryViewComponent } from './view/category-view.component';
 import { TagViewComponent } from './view/tag-view.component';
 import { SettingsViewComponent } from './view/settings-view.component';
+import { ImageComponent } from './view/image/image.component';
 import { ImageViewComponent } from './view/image/image-view.component';
 import { ImageCreateViewComponent } from './view/image/image-create-view.component';
 
 import { ImageCreateResolve } from './view/image/image-create.resolve';
+import { ImageViewResolve } from './view/image/image-view.resolve';
 
 const appRoutes: Routes = [
   {
@@ -21,7 +23,15 @@ const appRoutes: Routes = [
     component: LibraryViewComponent
   },
   {
+    path: 'library/:id',
+    component: LibraryViewComponent
+  },
+  {
     path: 'category',
+    component: CategoryViewComponent
+  },
+  {
+    path: 'category/:id',
     component: CategoryViewComponent
   },
   {
@@ -34,16 +44,17 @@ const appRoutes: Routes = [
   },
   {
     path: 'image',
-    component: ImageViewComponent,
+    component: ImageComponent,
     children: [
-      {
-        path: '',
-        component: ImageViewComponent
-      },
       {
         path: 'create',
         resolve: [ImageCreateResolve],
         component: ImageCreateViewComponent
+      },
+      {
+        path: ':id',
+        resolve: [ImageViewResolve],
+        component: ImageViewComponent
       }
     ]
   }
@@ -57,7 +68,8 @@ const appRoutes: Routes = [
     RouterModule
   ],
   providers: [
-    ImageCreateResolve
+    ImageCreateResolve,
+    ImageViewResolve
   ]
 })
 export class AppRoutingModule {}

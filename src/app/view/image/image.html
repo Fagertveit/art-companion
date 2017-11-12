@@ -1,0 +1,28 @@
+<div class="image-container">
+  <img [src]="asset.url" >
+</div>
+
+
+
+<div class="metadata-container" [class.open]="showMetadata">
+  <div class="toggle-metadata" (click)="toggleMetadata()">
+    <i class="fa" [class.fa-chevron-left]="!showMetadata" [class.fa-chevron-right]="showMetadata"></i>
+  </div>
+
+  <h4>Category</h4>
+  <div class="category btn" (click)="gotoCategory(category)">
+    {{ category.title }}
+  </div>
+
+  <h4>Tags</h4>
+  <div class="tags">
+    <span *ngFor="let tag of tags">{{ tag.title }}</span>
+  </div>
+
+  <h4>Edit Image</h4>
+  <div class="edit-asset">
+    <div class="edit-container" [class.open]="showEdit">
+      <p>Here we edit the shit out of the resource</p>
+    </div>
+  </div>
+</div>

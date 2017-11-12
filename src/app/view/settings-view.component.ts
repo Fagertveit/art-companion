@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
-import { CATEGORY_SEED } from '../model/category.seed';
-import { ASSET_SEED } from '../model/asset.seed';
+
 import { Category } from '../model/Category';
 import { Observable } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 
-import { AssetService, CategoryService, SettingsService } from '../service';
+import { AssetService, CategoryService, SettingsService, TagService } from '../service';
+
+import { CATEGORY_SEED } from '../model/category.seed';
+import { ASSET_SEED } from '../model/asset.seed';
+import { TAG_SEED } from '../model/tag.seed';
 
 @Component({
   selector: 'ac-settings',
@@ -18,6 +21,7 @@ export class SettingsViewComponent {
     private assetService: AssetService,
     private categoryService: CategoryService,
     private settingsService: SettingsService,
+    private tagService: TagService,
     private electron: ElectronService
   ) { }
 
@@ -50,7 +54,15 @@ export class SettingsViewComponent {
   }
 
   public seedTags(): void {
+    let observables = [];
 
+    for (let tag of TAG_SEED) {
+      observables.push(this.tagService.create(tag));
+    }
+
+    Observable.forkJoin(observables).subscribe(result => {
+      console.table(result);
+    });
   }
 
   public setLibraryPath(): void {

@@ -1,9 +1,40 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+
+import { AssetService, TagService, CategoryService } from '../../service';
+import { Asset, Category, Tag } from '../../model';
 
 @Component({
   selector: 'ac-image-view',
-  template: '<router-outlet></router-outlet>'
+  templateUrl: './image.html'
 })
 export class ImageViewComponent {
-  constructor() { }
+  public asset: Asset;
+  public category: Category;
+  public tags: Tag[];
+  public showMetadata: boolean = false;
+
+  constructor(
+    private assetService: AssetService,
+    private tagService: TagService,
+    private categoryService: CategoryService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
+
+  ngOnInit() {
+    this.route.data.subscribe((data) => {
+      this.asset = data[0].asset;
+      this.category = data[0].category;
+      this.tags = data[0].tags;
+    });
+  }
+
+  public gotoCategory(category: Category): void {
+    this.router.navigate(['/library', category._id]);
+  }
+
+  public toggleMetadata(): void {
+    this.showMetadata = !this.showMetadata;
+  }
 }

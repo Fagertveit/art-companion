@@ -48,6 +48,32 @@ export class AssetService {
     });
   }
 
+  public filter(filter: any): Observable<Asset[]> {
+    return Observable.create(obs => {
+      this.db.find(filter, (err, assets) => {
+        if (err) {
+          obs.complete(err);
+        } else {
+          obs.next(assets);
+          obs.complete();
+        }
+      });
+    });
+  }
+
+  public get(id: string): Observable<Asset> {
+    return Observable.create(obs => {
+      this.db.findOne({ _id: id}, (err: Error, asset: Asset) => {
+        if (err) {
+          obs.complete(err);
+        } else {
+          obs.next(asset);
+          obs.complete();
+        }
+      });
+    });
+  }
+
   public create(asset: Asset): Observable<Asset> {
     return Observable.create(obs => {
       this.db.insert(asset, (err: Error, newAsset: Asset) => {

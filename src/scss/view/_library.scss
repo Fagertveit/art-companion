@@ -2,16 +2,19 @@ ac-library {
   display: flex;
   flex: 1 auto;
   flex-direction: column;
+  padding: 10px;
 
   .category-selection {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    flex: 0 125px;
     justify-content: space-between;
   }
 
   .tag-selection {
     display: flex;
+    flex: 0 75px;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -21,8 +24,40 @@ ac-library {
     display: flex;
     flex: 1 auto;
     flex-wrap: wrap;
+    flex-direction: row;
+    align-items: flex-start;
     justify-content: space-around;
     overflow-y: auto;
+    max-width: 100%;
+  }
+
+  .category-btn {
+    min-width: 150px;
+    border: 1px solid #000;
+    background: $lightBackground;
+    margin: 5px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.selected {
+      border: 1px solid $color;
+    }
+  }
+
+  .tag-btn {
+    border: 1px solid #000;
+    background: $lightBackground;
+    margin: 5px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.selected {
+      border: 1px solid $color;
+    }
   }
 
   .asset {

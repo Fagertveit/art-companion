@@ -32,6 +32,7 @@ import { LibraryViewComponent } from './view/library-view.component';
 import { CategoryViewComponent } from './view/category-view.component';
 import { TagViewComponent } from './view/tag-view.component';
 import { SettingsViewComponent } from './view/settings-view.component';
+import { ImageComponent } from './view/image/image.component';
 import { ImageViewComponent } from './view/image/image-view.component';
 import { ImageCreateViewComponent } from './view/image/image-create-view.component';
 
@@ -57,6 +58,7 @@ import { AppRoutingModule } from './app.routes';
     CategoryViewComponent,
     TagViewComponent,
     SettingsViewComponent,
+    ImageComponent,
     ImageViewComponent,
     ImageCreateViewComponent,
     SidebarComponent,

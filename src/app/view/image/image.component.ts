@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'ac-image',
-  templateUrl: './image.html'
+  template: '<router-outlet></router-outlet>'
 })
-export class ImageViewComponent {
+export class ImageComponent {
   constructor() { }
 }
