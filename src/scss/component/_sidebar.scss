@@ -1,6 +1,7 @@
 ac-sidebar {
   display: flex;
   flex-direction: column;
+  flex: 0 0 220px;
   width: 220px;
   margin-left: -170px;
   background: $lightBackground;

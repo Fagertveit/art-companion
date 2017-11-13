@@ -16,6 +16,6 @@
 
 <div class="library-container">
   <div class="asset" *ngFor="let asset of assets" (click)="gotoImage(asset._id)">
-    <img [src]="asset.url" />
+    <img [src]="sanitize(asset.url)" />
   </div>
 </div>

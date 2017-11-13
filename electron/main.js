@@ -15,6 +15,8 @@ const path = require('path');
 const base64Img = require('base64-img');
 // Local shortcut electron module
 const localShortcut = require('electron-localshortcut');
+// File structure importer
+const importLibrary = require('./list-library');
 // regex for supported image formats
 const fileMatch = /(.jpg|.png|.gif|.jpeg|.svg)/gi;
 
@@ -26,7 +28,7 @@ let libraryPath = app.getAppPath() + '\\assets\\library\\';
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-      width: 1200,
+      width: 1600,
       height: 800,
       minWidth: 800,
       minHeight: 600
@@ -83,13 +85,25 @@ function createWindow () {
     }
   });
 
-  electron.ipcMain.on('save-resource', (event, data) => {
+  electron.ipcMain.on('create-resource', (event, data) => {
     console.log('Save resource', path.resolve(libraryPath, data.category, data.filename));
 
     base64Img.img(data.base64, path.resolve(libraryPath, data.category), path.parse(data.filename).name, (err, imgPath) => {
       let relative = path.relative(app.getAppPath(), imgPath);
       console.log('Resource saved: ', imgPath, relative);
-      mainWindow.webContents.send('resource-saved', relative);
+      mainWindow.webContents.send('resource-created', { url: imgPath, relativePath: relative });
+    });
+  });
+
+  electron.ipcMain.on('update-resource', (event, data) => {
+    fs.copyFile(data.src, data.dest, (err) => {
+      mainWindow.webContents.send('resource-updated', { destination: data.dest });
+    });
+  });
+
+  electron.ipcMain.on('remove-resource', (event, src) => {
+    fs.unlink(src, (err) => {
+      mainWindow.webContents.send('resource-removed');
     });
   });
 
@@ -102,11 +116,11 @@ function createWindow () {
     }
 
     dialog.showOpenDialog(options, (libPath) => {
-      let relative = path.relative(app.getAppPath(), libPath);
+      let relative = path.relative(app.getAppPath(), libPath[0]);
 
-      console.log('Changed library path to: ', libPath, relative);
-
-      mainWindow.webContents.send('set-library-path', relative);
+      importLibrary.listFileSystem(libPath[0], (err, result) => {
+        mainWindow.webContents.send('set-library-path', { fs: result, relativePath: relative });
+      });
     });
   });
 

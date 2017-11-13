@@ -17,6 +17,10 @@ export class ImageCreateViewComponent {
   public path: string;
   public categories: Category[] = [];
   public tags: Tag[] = [];
+  public selectedCategory: Category;
+  public selectedTags: Tag[] = [];
+  public categoryId: string;
+  public tagId: string;
   public asset: Asset = {
     url: '',
     title: '',
@@ -31,7 +35,6 @@ export class ImageCreateViewComponent {
     format: ''
   };
   public importedData: ImportedData;
-  public selectedCategory: Category;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,7 +50,6 @@ export class ImageCreateViewComponent {
   ngOnInit() {
     this.route.data.subscribe((data) => {
       this.categories = data[0].categories as Category[];
-      this.tags = data[0].tags as Tag[];
     });
 
     if (this.assetService.haveImport()) {
@@ -63,8 +65,48 @@ export class ImageCreateViewComponent {
   }
 
   public setCategory(category: Category): void {
+    this.selectedTags = [];
+    this.tagId = null;
     this.selectedCategory = category;
-    this.saveAsset();
+    this.getTags();
+  }
+
+  public setTag(tag: Tag): void {
+    this.selectedTags.push(tag);
+    this.tagId = tag._id;
+    this.getTags();
+  }
+
+  public getTags(): void {
+    let filter;
+
+    this.tags = [];
+
+    if (this.tagId) {
+      filter = {
+        parentTag: this.tagId
+      };
+    } else {
+      filter = {
+        parentCategory: this.selectedCategory._id
+      };
+    }
+
+    this.tagService.filter(filter).subscribe(result => {
+      this.tags = result;
+    });
+  }
+
+  public toggleTag(selectedTag: Tag): void {
+    this.selectedTags = this.selectedTags.splice(0, this.selectedTags.indexOf(selectedTag));
+
+    if (this.selectedTags.length > 0) {
+      this.tagId = this.selectedTags[this.selectedTags.length - 1]._id;
+    } else {
+      this.tagId = null;
+    }
+
+    this.getTags();
   }
 
   public storeAsset(path: string): void {
@@ -89,7 +131,7 @@ export class ImageCreateViewComponent {
     };
 
     if (this.electron.isElectronApp) {
-      this.electron.ipcRenderer.once('resource-saved', (event, filename) => {
+      this.electron.ipcRenderer.once('resource-created', (event, filename) => {
         this.zone.runOutsideAngular(() => {
           console.log('Got a relative path: ', filename);
 
@@ -100,7 +142,7 @@ export class ImageCreateViewComponent {
       });
 
       console.log('Saving data: ', data);
-      this.electron.ipcRenderer.send('save-resource', data);
+      this.electron.ipcRenderer.send('create-resource', data);
     }
   }
 

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { AssetService, TagService, CategoryService } from '../../service';
 import { Asset, Category, Tag } from '../../model';
@@ -19,7 +20,8 @@ export class ImageViewComponent {
     private tagService: TagService,
     private categoryService: CategoryService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -36,5 +38,9 @@ export class ImageViewComponent {
 
   public toggleMetadata(): void {
     this.showMetadata = !this.showMetadata;
+  }
+
+  public sanitize(url: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 }

@@ -1,9 +1,7 @@
 const path = require('path');
-const list = require('./list-library.js');
+const list = require('./list-library');
 
-var currentDir = path.resolve(__dirname);
-
-list.listFileSystem(currentDir, (err, fileListing) => {
+list.listFileSystem(process.argv[2], (err, fileListing) => {
   if (err) {
     console.error(err);
   } else {

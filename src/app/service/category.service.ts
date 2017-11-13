@@ -45,14 +45,29 @@ export class CategoryService {
 
   public create(category: Category): Observable<Category> {
     return Observable.create(obs => {
-      this.db.insert(category, (err: Error, newCategory: Category) => {
-        if (err) {
-          console.error('Failed to create category.', err);
-          obs.complete(err);
+      this.db.findOne({ _id: category._id }, (err, result) => {
+        if (result == null) {
+          this.db.insert(category, (err: Error, newCategory: Category) => {
+            if (err) {
+              console.error('Failed to create category.', err);
+              obs.complete(err);
+            } else {
+              console.log('Created category!', newCategory);
+              obs.next(newCategory);
+              obs.complete();
+            }
+          });
         } else {
-          console.log('Created category!', newCategory);
-          obs.next(newCategory);
-          obs.complete();
+          this.db.update({ _id: category._id }, category, (err, newCategory) => {
+            if (err) {
+              console.error('Failed to update category.', err);
+              obs.complete(err);
+            } else {
+              console.log('Updated category!', newCategory);
+              obs.next(newCategory);
+              obs.complete();
+            }
+          });
         }
       });
     });

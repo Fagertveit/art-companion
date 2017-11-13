@@ -8,16 +8,18 @@ ac-library {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    flex: 0 125px;
+    flex: 0 0 125px;
     justify-content: space-between;
+    overflow-y: auto;
   }
 
   .tag-selection {
     display: flex;
-    flex: 0 75px;
+    flex: 0 0 75px;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
+    overflow-y: auto;
   }
 
   .library-container {
@@ -29,6 +31,7 @@ ac-library {
     justify-content: space-around;
     overflow-y: auto;
     max-width: 100%;
+    transform: translate3d(0,0,0);
   }
 
   .category-btn {

@@ -24,16 +24,6 @@ export class SidebarComponent {
       title: 'Library'
     },
     {
-      route: '/category',
-      icon: 'fa fa-list',
-      title: 'Categories'
-    },
-    {
-      route: '/tag',
-      icon: 'fa fa-tag',
-      title: 'Tags',
-    },
-    {
       route: '/image/create',
       icon: 'fa fa-picture-o',
       title: 'Image'

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { AssetService, CategoryService, TagService } from '../service';
 import { Asset, Category, Tag } from '../model';
@@ -22,7 +23,8 @@ export class LibraryViewComponent {
     private categoryService: CategoryService,
     private tagService: TagService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -36,14 +38,33 @@ export class LibraryViewComponent {
     this.getAssets();
   }
 
+  public sanitize(url: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
   public gotoImage(id: string): void {
     this.router.navigate(['image', id]);
   }
 
   public refreshAssets(): void {
-    let filter = {
-      category: this.selectedCategory._id,
-    };
+    let filter;
+
+    if (this.tagId) {
+      filter = {
+        $and: [
+          {
+            category: this.selectedCategory._id
+          },
+          {
+            tags: this.tagId
+          }
+        ]
+      };
+    } else {
+      filter = {
+        category: this.selectedCategory._id
+      };
+    }
 
     this.assetService.filter(filter).subscribe(result => {
       this.assets = result;
@@ -77,6 +98,7 @@ export class LibraryViewComponent {
   public setTag(tag: Tag): void {
     this.selectedTags.push(tag);
     this.tagId = tag._id;
+    this.refreshAssets();
     this.getTags();
   }
 

@@ -12,11 +12,28 @@
   </div>
 
   <div class="ac-card">
-    <h4>Select category</h4>
-    <div class="category-btn-list">
-      <div class="category-btn" [style.background-image]="'url(' + category.icon + ')'" *ngFor="let category of categories" (click)="setCategory(category)">
-        {{ category.title }}
+    <div class="category-container">
+      <h4>Select category</h4>
+      <div class="category-btn-list">
+        <div class="category-btn" [style.background-image]="'url(' + category.icon + ')'" *ngFor="let category of categories" (click)="setCategory(category)">
+          {{ category.title }}
+        </div>
       </div>
+    </div>
+    <div class="tag-container">
+      <h4>Select tags</h4>
+      <div class="tag-btn-list">
+        <div class="tag-btn" *ngFor="let tag of selectedTags" (click)="toggleTag(tag)">
+          {{ tag.title }}
+        </div>
+        <div class="tag-btn" *ngFor="let tag of tags" (click)="setTag(tag)">
+          {{ tag.title }}
+        </div>
+      </div>
+    </div>
+
+    <div class="save-btn" (click)="saveAsset()">
+      Save Image
     </div>
   </div>
 </div>

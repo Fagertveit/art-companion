@@ -13,16 +13,54 @@ exports.listFileSystem = function(basePath, cb) {
     for (let file of files) {
       let sections = file.split('/');
       let parsed = path.parse(file);
+      let fileObj = {
+        filename: '',
+        category: '',
+        destination: '',
+        url: '',
+        format: '',
+        tags: []
+      };
 
-      let category = sections[sections.length - 2];
-      let fileType = parsed.ext;
-      let fileName = parsed.name;
+      sections = sections.slice(sections.indexOf('library') + 1)
 
-      if (!fileListing[category]) {
-        fileListing[category] = [];
+      fileObj.category = sections.shift();
+      fileObj.filename = sections.pop();
+
+      let tagBase = '';
+
+      for (let tag of sections) {
+        let tempTag = {
+          _id: '',
+          parentCategory: '',
+          parentTag: '',
+          title: ''
+        };
+
+        tempTag.title = tag;
+
+        if (tagBase.length == 0) {
+          tempTag._id = tag.toLowerCase();
+          tempTag.parentCategory = fileObj.category.toLowerCase();
+          tagBase = tag.toLowerCase();
+        } else {
+          tempTag._id = tagBase + '-' + tag.toLowerCase();
+          tempTag.parentTag = tagBase;
+          tagBase += '-' + tag.toLowerCase();
+        }
+
+        fileObj.tags.push(tempTag);
       }
 
-      fileListing[category].push({ fileName: fileName, fileType: fileType, path: file });
+      fileObj.destination = 'library' + '/' + fileObj.category + '/' + sections.join('/') + fileObj.filename;
+      fileObj.url = file;
+      fileObj.format = parsed.ext;
+
+      if (!fileListing[fileObj.category]) {
+        fileListing[fileObj.category] = [];
+      }
+
+      fileListing[fileObj.category].push(fileObj);
     }
 
     cb(null, fileListing);

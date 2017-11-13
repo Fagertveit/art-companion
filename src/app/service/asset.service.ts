@@ -75,14 +75,29 @@ export class AssetService {
 
   public create(asset: Asset): Observable<Asset> {
     return Observable.create(obs => {
-      this.db.insert(asset, (err: Error, newAsset: Asset) => {
-        if (err) {
-          console.error('Failed to create asset.', err);
-          obs.complete(err);
+      this.db.findOne({ _id: asset._id }, (err, result) => {
+        if (result == null) {
+          this.db.insert(asset, (err: Error, newAsset: Asset) => {
+            if (err) {
+              console.error('Failed to create asset.', err);
+              obs.complete(err);
+            } else {
+              console.log('Created asset!', newAsset);
+              obs.next(newAsset);
+              obs.complete();
+            }
+          });
         } else {
-          console.log('Created asset!', newAsset);
-          obs.next(newAsset);
-          obs.complete();
+          this.db.update({ _id: asset._id }, asset, (err, newAsset) => {
+            if (err) {
+              console.error('Failed to update asset.', err);
+              obs.complete(err);
+            } else {
+              console.log('Updated asset!', newAsset);
+              obs.next(newAsset);
+              obs.complete();
+            }
+          });
         }
       });
     });

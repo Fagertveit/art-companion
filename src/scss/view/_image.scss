@@ -18,35 +18,68 @@ ac-image-create-view {
       flex: 1;
 
       .ac-card-content {
+        display: flex;
+        flex: 1 auto;
+        flex-direction: column;
         justify-content: center;
-        text-align: center;
+        align-items: center;
       }
     }
 
-    .category-btn-list {
+    .category-container {
+      display: flex;
+      flex: 2 auto;
+      flex-direction: column;
+    }
+
+    .tag-container {
+      display: flex;
+      flex: 1 auto;
+      flex-direction: column;
+    }
+
+    .save-btn {
+      display: flex;
+      flex: 0 0 75px;
+      margin: 2px;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #000;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: lighten($lightBackground, 5%);
+
+      &:hover {
+        cursor: pointer;
+        background-color: darken($lightBackground, 5%);
+      }
+    }
+
+    .category-btn-list, .tag-btn-list {
       display: flex;
       flex: 4 auto;
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: space-between;
+    }
 
-      .category-btn {
-        display: flex;
-        text-align: center;
-        margin: 2px;
-        padding: 10px;
-        flex: 1;
-        min-width: 150px;
-        border: 1px solid #000;
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-color: lighten($lightBackground, 5%);
+    .category-btn, .tag-btn {
+      display: flex;
+      text-align: center;
+      margin: 2px;
+      padding: 10px;
+      flex: 1;
+      min-width: 150px;
+      border: 1px solid #000;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: lighten($lightBackground, 5%);
 
-        &:hover {
-          cursor: pointer;
-          background-color: darken($lightBackground, 5%);
-        }
+      &:hover {
+        cursor: pointer;
+        background-color: darken($lightBackground, 5%);
       }
     }
   }
@@ -73,7 +106,7 @@ ac-image-view {
 
   .metadata-container {
     display: flex;
-    flex: 0 320px;
+    flex: 0 0 320px;
     margin-right: -280px;
     background: $lightBackground;
     border: 1px solid #000;

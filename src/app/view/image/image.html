@@ -1,5 +1,5 @@
 <div class="image-container">
-  <img [src]="asset.url" >
+  <img [src]="sanitize(asset.url)" >
 </div>
 
 <div class="metadata-container" [class.open]="showMetadata">
