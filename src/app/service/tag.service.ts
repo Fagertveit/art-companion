@@ -46,6 +46,7 @@ export class TagService {
   public create(tag: Tag): Observable<Tag> {
     return Observable.create(obs => {
       this.db.findOne({ _id: tag._id }, (err, result) => {
+        console.log('Find one result: ', result);
         if (result == null) {
           this.db.insert(tag, (err: Error, newTag: Tag) => {
             if (err) {

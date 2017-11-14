@@ -31,7 +31,8 @@ function createWindow () {
       width: 1600,
       height: 800,
       minWidth: 800,
-      minHeight: 600
+      minHeight: 600,
+      backgroundColor: '#262427'
   });
 
   mainWindow.setMenu(null);
@@ -61,7 +62,7 @@ function createWindow () {
     }
 
     if (url.match('file:///')) {
-      let imgPath = url.substr(8, url.length);
+      let imgPath = url.substr(8, url.length).replace('%20', ' ');
       let filename = Date.now() + '-' + path.parse(url).base;
 
       base64Img.base64(imgPath, (err, data) => {
@@ -85,10 +86,16 @@ function createWindow () {
     }
   });
 
-  electron.ipcMain.on('create-resource', (event, data) => {
-    console.log('Save resource', path.resolve(libraryPath, data.category, data.filename));
+  electron.ipcMain.on('client-startup', (event, data) => {
+    if (data.libraryPath) {
+      libraryPath = data.libraryPath;
+    }
+  });
 
-    base64Img.img(data.base64, path.resolve(libraryPath, data.category), path.parse(data.filename).name, (err, imgPath) => {
+  electron.ipcMain.on('create-resource', (event, data) => {
+    console.log('Save resource', path.resolve(libraryPath, data.category, data.tags, data.filename));
+
+    base64Img.img(data.base64, path.resolve(libraryPath, data.category, data.tags), path.parse(data.filename).name, (err, imgPath) => {
       let relative = path.relative(app.getAppPath(), imgPath);
       console.log('Resource saved: ', imgPath, relative);
       mainWindow.webContents.send('resource-created', { url: imgPath, relativePath: relative });
@@ -96,13 +103,28 @@ function createWindow () {
   });
 
   electron.ipcMain.on('update-resource', (event, data) => {
+    console.log('Copy file ' + data.src + ' to ' + data.dest);
+
     fs.copyFile(data.src, data.dest, (err) => {
       mainWindow.webContents.send('resource-updated', { destination: data.dest });
+
+      // Unlink src
+      fs.unlink(data.src, (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
     });
   });
 
   electron.ipcMain.on('remove-resource', (event, src) => {
+    console.log('Unlinking file ' + src);
+
     fs.unlink(src, (err) => {
+      if (err) {
+        return console.error(err);
+      }
+
       mainWindow.webContents.send('resource-removed');
     });
   });
@@ -118,8 +140,10 @@ function createWindow () {
     dialog.showOpenDialog(options, (libPath) => {
       let relative = path.relative(app.getAppPath(), libPath[0]);
 
+      libraryPath = libPath[0];
+
       importLibrary.listFileSystem(libPath[0], (err, result) => {
-        mainWindow.webContents.send('set-library-path', { fs: result, relativePath: relative });
+        mainWindow.webContents.send('set-library-path', { fs: result, libraryPath: libPath[0] });
       });
     });
   });

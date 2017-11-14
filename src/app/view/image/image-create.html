@@ -20,6 +20,12 @@
         </div>
       </div>
     </div>
+    <div class="create-category">
+      <h4>Create category</h4>
+      <form (ngSubmit)="createCategory()">
+        <input class="category-input" id="categoryTitle" name="categoryTitle" [(ngModel)]="category.title" placeholder="title" />
+      </form>
+    </div>
     <div class="tag-container">
       <h4>Select tags</h4>
       <div class="tag-btn-list">
@@ -31,7 +37,12 @@
         </div>
       </div>
     </div>
-
+    <div class="create-tag">
+      <h4>Create tag</h4>
+      <form (ngSubmit)="createTag()">
+        <input class="tag-input" id="tagTitle" name="tagTitle" [(ngModel)]="tag.title" placeholder="title" />
+      </form>
+    </div>
     <div class="save-btn" (click)="saveAsset()">
       Save Image
     </div>

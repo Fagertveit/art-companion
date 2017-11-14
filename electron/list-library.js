@@ -40,13 +40,13 @@ exports.listFileSystem = function(basePath, cb) {
         tempTag.title = tag;
 
         if (tagBase.length == 0) {
-          tempTag._id = tag.toLowerCase();
-          tempTag.parentCategory = fileObj.category.toLowerCase();
-          tagBase = tag.toLowerCase();
+          tempTag._id = fileObj.category.toLowerCase().replace(' ', '_') + '-' + tag.toLowerCase().replace(' ', '_');
+          tempTag.parentCategory = fileObj.category.toLowerCase().replace(' ', '_');
+          tagBase = fileObj.category.toLowerCase().replace(' ', '_') + '-' + tag.toLowerCase().replace(' ', '_');
         } else {
-          tempTag._id = tagBase + '-' + tag.toLowerCase();
+          tempTag._id = tagBase + '-' + tag.toLowerCase().replace(' ', '_');
           tempTag.parentTag = tagBase;
-          tagBase += '-' + tag.toLowerCase();
+          tagBase += '-' + tag.toLowerCase().replace(' ', '_');
         }
 
         fileObj.tags.push(tempTag);

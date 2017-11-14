@@ -86,8 +86,9 @@ export class SettingsViewComponent {
   public setLibraryPath(): void {
     if (this.electron.isElectronApp) {
       this.electron.ipcRenderer.once('set-library-path', (event, data) => {
-        if (data && data.relativePath) {
-          this.settingsService.setLibraryPath(data.relativePath);
+        if (data && data.libraryPath) {
+          this.settingsService.setLibraryPath(data.libraryPath);
+          this.libraryPath = data.libraryPath;
         }
 
         this.importLibrary(data.fs).then(result => {
@@ -134,7 +135,6 @@ export class SettingsViewComponent {
 
       Observable.forkJoin(observables).subscribe(result => {
         console.log(result);
-
         resolve(true);
       });
     });

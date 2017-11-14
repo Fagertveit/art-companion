@@ -19,7 +19,7 @@ export class ImageViewResolve implements Resolve<any> {
       let data = {
         asset: null,
         category: null,
-        tags: []
+        tags: null
       };
 
       let id = route.params['id'];
@@ -27,8 +27,12 @@ export class ImageViewResolve implements Resolve<any> {
       this.assetService.get(id).subscribe(asset => {
         data.asset = asset;
 
-        this.categoryService.get(asset.category).subscribe(category => {
-          data.category = category;
+        Observable.forkJoin([
+          this.categoryService.get(asset.category),
+          this.tagService.list()
+        ]).subscribe(results => {
+          data.category = results[0];
+          data.tags = results[1];
 
           resolve(data);
         });

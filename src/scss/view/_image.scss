@@ -38,6 +38,28 @@ ac-image-create-view {
       flex-direction: column;
     }
 
+    .create-tag, .create-category {
+      display: flex;
+      flex: 0 0 75px;
+      flex-direction: column;
+
+      form {
+        display: flex;
+        flex: 1;
+      }
+
+      input {
+        display: flex;
+        flex: 1;
+        border: 0px;
+        background: $background;
+        color: $color;
+        margin: 2px;
+        font-size: 18px;
+        padding: 5px 20px;
+      }
+    }
+
     .save-btn {
       display: flex;
       flex: 0 0 75px;

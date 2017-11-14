@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ElectronService } from 'ngx-electron';
 
 import { SidebarComponent } from './component/sidebar/sidebar.component';
-import { AssetService } from './service/asset.service';
+import { AssetService, SettingsService } from './service';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +14,7 @@ export class AppComponent {
     private router: Router,
     private electronService: ElectronService,
     private assetService: AssetService,
+    private settingsService: SettingsService,
     private ngZone: NgZone
   ) { }
 
@@ -30,6 +31,10 @@ export class AppComponent {
           this.navigateTo('/image/create');
         });
       });
+
+      if (this.settingsService.getLibraryPath()) {
+        this.electronService.ipcRenderer.send('client-startup', { libraryPath: this.settingsService.getLibraryPath() });
+      }
     }
   }
 

@@ -34,6 +34,15 @@ export class ImageCreateViewComponent {
     monochrome: false,
     format: ''
   };
+  public tag: Tag = {
+    title: '',
+    parentCategory: '',
+    parentTag: ''
+  };
+  public category: Category = {
+    title: '',
+    icon: '',
+  }
   public importedData: ImportedData;
 
   constructor(
@@ -71,6 +80,24 @@ export class ImageCreateViewComponent {
     this.getTags();
   }
 
+  public createCategory(): void {
+    this.category._id = this.category.title.toLowerCase().replace(' ', '_');
+
+    this.categoryService.create(this.category).subscribe(result => {
+      this.category = {
+        title: '',
+        icon: ''
+      };
+
+      delete this.category._id;
+
+      this.categories.push(result);
+
+      this.selectedCategory = this.categories.find(cat => cat._id == result._id);
+      this.getTags();
+    });
+  }
+
   public setTag(tag: Tag): void {
     this.selectedTags.push(tag);
     this.tagId = tag._id;
@@ -97,6 +124,27 @@ export class ImageCreateViewComponent {
     });
   }
 
+  public createTag(): void {
+    if (this.tagId) {
+      this.tag.parentTag = this.tagId;
+      this.tag._id = this.tagId + '-' + this.tag.title.toLowerCase().replace(' ', '_');
+    } else {
+      this.tag.parentCategory = this.selectedCategory._id;
+      this.tag._id = this.selectedCategory._id + '-' + this.tag.title.toLowerCase().replace(' ', '_');
+    }
+
+    this.tagService.create(this.tag).subscribe(result => {
+      this.selectedTags.push(result);
+      this.tag = {
+        title: '',
+        parentCategory: '',
+        parentTag: '',
+      }
+
+      delete this.tag._id;
+    });
+  }
+
   public toggleTag(selectedTag: Tag): void {
     this.selectedTags = this.selectedTags.splice(0, this.selectedTags.indexOf(selectedTag));
 
@@ -113,6 +161,7 @@ export class ImageCreateViewComponent {
     this.asset.url = path;
     this.asset.title = this.importedData.filename;
     this.asset.category = this.selectedCategory._id;
+    this.asset.tags = this.selectedTags.map(tag => tag._id);
 
     console.log('Storing asset: ', this.asset);
     this.assetService.create(this.asset).subscribe(result => {
@@ -127,16 +176,17 @@ export class ImageCreateViewComponent {
     let data = {
       base64: this.importedData.base64,
       category: this.selectedCategory.title,
+      tags: this.selectedTags.map(tag => tag.title).join('/'),
       filename: this.importedData.filename
     };
 
     if (this.electron.isElectronApp) {
-      this.electron.ipcRenderer.once('resource-created', (event, filename) => {
+      this.electron.ipcRenderer.once('resource-created', (event, paths) => {
         this.zone.runOutsideAngular(() => {
-          console.log('Got a relative path: ', filename);
+          console.log('Got a relative path: ', paths);
 
           this.zone.runTask(() => {
-            this.storeAsset(filename);
+            this.storeAsset(paths.url);
           });
         });
       });

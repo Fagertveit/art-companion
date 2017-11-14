@@ -14,13 +14,9 @@
 
   <h4>Tags</h4>
   <div class="tags">
-    <span *ngFor="let tag of tags">{{ tag.title }}</span>
+    <span *ngFor="let tag of selectedTags">{{ tag.title }}</span>
   </div>
+  <div class="btn">Edit tags</div>
 
-  <h4>Edit Image</h4>
-  <div class="edit-asset">
-    <div class="edit-container" [class.open]="showEdit">
-      <p>Here we edit the shit out of the resource</p>
-    </div>
-  </div>
+  <div class="btn btn-warning" (click)="deleteImage(true)">Delete Image</div>
 </div>
