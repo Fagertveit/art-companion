@@ -18,6 +18,10 @@ export class LibraryViewComponent {
   public categoryId: string;
   public tagId: string;
   public showNavigation: boolean = true;
+  public filter: any = {};
+  public limit: number = 20;
+  public page: number = 0;
+  public scrollCooldown: boolean = false;
 
   constructor(
     private assetService: AssetService,
@@ -36,7 +40,10 @@ export class LibraryViewComponent {
     });
 
     this.getCategories();
-    this.getAssets();
+
+    if (!this.categoryId) {
+      this.getAssets();
+    }
   }
 
   public toggleNavigation(): void {
@@ -52,10 +59,8 @@ export class LibraryViewComponent {
   }
 
   public refreshAssets(): void {
-    let filter;
-
     if (this.tagId) {
-      filter = {
+      this.filter = {
         $and: [
           {
             category: this.selectedCategory._id
@@ -66,19 +71,30 @@ export class LibraryViewComponent {
         ]
       };
     } else {
-      filter = {
+      this.filter = {
         category: this.selectedCategory._id
       };
     }
 
-    this.assetService.filter(filter).subscribe(result => {
-      this.assets = result;
-    });
+    this.page = 0;
+    this.assets = [];
+
+    this.getAssets();
+  }
+
+  public onScroll(): void {
+    if (!this.scrollCooldown) {
+      this.scrollCooldown = true;
+      this.page += 1;
+
+      this.getAssets();
+    }
   }
 
   public getAssets(): void {
-    this.assetService.list().subscribe(result => {
-      this.assets = result;
+    this.assetService.filterPage(this.filter, this.page, this.limit).subscribe(result => {
+      this.assets = this.assets.concat(result);
+      this.scrollCooldown = false;
     });
   }
 
@@ -88,6 +104,7 @@ export class LibraryViewComponent {
 
       if (this.categoryId) {
         this.setCategory(this.categories.find(category => category._id == this.categoryId));
+        this.refreshAssets();
       }
     });
   }

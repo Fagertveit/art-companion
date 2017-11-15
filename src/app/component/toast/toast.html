@@ -1,0 +1,66 @@
+<div class="toast-container" *ngIf="notification">
+  <div class="toast" [class.active]="show" *ngIf="notification.type == 0">
+    <div class="toast-icon">
+      <i class="fa fa-check-circle"></i>
+    </div>
+    <div class="toast-content">
+      <div class="toast-header">
+        <strong>{{ notification.title }}</strong>
+        <i class="fa fa-times" (click)="closeToast()"></i>
+      </div>
+      <div class="toast-message">
+        {{ notification.message }}
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" [class.active]="show" *ngIf="notification.type == 1">
+    <div class="toast-icon">
+      <i class="fa fa-info-circle"></i>
+    </div>
+    <div class="toast-content">
+      <div class="toast-header">
+        <strong>{{ notification.title }}</strong>
+        <i class="fa fa-times" (click)="closeToast()"></i>
+      </div>
+      <div class="toast-message">
+        {{ notification.message }}
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" [class.active]="show" *ngIf="notification.type == 2">
+    <div class="toast-icon">
+      <i class="fa fa-exclamation-triangle"></i>
+    </div>
+    <div class="toast-content">
+      <div class="toast-header">
+        <strong>{{ notification.title }}</strong>
+        <i class="fa fa-times" (click)="closeToast()"></i>
+      </div>
+      <div class="toast-message">
+        {{ notification.message }}
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" [class.active]="show" *ngIf="notification.type == 3">
+    <div class="toast-icon">
+      <i class="fa fa-spinner"></i>
+    </div>
+    <div class="toast-content">
+      <div class="toast-header">
+        <strong>{{ notification.title }}</strong>
+        <i class="fa fa-times" (click)="closeToast()"></i>
+      </div>
+      <div class="toast-message">
+        {{ notification.message }}
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

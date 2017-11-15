@@ -47,6 +47,19 @@ export class AssetService {
     });
   }
 
+  public listPage(page: number, limit: number): Observable<Asset[]> {
+    return Observable.create(obs => {
+      this.db.find({}).skip(page * limit).limit(limit).exec((err, assets) => {
+        if (err) {
+          obs.complete(err);
+        } else {
+          obs.next(assets);
+          obs.complete();
+        }
+      })
+    })
+  }
+
   public filter(filter: any): Observable<Asset[]> {
     return Observable.create(obs => {
       this.db.find(filter, (err, assets) => {
@@ -57,6 +70,19 @@ export class AssetService {
           obs.complete();
         }
       });
+    });
+  }
+
+  public filterPage(filter: any, page: number, limit: number): Observable<Asset[]> {
+    return Observable.create(obs => {
+      this.db.find(filter).skip(page * limit).limit(limit).exec((err, assets) => {
+        if (err) {
+          obs.complete(err);
+        } else {
+          obs.next(assets);
+          obs.complete();
+        }
+      })
     });
   }
 
@@ -82,7 +108,6 @@ export class AssetService {
               console.error('Failed to create asset.', err);
               obs.complete(err);
             } else {
-              console.log('Created asset!', newAsset);
               obs.next(newAsset);
               obs.complete();
             }
@@ -93,11 +118,24 @@ export class AssetService {
               console.error('Failed to update asset.', err);
               obs.complete(err);
             } else {
-              console.log('Updated asset!', newAsset);
               obs.next(newAsset);
               obs.complete();
             }
           });
+        }
+      });
+    });
+  }
+
+  public update(asset: Asset): Observable<Asset> {
+    return Observable.create(obs => {
+      this.db.update({ _id: asset._id }, asset, (err, updated) => {
+        if (err) {
+          console.error('Failed to update asset.', err);
+          obs.complete(err);
+        } else {
+          obs.next(updated);
+          obs.complete();
         }
       });
     });
@@ -110,7 +148,6 @@ export class AssetService {
           console.error('Failed to remove ' + id, err);
           obs.complete(err);
         } else {
-          console.log('Removed asset ' + id, numRemoved);
           obs.next(numRemoved);
           obs.complete();
         }

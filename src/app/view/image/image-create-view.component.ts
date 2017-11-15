@@ -6,7 +6,7 @@ import { ElectronService } from 'ngx-electron';
 import { AssetService } from '../../service/asset.service';
 import { CategoryService } from '../../service/category.service';
 import { TagService } from '../../service/tag.service';
-import { Category, Tag, Asset, ImportedData } from '../../model';
+import { Category, Tag, Asset, ImportedData, Dimension } from '../../model';
 
 @Component({
   selector: 'ac-image-create-view',
@@ -157,18 +157,28 @@ export class ImageCreateViewComponent {
     this.getTags();
   }
 
-  public storeAsset(path: string): void {
+  public updateAsset(path: string, thumbPath: string, size: Dimension, fileSize: number, fileType: string): void {
     this.asset.url = path;
+    this.asset.thumbnail = thumbPath;
     this.asset.title = this.importedData.filename;
     this.asset.category = this.selectedCategory._id;
     this.asset.tags = this.selectedTags.map(tag => tag._id);
+    this.asset.dimensions = size;
+    this.asset.format = fileType;
+    this.asset.size = fileSize;
 
-    console.log('Storing asset: ', this.asset);
-    this.assetService.create(this.asset).subscribe(result => {
-      console.log('Saved Asset: ', result);
+    this.assetService.update(this.asset).subscribe(result => {
       this.assetService.clearImportedData();
 
-      this.router.navigate(['/image', result._id]);
+      this.router.navigate(['/image', this.asset._id]);
+    });
+  }
+
+  public storeAsset(): void {
+    this.assetService.create(this.asset).subscribe(result => {
+      this.asset = result;
+
+      this.saveAsset();
     });
   }
 
@@ -177,21 +187,17 @@ export class ImageCreateViewComponent {
       base64: this.importedData.base64,
       category: this.selectedCategory.title,
       tags: this.selectedTags.map(tag => tag.title).join('/'),
-      filename: this.importedData.filename
+      filename: this.importedData.filename,
+      id: this.asset._id
     };
 
     if (this.electron.isElectronApp) {
-      this.electron.ipcRenderer.once('resource-created', (event, paths) => {
-        this.zone.runOutsideAngular(() => {
-          console.log('Got a relative path: ', paths);
-
-          this.zone.runTask(() => {
-            this.storeAsset(paths.url);
-          });
+      this.electron.ipcRenderer.once('resource-created', (event, data) => {
+        this.zone.runTask(() => {
+          this.updateAsset(data.url, data.thumbUrl, data.imageSize, data.fileSize, data.fileFormat);
         });
       });
 
-      console.log('Saving data: ', data);
       this.electron.ipcRenderer.send('create-resource', data);
     }
   }
@@ -202,7 +208,6 @@ export class ImageCreateViewComponent {
   }
 
   public setPathData(url: string): void {
-    console.log('Image path:', url);
     let path = url;
     let pathArr = url.split('/');
     let filename = pathArr[pathArr.length - 1];

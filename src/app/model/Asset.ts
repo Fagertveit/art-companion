@@ -3,6 +3,7 @@ import { Category } from './Category';
 
 export interface Asset {
   url: string;
+  thumbnail?: string;
   title?: string;
   tags: string[];
   category: string;

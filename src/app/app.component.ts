@@ -32,10 +32,25 @@ export class AppComponent {
         });
       });
 
+      this.electronService.ipcRenderer.on('thumbnail-generated', (event, data) => {
+        this.ngZone.runOutsideAngular(() => {
+          this.updateAsset(data.id, data.url);
+        });
+      });
+
       if (this.settingsService.getLibraryPath()) {
         this.electronService.ipcRenderer.send('client-startup', { libraryPath: this.settingsService.getLibraryPath() });
       }
     }
+  }
+
+  public updateAsset(id: string, thumbUrl: string): void {
+    this.assetService.get(id).subscribe(result => {
+      result.thumbnail = thumbUrl;
+
+      this.assetService.update(result).subscribe(result => {
+      });
+    });
   }
 
   public navigateTo(route: string) {

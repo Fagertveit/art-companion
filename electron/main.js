@@ -3,6 +3,7 @@ const electron = require('electron');
 const app = electron.app;
 const clipboard = electron.clipboard;
 const dialog = electron.dialog;
+const nativeImage = electron.nativeImage;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 // Module for file download
@@ -96,9 +97,33 @@ function createWindow () {
     console.log('Save resource', path.resolve(libraryPath, data.category, data.tags, data.filename));
 
     base64Img.img(data.base64, path.resolve(libraryPath, data.category, data.tags), path.parse(data.filename).name, (err, imgPath) => {
-      let relative = path.relative(app.getAppPath(), imgPath);
-      console.log('Resource saved: ', imgPath, relative);
-      mainWindow.webContents.send('resource-created', { url: imgPath, relativePath: relative });
+      console.log('Resource saved: ', imgPath);
+      let fileStats = fs.statSync(imgPath);
+      let fileSize = fileStats.size;
+
+      let srcImage = nativeImage.createFromPath(imgPath);
+      let srcSize = srcImage.getSize();
+      let parsedPath = path.parse(imgPath);
+      let thumbPath = path.resolve(libraryPath, 'thumbnails');
+      let options = {
+        quality: 'good'
+      };
+
+      if (srcSize.width < srcSize.height) {
+        options.height = data.sizeBase;
+      } else {
+        options.width = data.sizeBase;
+      }
+
+      let thumbnail = srcImage.resize(options);
+
+      base64Img.img(thumbnail.toDataURL(), thumbPath, data.id, (err, thumbUrl) => {
+        if (err) {
+          console.error(err);
+        }
+
+        mainWindow.webContents.send('resource-created', { url: imgPath, thumbUrl: thumbUrl, imageSize: srcSize, fileSize: fileSize, fileFormat: parsedPath.ext });
+      });
     });
   });
 
@@ -114,6 +139,32 @@ function createWindow () {
           console.error(err);
         }
       });
+    });
+  });
+
+  electron.ipcMain.on('generate-thumbnail', (event, data) => {
+    let srcImage = nativeImage.createFromPath(data.url);
+    let srcSize = srcImage.getSize();
+    let parsedPath = path.parse(data.url);
+    let thumbPath = path.resolve(libraryPath, 'thumbnails');
+    let options = {
+      quality: 'better'
+    };
+
+    if (srcSize.width < srcSize.height) {
+      options.height = data.sizeBase;
+    } else {
+      options.width = data.sizeBase;
+    }
+
+    let thumbnail = srcImage.resize(options);
+
+    base64Img.img(thumbnail.toDataURL(), thumbPath, data.id, (err, imgPath) => {
+      if (err) {
+        console.error(err);
+      }
+
+      mainWindow.webContents.send('thumbnail-generated', { url: imgPath, id: data.id });
     });
   });
 

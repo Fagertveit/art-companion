@@ -1,0 +1,23 @@
+.progress-container {
+  display: flex;
+  flex: 1 auto;
+  margin: 10px;
+}
+
+.progress-bar {
+  display: flex;
+  flex: 1 auto;
+  background: $background;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 1) inset, 1px 1px 1px #746f68;
+  margin: 4px;
+  padding: 1px;
+  border: 1px solid #000;
+}
+
+.bar {
+  display: flex;
+  flex: 0 50%;
+  margin: 1px;
+  background: $color;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
+}

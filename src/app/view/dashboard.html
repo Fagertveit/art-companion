@@ -33,4 +33,44 @@
 <div class="panel" style="flex: 1 1 auto">
   <h1>Table</h1>
   <p>This is how we render tables in art companion</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Test</th>
+        <th>Info</th>
+        <th>Something</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>It's the body</td>
+        <td>We're inside it now</td>
+        <td>Good for data listing</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+
+<div class="panel" style="flex: 1 1 auto">
+  <h1>Toasts and Modals</h1>
+  <p>Here we test out the different toasts and modals that we can use within the app</p>
+  <h3>Modal</h3>
+  <p>A modal needs to be opened by an action, this can be programatical or by user interaction, here follows a button that opens a modal</p>
+  <button class="btn" (click)="modal.open()">Open Modal</button>
+  <h3>Toast</h3>
+  <p>The toast is a general purpouse notification interface that will tell the user that something is happening within the application, try it out!</p>
+  <div class="tag-list">
+    <div class="tag" [class.active]="toastType == 'success'" (click)="toastType = 'success'">Success</div>
+    <div class="tag" [class.active]="toastType == 'info'" (click)="toastType = 'info'">Info</div>
+    <div class="tag" [class.active]="toastType == 'error'" (click)="toastType = 'error'">Error</div>
+    <div class="tag" [class.active]="toastType == 'progress'" (click)="toastType = 'progress'">Progress</div>
+  </div>
+  <button class="btn" (click)="showToast()">Cheerz!</button>
+</div>
+
+<modal [title]="'Modal title'" #modal>
+  <p>Here we have a cool modal that we can use for a lot of things, like asking the user what he wants to do with thingamabobs and such</p>
+  <p>The modal will be important when we ask the user things like if he really really really want's to remove a image</p>
+  <p>Enjoy!</p>
+</modal>

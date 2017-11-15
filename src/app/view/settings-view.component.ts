@@ -93,6 +93,7 @@ export class SettingsViewComponent {
 
         this.importLibrary(data.fs).then(result => {
           console.log('Library imported!');
+          this.generateThumbnails();
         });
       });
 
@@ -103,8 +104,13 @@ export class SettingsViewComponent {
   public importLibrary(fileSystem: any): Promise<boolean> {
     return new Promise((resolve) => {
       let observables = [];
+      let createdTags = [];
 
       for (let category in fileSystem) {
+        if (category == 'thumbnails') {
+          continue;
+        }
+
         let files = fileSystem[category];
         let newCategory: Category = {
           title: category,
@@ -118,15 +124,22 @@ export class SettingsViewComponent {
           let newAsset: Asset = {
             title: file.filename as string,
             url: file.url as string,
+            thumbnail: '',
             category: file.category.toLowerCase() as string,
             format: file.format as string,
+            dimensions: file.dimensions,
+            size: file.size,
+            monochrome: false,
             tags: []
           };
 
           for (let tag of file.tags) {
             newAsset.tags.push(tag._id);
 
-            observables.push(this.tagService.create(tag));
+            if (createdTags.indexOf(tag._id) == -1) {
+              observables.push(this.tagService.create(tag));
+              createdTags.push(tag._id);
+            }
           }
 
           observables.push(this.assetService.create(newAsset));
@@ -134,9 +147,18 @@ export class SettingsViewComponent {
       }
 
       Observable.forkJoin(observables).subscribe(result => {
-        console.log(result);
         resolve(true);
       });
+    });
+  }
+
+  public generateThumbnails(): void {
+    let assets: Asset[];
+
+    this.assetService.list().subscribe(result => {
+      for (let asset of result) {
+        this.electron.ipcRenderer.send('generate-thumbnail', { id: asset._id, url: asset.url, sizeBase: 400 });
+      }
     });
   }
 }

@@ -1,6 +1,7 @@
-import { Asset } from './Asset';
+import { Asset, Dimension } from './Asset';
 import { Tag } from './Tag';
 import { Category } from './Category';
 import { ImportedData } from './ImportedData';
+import { Notification, NotificationType } from './Notification';
 
-export { Asset, Tag, Category, ImportedData };
+export { Asset, Dimension, Tag, Category, ImportedData, Notification, NotificationType };

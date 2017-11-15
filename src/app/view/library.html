@@ -29,8 +29,13 @@
   </div>
 </div>
 
-<div class="library-container">
+<div class="library-container"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  [scrollWindow]="false"
+  (scrolled)="onScroll()">
   <div class="asset" *ngFor="let asset of assets" (click)="gotoImage(asset._id)">
-    <img [src]="sanitize(asset.url)" />
+    <img [src]="sanitize(asset.thumbnail)" />
   </div>
 </div>

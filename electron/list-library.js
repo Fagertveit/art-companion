@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
+const nativeImage = require('electron').nativeImage;
 
 exports.listFileSystem = function(basePath, cb) {
   glob(basePath + '/**/*.+(jpg|png|jpeg|gif)', null, (err, files) => {
@@ -17,10 +18,16 @@ exports.listFileSystem = function(basePath, cb) {
         filename: '',
         category: '',
         destination: '',
+        dimensions: {},
+        size: 0,
         url: '',
         format: '',
         tags: []
       };
+      let img = nativeImage.createFromPath(file);
+
+      fileObj.dimensions = img.getSize();
+      fileObj.size = fs.statSync(file).size;
 
       sections = sections.slice(sections.indexOf('library') + 1)
 

@@ -77,4 +77,10 @@ export class ImageViewComponent {
       }
     });
   }
+
+  public generateThumbnail(): void {
+    if (this.electron.isElectronApp) {
+      this.electron.ipcRenderer.send('generate-thumbnail', { url: this.asset.url, id: this.asset._id, sizeBase: 400 });
+    }
+  }
 }
