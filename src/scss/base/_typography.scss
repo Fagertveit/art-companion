@@ -2,3 +2,54 @@
   font-family: fontinSans;
   src: url('../assets/font/Fontin_Sans_SC_45b.otf');
 }
+
+h1, h2, h3, h4 {
+  margin: 0.2em 0;
+  letter-spacing: 2px;
+  text-shadow: 0 0 1px rgba(0, 0, 0, .66);
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h2 {
+  font-size: 2.5em;
+}
+
+h3 {
+  font-size: 2em;
+  text-indent: 0.5em;
+  border-bottom: 2px solid $color;
+}
+
+h4 {
+  font-size: 1.5em;
+}
+
+p {
+  font-size: 1em;
+  letter-spacing: 1px;
+  text-shadow: 0 0 1px rgba(0, 0, 0, .66);
+  line-height: $lineHeight;
+}
+
+strong {
+  font-size: 1.1em;
+  line-height: $lineHeight;
+}
+
+small {
+  font-size: 0.8em;
+  line-height: $lineHeight;
+}
+
+a {
+  color: lighten($color, 15%);
+  text-decoration: none;
+  border-bottom: 2px dotted $color;
+
+  &:hover {
+    color: $color;
+  }
+}

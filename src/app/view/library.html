@@ -1,16 +1,31 @@
-<div class="category-selection">
-  <div class="category-btn" [class.selected]="category == selectedCategory" *ngFor="let category of categories" (click)="setCategory(category)">
-    <p>{{ category.title }}</p>
+<div class="navigation" [class.active]="showNavigation">
+  <div class="category-selection">
+    <div class="well-icon">
+      <i class="fa fa-folder"></i>
+    </div>
+    <div class="well">
+      <div class="tag" [class.active]="category == selectedCategory" *ngFor="let category of categories" (click)="setCategory(category)">
+        {{ category.title }}
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="tag-selection">
-  <div class="tag-btn selected" *ngFor="let tag of selectedTags" (click)="toggleTag(tag)">
-    <p>{{ tag.title }}</p>
+  <div class="tag-selection">
+    <div class="well-icon">
+      <i class="fa fa-tag"></i>
+    </div>
+    <div class="well">
+      <div class="tag active" *ngFor="let tag of selectedTags" (click)="toggleTag(tag)">
+        {{ tag.title }}
+      </div>
+
+      <div class="tag" *ngFor="let tag of tags" (click)="setTag(tag)">
+        {{ tag.title }}
+      </div>
+    </div>
   </div>
-
-  <div class="tag-btn" *ngFor="let tag of tags" (click)="setTag(tag)">
-    <p>{{ tag.title }}</p>
+  <div class="toggle-nav" (click)="toggleNavigation()">
+    <i class="fa" [class.fa-chevron-up]="showNavigation" [class.fa-chevron-down]="!showNavigation"></i>
   </div>
 </div>
 

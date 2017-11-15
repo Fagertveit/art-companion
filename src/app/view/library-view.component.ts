@@ -17,6 +17,7 @@ export class LibraryViewComponent {
   public selectedTags: Tag[] = [];
   public categoryId: string;
   public tagId: string;
+  public showNavigation: boolean = true;
 
   constructor(
     private assetService: AssetService,
@@ -36,6 +37,10 @@ export class LibraryViewComponent {
 
     this.getCategories();
     this.getAssets();
+  }
+
+  public toggleNavigation(): void {
+    this.showNavigation = !this.showNavigation;
   }
 
   public sanitize(url: string): SafeResourceUrl {

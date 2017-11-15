@@ -13,8 +13,51 @@
   color: $color;
   padding: 6px 10px;
   margin: 4px;
+
+  &:hover {
+    background: lighten($lightBackground, 5%);
+  }
+
+  &:focus {
+    outline: 0;
+  }
 }
 
 .btn-warning {
   background-color: #502c29;
+
+  &:hover {
+    background: lighten(#502c29, 5%);
+  }
+}
+
+.tag {
+  border: 1px solid #615f58;
+  border-bottom-color: #262427;
+  border-right-color: #262427;
+  background: #464540;
+  padding: 4px 10px;
+  margin: 4px;
+  display: inline-flex;
+  color: $color;
+  text-shadow: 1px 1px 1px #615f58;
+  box-shadow: 0 0 3px #000;
+
+  &.active {
+    border: 1px solid $background;
+    border-bottom-color: lighten($lightBackground, 5%);;
+    border-right-color: lighten($lightBackground, 5%);;
+    color: $color;
+    text-shadow: 1px 1px 1px $background;
+    box-shadow: 0 0 5px #000 inset;
+    background: darken(#464540, 5%);
+
+    &:hover {
+      box-shadow: 0 0 1px #000 inset;
+    }
+  }
+
+  &:hover {
+    box-shadow: 0 0 1px #000;
+  }
 }

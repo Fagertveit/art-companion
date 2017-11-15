@@ -1,0 +1,41 @@
+input {
+  display: flex;
+  flex: 1;
+  border: 0px;
+  background: darken($lightBackground, 5%);
+  border-bottom: 2px solid $background;
+  color: $color;
+  margin: 2px;
+  font-size: 18px;
+  padding: 5px 20px;
+  font-family: fontinSans;
+
+  &::placeholder {
+    color: darken($color, 30%);
+  }
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:disabled {
+    background: darken($lightBackground, 3%);
+  }
+}
+
+select {
+  display: flex;
+  flex: 1;
+  border: 0px;
+  background: darken($lightBackground, 5%);
+  border-bottom: 2px solid $background;
+  color: $color;
+  margin: 2px;
+  font-size: 18px;
+  padding: 5px 20px;
+  font-family: fontinSans;
+
+  &:focus {
+    outline: 0;
+  }
+}

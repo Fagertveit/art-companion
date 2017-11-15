@@ -2,8 +2,9 @@ $fa-font-path: '~font-awesome-sass/assets/fonts/font-awesome/';
 
 @import "~font-awesome-sass/assets/stylesheets/font-awesome";
 
+@import "base/variables";
 @import "base/typography";
-@import "base/colors";
+@import "base/form";
 @import "base/base";
 @import "base/layout";
 @import "base/table";

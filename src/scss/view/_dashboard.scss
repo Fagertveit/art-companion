@@ -2,4 +2,7 @@ ac-dashboard {
   display: flex;
   flex: 1;
   padding: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
 }

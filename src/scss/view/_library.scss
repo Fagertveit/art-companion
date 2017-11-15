@@ -2,24 +2,55 @@ ac-library {
   display: flex;
   flex: 1 auto;
   flex-direction: column;
-  padding: 10px;
+
+  .navigation {
+    background: $lightBackground;
+    display: flex;
+    flex: 0 0 200px;
+    flex-direction: column;
+    margin-top: -160px;
+    justify-content: space-between;
+    transition: margin-top 250ms ease-in-out;
+    border-bottom: 1px solid #000;
+    padding-right: 10px;
+    transform: translate3d(0,0,0);
+
+    &.active {
+      margin-top: 0;
+    }
+  }
 
   .category-selection {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    flex: 0 0 125px;
+    flex: 0 0 90px;
+    margin-top: 10px;
     justify-content: space-between;
     overflow-y: auto;
+
+    .tag {
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+    }
   }
 
   .tag-selection {
     display: flex;
-    flex: 0 0 75px;
+    flex: 0 0 50px;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
     overflow-y: auto;
+  }
+
+  .toggle-nav {
+    display: flex;
+    flex: 0 0 40px;
+    font-size: 30px;
+    justify-content: center;
+    align-items: center;
   }
 
   .library-container {
@@ -32,35 +63,6 @@ ac-library {
     overflow-y: auto;
     max-width: 100%;
     transform: translate3d(0,0,0);
-  }
-
-  .category-btn {
-    min-width: 150px;
-    border: 1px solid #000;
-    background: $lightBackground;
-    margin: 5px;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &.selected {
-      border: 1px solid $color;
-    }
-  }
-
-  .tag-btn {
-    border: 1px solid #000;
-    background: $lightBackground;
-    margin: 5px;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &.selected {
-      border: 1px solid $color;
-    }
   }
 
   .asset {

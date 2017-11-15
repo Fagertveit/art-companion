@@ -15,7 +15,11 @@
     <div class="category-container">
       <h4>Select category</h4>
       <div class="category-btn-list">
-        <div class="category-btn" [style.background-image]="'url(' + category.icon + ')'" *ngFor="let category of categories" (click)="setCategory(category)">
+        <div class="tag category-tag"
+          [style.background-image]="'url(' + category.icon + ')'"
+          [class.active]="category == selectedCategory"
+          *ngFor="let category of categories"
+          (click)="setCategory(category)">
           {{ category.title }}
         </div>
       </div>
@@ -29,10 +33,10 @@
     <div class="tag-container">
       <h4>Select tags</h4>
       <div class="tag-btn-list">
-        <div class="tag-btn" *ngFor="let tag of selectedTags" (click)="toggleTag(tag)">
+        <div class="tag active" *ngFor="let tag of selectedTags" (click)="toggleTag(tag)">
           {{ tag.title }}
         </div>
-        <div class="tag-btn" *ngFor="let tag of tags" (click)="setTag(tag)">
+        <div class="tag" *ngFor="let tag of tags" (click)="setTag(tag)">
           {{ tag.title }}
         </div>
       </div>
@@ -43,8 +47,8 @@
         <input class="tag-input" id="tagTitle" name="tagTitle" [(ngModel)]="tag.title" placeholder="title" />
       </form>
     </div>
-    <div class="save-btn" (click)="saveAsset()">
+    <button class="btn save-btn" (click)="saveAsset()">
       Save Image
-    </div>
+    </button>
   </div>
 </div>
