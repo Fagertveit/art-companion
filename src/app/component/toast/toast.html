@@ -53,14 +53,7 @@
         <strong>{{ notification.title }}</strong>
         <i class="fa fa-times" (click)="closeToast()"></i>
       </div>
-      <div class="toast-message">
-        {{ notification.message }}
-      </div>
-      <div class="progress-container">
-        <div class="progress-bar">
-          <div class="bar"></div>
-        </div>
-      </div>
+      <progress-bar [maxValue]="maxValue" [value]="value"></progress-bar>
     </div>
   </div>
 </div>

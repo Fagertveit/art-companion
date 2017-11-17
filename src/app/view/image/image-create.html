@@ -1,54 +1,57 @@
-<div class="ac-create-image">
-  <div class="ac-card">
-    <h4>Image</h4>
-    <div *ngIf="!url" class="ac-card-content">
-      <p>Select asset</p>
-      <file-upload (image)="setImageData($event)" (url)="setPathData($event)"></file-upload>
-    </div>
 
-    <div *ngIf="url" class="ac-card-content">
-      <img *ngIf="url" mat-card-image [src]="url" alt="Image source: {{ path }}">
+<div class="panel">
+  <h4>Image</h4>
+  <div *ngIf="!url" class="image-upload">
+    <p>Select asset</p>
+    <file-upload (image)="setImageData($event)" (url)="setPathData($event)"></file-upload>
+  </div>
+
+  <div *ngIf="url" class="image-container">
+    <img *ngIf="url" mat-card-image [src]="url" alt="Image source: {{ path }}">
+  </div>
+</div>
+
+<div class="panel">
+  <div class="category-container">
+    <h4>Select category</h4>
+    <div class="category-btn-list">
+      <div class="tag category-tag"
+        [style.background-image]="'url(' + category.icon + ')'"
+        [class.active]="category == selectedCategory"
+        *ngFor="let category of categories"
+        (click)="setCategory(category)">
+        {{ category.title }}
+      </div>
     </div>
   </div>
 
-  <div class="ac-card">
-    <div class="category-container">
-      <h4>Select category</h4>
-      <div class="category-btn-list">
-        <div class="tag category-tag"
-          [style.background-image]="'url(' + category.icon + ')'"
-          [class.active]="category == selectedCategory"
-          *ngFor="let category of categories"
-          (click)="setCategory(category)">
-          {{ category.title }}
-        </div>
-      </div>
-    </div>
-    <div class="create-category">
-      <h4>Create category</h4>
-      <form (ngSubmit)="createCategory()">
-        <input class="category-input" id="categoryTitle" name="categoryTitle" [(ngModel)]="category.title" placeholder="title" />
-      </form>
-    </div>
-    <div class="tag-container">
-      <h4>Select tags</h4>
-      <div class="tag-btn-list">
-        <div class="tag active" *ngFor="let tag of selectedTags" (click)="toggleTag(tag)">
-          {{ tag.title }}
-        </div>
-        <div class="tag" *ngFor="let tag of tags" (click)="setTag(tag)">
-          {{ tag.title }}
-        </div>
-      </div>
-    </div>
-    <div class="create-tag">
-      <h4>Create tag</h4>
-      <form (ngSubmit)="createTag()">
-        <input class="tag-input" id="tagTitle" name="tagTitle" [(ngModel)]="tag.title" placeholder="title" />
-      </form>
-    </div>
-    <button class="btn save-btn" (click)="storeAsset()">
-      Save Image
-    </button>
+  <div class="create-category">
+    <h4>Create category</h4>
+    <form (ngSubmit)="createCategory()">
+      <input class="category-input" id="categoryTitle" name="categoryTitle" [(ngModel)]="category.title" placeholder="title" />
+    </form>
   </div>
+
+  <div class="tag-container">
+    <h4>Select tags</h4>
+    <div class="tag-btn-list">
+      <div class="tag active" *ngFor="let tag of selectedTags" (click)="toggleTag(tag)">
+        {{ tag.title }}
+      </div>
+      <div class="tag" *ngFor="let tag of tags" (click)="setTag(tag)">
+        {{ tag.title }}
+      </div>
+    </div>
+  </div>
+
+  <div class="create-tag">
+    <h4>Create tag</h4>
+    <form (ngSubmit)="createTag()">
+      <input class="tag-input" id="tagTitle" name="tagTitle" [(ngModel)]="tag.title" placeholder="title" />
+    </form>
+  </div>
+
+  <button class="btn save-btn" (click)="storeAsset()">
+    Save Image
+  </button>
 </div>

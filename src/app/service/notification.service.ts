@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
-import { Notification, NotificationType } from '../model';
+import { Notification, NotificationType, Progress } from '../model';
 
 @Injectable()
 export class NotificationService {
@@ -40,10 +40,9 @@ export class NotificationService {
     this.subject.next(notification);
   }
 
-  public progress(title: string, message: string, progress: number): void {
+  public progress(title: string, progress: Subject<Progress>): void {
     let notification: Notification = {
       title: title,
-      message: message,
       progress: progress,
       type: NotificationType.PROGRESS
     };

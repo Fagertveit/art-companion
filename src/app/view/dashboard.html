@@ -67,6 +67,8 @@
     <div class="tag" [class.active]="toastType == 'progress'" (click)="toastType = 'progress'">Progress</div>
   </div>
   <button class="btn" (click)="showToast()">Cheerz!</button>
+  <h3>Progress</h3>
+  <progress-bar [maxValue]="100" [value]="progressValue"></progress-bar>
 </div>
 
 <modal [title]="'Modal title'" #modal>

@@ -9,8 +9,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AppComponent } from './app.component';
 import { DashboardViewComponent } from './view/dashboard-view.component';
 import { LibraryViewComponent } from './view/library-view.component';
-import { CategoryViewComponent } from './view/category-view.component';
-import { TagViewComponent } from './view/tag-view.component';
 import { SettingsViewComponent } from './view/settings-view.component';
 import { ImageComponent } from './view/image/image.component';
 import { ImageViewComponent } from './view/image/image-view.component';
@@ -21,6 +19,7 @@ import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { FileUploadComponent } from './component/file-upload/file-upload.component';
 import { ModalComponent } from './component/modal/modal.component';
 import { ToastComponent } from './component/toast/toast.component';
+import { ProgressComponent } from './component/progress/progress.component';
 
 // Directive
 import { DomAnchor } from './directive/dom-anchor/dom-anchor.directive';
@@ -31,6 +30,8 @@ import { TagService } from './service/tag.service';
 import { AssetService } from './service/asset.service';
 import { SettingsService} from './service/settings.service';
 import { NotificationService } from './service/notification.service';
+import { GlobalEventService } from './service/global-event.service';
+import { LibraryService } from './service/library.service';
 
 import { AppRoutingModule } from './app.routes';
 
@@ -39,8 +40,6 @@ import { AppRoutingModule } from './app.routes';
     AppComponent,
     DashboardViewComponent,
     LibraryViewComponent,
-    CategoryViewComponent,
-    TagViewComponent,
     SettingsViewComponent,
     ImageComponent,
     ImageViewComponent,
@@ -49,6 +48,7 @@ import { AppRoutingModule } from './app.routes';
     FileUploadComponent,
     ModalComponent,
     ToastComponent,
+    ProgressComponent,
     DomAnchor
   ],
   imports: [
@@ -59,7 +59,15 @@ import { AppRoutingModule } from './app.routes';
     NgxElectronModule,
     InfiniteScrollModule
   ],
-  providers: [TagService, CategoryService, AssetService, SettingsService, NotificationService],
+  providers: [
+    TagService,
+    CategoryService,
+    AssetService,
+    SettingsService,
+    NotificationService,
+    GlobalEventService,
+    LibraryService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

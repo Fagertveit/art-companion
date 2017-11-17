@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 
-import { AssetService, CategoryService, SettingsService, TagService } from '../service';
+import { AssetService, CategoryService, SettingsService, TagService, LibraryService } from '../service';
 import { Asset, Category, Tag } from '../model';
 
 import { CATEGORY_SEED } from '../model/category.seed';
@@ -22,7 +22,8 @@ export class SettingsViewComponent {
     private categoryService: CategoryService,
     private settingsService: SettingsService,
     private tagService: TagService,
-    private electron: ElectronService
+    private electron: ElectronService,
+    private libraryService: LibraryService
   ) { }
 
   public ngOnInit() {
@@ -45,6 +46,18 @@ export class SettingsViewComponent {
     this.categoryService.list().subscribe(result => {
       console.table(result);
     });
+  }
+
+  public listFilesystem(): void {
+    if (this.electron.isElectronApp) {
+      this.electron.ipcRenderer.send('list-library');
+    }
+  }
+
+  public importLibrary(): void {
+    if (this.electron.isElectronApp) {
+      this.electron.ipcRenderer.send('import-library');
+    }
   }
 
   public seedCategories(): void {
@@ -91,74 +104,13 @@ export class SettingsViewComponent {
           this.libraryPath = data.libraryPath;
         }
 
-        this.importLibrary(data.fs).then(result => {
+        this.libraryService.importLibrary(data.fs).then(result => {
           console.log('Library imported!');
-          this.generateThumbnails();
+          this.libraryService.generateThumbnails();
         });
       });
 
       this.electron.ipcRenderer.send('select-library');
     }
-  }
-
-  public importLibrary(fileSystem: any): Promise<boolean> {
-    return new Promise((resolve) => {
-      let observables = [];
-      let createdTags = [];
-
-      for (let category in fileSystem) {
-        if (category == 'thumbnails') {
-          continue;
-        }
-
-        let files = fileSystem[category];
-        let newCategory: Category = {
-          title: category,
-          _id: category.toLowerCase(),
-          icon: ''
-        };
-
-        observables.push(this.categoryService.create(newCategory));
-
-        for (let file of files) {
-          let newAsset: Asset = {
-            title: file.filename as string,
-            url: file.url as string,
-            thumbnail: '',
-            category: file.category.toLowerCase() as string,
-            format: file.format as string,
-            dimensions: file.dimensions,
-            size: file.size,
-            monochrome: false,
-            tags: []
-          };
-
-          for (let tag of file.tags) {
-            newAsset.tags.push(tag._id);
-
-            if (createdTags.indexOf(tag._id) == -1) {
-              observables.push(this.tagService.create(tag));
-              createdTags.push(tag._id);
-            }
-          }
-
-          observables.push(this.assetService.create(newAsset));
-        }
-      }
-
-      Observable.forkJoin(observables).subscribe(result => {
-        resolve(true);
-      });
-    });
-  }
-
-  public generateThumbnails(): void {
-    let assets: Asset[];
-
-    this.assetService.list().subscribe(result => {
-      for (let asset of result) {
-        this.electron.ipcRenderer.send('generate-thumbnail', { id: asset._id, url: asset.url, sizeBase: 400 });
-      }
-    });
   }
 }

@@ -20,6 +20,7 @@ const localShortcut = require('electron-localshortcut');
 const importLibrary = require('./list-library');
 // regex for supported image formats
 const fileMatch = /(.jpg|.png|.gif|.jpeg|.svg)/gi;
+const async = require('async');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -75,7 +76,6 @@ function createWindow () {
       });
     } else {
       let filename = Date.now() + '-' + url.split('/').pop();
-      console.log('Filename: ', filename);
 
       base64Img.requestBase64(url, (err, res, body) => {
         if (err) {
@@ -143,28 +143,14 @@ function createWindow () {
   });
 
   electron.ipcMain.on('generate-thumbnail', (event, data) => {
-    let srcImage = nativeImage.createFromPath(data.url);
-    let srcSize = srcImage.getSize();
-    let parsedPath = path.parse(data.url);
-    let thumbPath = path.resolve(libraryPath, 'thumbnails');
-    let options = {
-      quality: 'better'
-    };
-
-    if (srcSize.width < srcSize.height) {
-      options.height = data.sizeBase;
-    } else {
-      options.width = data.sizeBase;
-    }
-
-    let thumbnail = srcImage.resize(options);
-
-    base64Img.img(thumbnail.toDataURL(), thumbPath, data.id, (err, imgPath) => {
+    async.waterfall([
+      async.apply(generateThumbnail, data)
+    ], (err, result) => {
       if (err) {
-        console.error(err);
+        console.error(err.message);
       }
 
-      mainWindow.webContents.send('thumbnail-generated', { url: imgPath, id: data.id });
+      mainWindow.webContents.send('thumbnail-generated', result);
     });
   });
 
@@ -192,10 +178,78 @@ function createWindow () {
       let relative = path.relative(app.getAppPath(), libPath[0]);
 
       libraryPath = libPath[0];
-
+      mainWindow.webContents.send('set-library-path', { libraryPath: libPath[0] });
+      /*
       importLibrary.listFileSystem(libPath[0], (err, result) => {
+        if (err) {
+          console.error(err);
+        }
+
         mainWindow.webContents.send('set-library-path', { fs: result, libraryPath: libPath[0] });
       });
+      */
+    });
+  });
+
+  electron.ipcMain.on('import-library', (event) => {
+    let categories = [];
+    let tags = [];
+
+    let categoryObjects = [];
+    let tagObjects = [];
+
+    importLibrary.getFileList(libraryPath, (err, fileList) => {
+      if (err) {
+        console.error(err.message);
+      }
+
+      async.eachSeries(fileList, (file, callback) => {
+        importLibrary.getFileInfo(file, (err, fileObj) => {
+          if (err) {
+            return callback(err);
+          }
+
+          if (fileObj.category != 'thumbnails') {
+            if (categories.indexOf(fileObj.category) == -1) {
+              categoryObjects.push({
+                title: fileObj.category,
+                _id: fileObj.category.toLowerCase().replace(' ', '_'),
+                icon: ''
+              });
+
+              categories.push(fileObj.category);
+            }
+
+            for (let tag of fileObj.tags) {
+              if (tags.indexOf(tag._id) == -1) {
+                tagObjects.push(tag);
+                tags.push(tag._id);
+              }
+            }
+
+            mainWindow.webContents.send('import-image', fileObj);
+          }
+
+          callback();
+        });
+      }, (err) => {
+        if (err) {
+          return console.error(err.message);
+        }
+
+        mainWindow.webContents.send('import-categories', categoryObjects);
+        mainWindow.webContents.send('import-tags', tagObjects);
+      });
+    });
+  });
+
+  electron.ipcMain.on('list-library', (event) => {
+    importLibrary.listFileSystem(libraryPath, (err, result) => {
+      if (err) {
+        console.error(err);
+      }
+
+      mainWindow.webContents.send('library-listed', { fs: result });
     });
   });
 
@@ -232,3 +286,28 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+function generateThumbnail(data, callback) {
+  let srcImage = nativeImage.createFromPath(data.url);
+  let srcSize = srcImage.getSize();
+  let thumbPath = path.resolve(libraryPath, 'thumbnails');
+  let options = {
+    quality: 'good'
+  };
+
+  if (srcSize.width < srcSize.height) {
+    options.height = data.sizeBase;
+  } else {
+    options.width = data.sizeBase;
+  }
+
+  let thumbnail = srcImage.resize(options);
+
+  base64Img.img(thumbnail.toDataURL(), thumbPath, data.id, (err, imgPath) => {
+    if (err) {
+      console.error(err.message);
+    }
+
+    callback(null, { url: imgPath, size: srcSize, id: data.id})
+  });
+}

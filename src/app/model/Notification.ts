@@ -1,3 +1,6 @@
+import { Progress } from './Progress';
+import { Subject } from 'rxjs';
+
 export const enum NotificationType {
   SUCCESS,
   INFO,
@@ -9,7 +12,7 @@ export const enum NotificationType {
 export interface Notification {
   type: number;
   title: string;
-  message: string;
+  message?: string;
   image?: string;
-  progress?: number;
+  progress?: Subject<Progress>;
 }

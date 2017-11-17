@@ -1,7 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 
 import { ModalComponent } from '../component/modal/modal.component';
+
+import { Progress } from '../model';
 
 import { NotificationService } from '../service/notification.service';
 
@@ -13,8 +16,28 @@ export class DashboardViewComponent {
   @ViewChild(ModalComponent) modal: ModalComponent;
 
   public toastType: string = 'success';
+  public progressValue: number = 0;
+  public sub: any;
+  public subject: Subject<Progress>;
 
   constructor(private router: Router, private notification: NotificationService) { }
+
+  ngOnInit() {
+    this.subject = new Subject();
+    this.sub = Observable.interval(1000).subscribe(() => {
+      if (this.progressValue < 100) {
+        this.progressValue += 10;
+      } else {
+        this.progressValue = 0;
+      }
+
+      this.subject.next({maxValue: 100, value: this.progressValue});
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
 
   public createAsset(): void {
     this.router.navigate(['image/create']);
@@ -32,7 +55,7 @@ export class DashboardViewComponent {
         this.notification.error('Error toast!', 'With a message!');
         break;
       case 'progress':
-        this.notification.progress('Progress toast!', 'With a message!', 50);
+        this.notification.progress('Progress toast!', this.subject);
         break;
       default:
         this.notification.success('Success toast!', 'With a message!');

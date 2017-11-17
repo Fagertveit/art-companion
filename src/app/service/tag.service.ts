@@ -46,14 +46,12 @@ export class TagService {
   public create(tag: Tag): Observable<Tag> {
     return Observable.create(obs => {
       this.db.findOne({ _id: tag._id }, (err, result) => {
-        console.log('Find one result: ', result);
         if (result == null) {
           this.db.insert(tag, (err: Error, newTag: Tag) => {
             if (err) {
               console.error('Failed to create tag.', err);
               obs.complete(err);
             } else {
-              console.log('Created tag!', newTag);
               obs.next(newTag);
               obs.complete();
             }
@@ -64,7 +62,6 @@ export class TagService {
               console.error('Failed to update tag.', err);
               obs.complete(err);
             } else {
-              console.log('Updated tag!', newTag);
               obs.next(newTag);
               obs.complete();
             }
@@ -81,7 +78,6 @@ export class TagService {
           console.error('Failed to remove ' + id, err);
           obs.complete(err);
         } else {
-          console.log('Removed tag ' + id, numRemoved);
           obs.next(numRemoved);
           obs.complete();
         }
