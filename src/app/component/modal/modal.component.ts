@@ -6,10 +6,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ModalComponent {
   @Input() title: string = '';
-  @Input() type: string = 'simple';
+  @Input() closeBtn: string = 'Close';
 
   @Output() onClose: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() onCancel: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() onSave: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   private show: boolean = false;
@@ -27,11 +26,6 @@ export class ModalComponent {
 
   public save(): void {
     this.onSave.emit(true);
-    this.show = false;
-  }
-
-  public cancel(): void {
-    this.onCancel.emit(true);
     this.show = false;
   }
 }

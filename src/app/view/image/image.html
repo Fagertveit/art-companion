@@ -18,6 +18,10 @@
   </div>
   <div class="btn">Edit tags</div>
 
-  <div class="btn btn-warning" (click)="deleteImage(true)">Delete Image</div>
+  <div class="btn btn-warning" (click)="confirmDelete()">Delete Image</div>
   <div class="btn" (click)="generateThumbnail()">Generate Thumbnail</div>
 </div>
+
+<modal-confirm #deleteModal [title]="'Confirm delete'" (onConfirm)="deleteImage(true)">
+  <p>Do you really want to delete the image?</p>
+</modal-confirm>

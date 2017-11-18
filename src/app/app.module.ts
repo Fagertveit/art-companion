@@ -18,8 +18,10 @@ import { ImageCreateViewComponent } from './view/image/image-create-view.compone
 import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { FileUploadComponent } from './component/file-upload/file-upload.component';
 import { ModalComponent } from './component/modal/modal.component';
+import { ModalConfirmComponent } from './component/modal/modal-confirm.component';
 import { ToastComponent } from './component/toast/toast.component';
 import { ProgressComponent } from './component/progress/progress.component';
+import { RatingComponent } from './component/rating/rating.component';
 
 // Directive
 import { DomAnchor } from './directive/dom-anchor/dom-anchor.directive';
@@ -47,8 +49,10 @@ import { AppRoutingModule } from './app.routes';
     SidebarComponent,
     FileUploadComponent,
     ModalComponent,
+    ModalConfirmComponent,
     ToastComponent,
     ProgressComponent,
+    RatingComponent,
     DomAnchor
   ],
   imports: [

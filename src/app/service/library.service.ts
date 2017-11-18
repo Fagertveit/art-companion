@@ -16,20 +16,39 @@ export class LibraryService {
     private electron: ElectronService
   ) { }
 
+  private categories: string[] = [];
+  private tags: string[] = [];
+  private newCategories: Category[] = [];
+  private newTags: Tag[] = [];
+
   public importImage(file: File): Observable<Asset> {
     return Observable.create(obs => {
       let newAsset: Asset = {
         title: file.filename as string,
         url: file.url as string,
         thumbnail: '',
-        category: file.category.toLowerCase() as string,
+        category: file.category.toLowerCase().replace(' ', '_'),
         format: file.format as string,
         dimensions: file.dimensions,
         monochrome: false,
         tags: []
       };
 
+      if (this.categories.indexOf(file.category) == -1) {
+        this.newCategories.push({
+          title: file.category,
+          _id: file.category.toLowerCase().replace(' ', '_'),
+          icon: ''
+        });
+
+        this.categories.push(file.category);
+      }
+
       for (let tag of file.tags) {
+        if (this.tags.indexOf(tag._id) == -1) {
+          this.newTags.push(tag);
+          this.tags.push(tag._id);
+        }
         newAsset.tags.push(tag._id);
       }
 
@@ -40,11 +59,11 @@ export class LibraryService {
     });
   }
 
-  public importCategories(categories: Category[]): Observable<Category[]> {
+  public importCategories(): Observable<Category[]> {
     return Observable.create(obs => {
       let observables = [];
 
-      for (let category of categories) {
+      for (let category of this.newCategories) {
         observables.push(this.categoryService.create(category));
       }
 
@@ -55,11 +74,11 @@ export class LibraryService {
     });
   }
 
-  public importTags(tags: Tag[]): Observable<Tag[]> {
+  public importTags(): Observable<Tag[]> {
     return Observable.create(obs => {
       let observables = [];
 
-      for (let tag of tags) {
+      for (let tag of this.newTags) {
         observables.push(this.tagService.create(tag));
       }
 

@@ -8,7 +8,7 @@ import { AssetService } from './asset.service';
 import { SettingsService } from './settings.service';
 import { LibraryService } from './library.service';
 
-import { Dimension, Progress } from '../model';
+import { Dimension, Progress, Asset } from '../model';
 
 @Injectable()
 export class GlobalEventService {
@@ -17,6 +17,9 @@ export class GlobalEventService {
   public numImageImports: number = 0;
   private thumbnailQueue: any[] = [];
   private thumbSubject: Subject<Progress>;
+
+  private importNum: number = 0;
+  private numImported: number = 0;
 
   constructor(
     private electron: ElectronService,
@@ -72,6 +75,57 @@ export class GlobalEventService {
         console.log(data.fs);
       });
 
+      this.electron.ipcRenderer.on('import-start', (event, numResources) => {
+        this.importNum = numResources;
+
+        this.thumbSubject = new Subject();
+        this.notification.progress('Importing library', this.thumbSubject);
+
+        this.electron.ipcRenderer.send('import-take-next');
+      });
+
+      this.electron.ipcRenderer.on('import-file-info', (event, imageInfo) => {
+        this.ngZone.runOutsideAngular(() => {
+          if (imageInfo.category == 'thumbnails') {
+            this.numImported += 1;
+
+            if (this.importNum > this.numImported) {
+              this.electron.ipcRenderer.send('import-take-next');
+            }
+          } else {
+            this.libraryService.importImage(imageInfo).subscribe(asset => {
+              this.electron.ipcRenderer.send('import-thumbnail', { url: asset.url, id: asset._id });
+            });
+          }
+        });
+      });
+
+      this.electron.ipcRenderer.on('imported-thumbnail', (event, data) => {
+        this.ngZone.runOutsideAngular(() => {
+          this.updateAsset(data.id, data.url, data.size).subscribe(result => {
+            this.numImported += 1;
+
+            this.ngZone.runTask(() => {
+              this.thumbSubject.next({ maxValue: this.importNum, value: this.numImported });
+            });
+
+            if (this.importNum > this.numImported) {
+              setTimeout(() => {
+                this.electron.ipcRenderer.send('import-take-next');
+              }, 100);
+            } else {
+              this.libraryService.importCategories().subscribe(result => {
+                console.log('Categories created!');
+              });
+
+              this.libraryService.importTags().subscribe(result => {
+                console.log('Tags created!');
+              });
+            }
+          });
+        });
+      });
+
       this.electron.ipcRenderer.on('import-image', (event, data) => {
         this.ngZone.runOutsideAngular(() => {
           this.libraryService.importImage(data).subscribe(asset => {
@@ -94,7 +148,7 @@ export class GlobalEventService {
 
       this.electron.ipcRenderer.on('import-categories', (event, data) => {
         this.ngZone.runOutsideAngular(() => {
-          this.libraryService.importCategories(data).subscribe(result => {
+          this.libraryService.importCategories().subscribe(result => {
             console.log('Categories created!');
           });
         });
@@ -102,7 +156,7 @@ export class GlobalEventService {
 
       this.electron.ipcRenderer.on('import-tags', (event, data) => {
         this.ngZone.runOutsideAngular(() => {
-          this.libraryService.importTags(data).subscribe(result => {
+          this.libraryService.importTags().subscribe(result => {
             console.log('Tags created!');
           });
         });
@@ -110,12 +164,16 @@ export class GlobalEventService {
     }
   }
 
-  public updateAsset(id: string, thumbUrl: string, imgSize: Dimension): void {
-    this.assetService.get(id).subscribe(result => {
-      result.thumbnail = thumbUrl;
-      result.dimensions = imgSize;
+  public updateAsset(id: string, thumbUrl: string, imgSize: Dimension): Observable<Asset> {
+    return Observable.create(obs => {
+      this.assetService.get(id).subscribe(result => {
+        result.thumbnail = thumbUrl;
+        result.dimensions = imgSize;
 
-      this.assetService.update(result).subscribe(result => {
+        this.assetService.update(result).subscribe(asset => {
+          obs.next(asset);
+          obs.complete();
+        });
       });
     });
   }

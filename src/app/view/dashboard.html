@@ -1,4 +1,4 @@
-<div class="panel" style="flex: 1 1 auto">
+<div class="panel" style="flex: 0 50%">
   <h1>Typography</h1>
   <h3>Headers</h3>
   <h1>Header 1</h1>
@@ -10,7 +10,7 @@
   </p>
 </div>
 
-<div class="panel" style="flex: 1 1 auto">
+<div class="panel" style="flex: 0 50%">
   <h1>Form</h1>
   <p>Here we list the elements that can be seen in the various forms in the application.</p>
   <h3>Buttons</h3>
@@ -30,7 +30,7 @@
   </select>
 </div>
 
-<div class="panel" style="flex: 1 1 auto">
+<div class="panel" style="flex: 0 50%">
   <h1>Table</h1>
   <p>This is how we render tables in art companion</p>
 
@@ -52,12 +52,13 @@
   </table>
 </div>
 
-<div class="panel" style="flex: 1 1 auto">
+<div class="panel" style="flex: 0 50%">
   <h1>Toasts and Modals</h1>
   <p>Here we test out the different toasts and modals that we can use within the app</p>
   <h3>Modal</h3>
   <p>A modal needs to be opened by an action, this can be programatical or by user interaction, here follows a button that opens a modal</p>
   <button class="btn" (click)="modal.open()">Open Modal</button>
+  <button class="btn btn-warning" (click)="confirmModal.open()">Open Confirm Modal</button>
   <h3>Toast</h3>
   <p>The toast is a general purpouse notification interface that will tell the user that something is happening within the application, try it out!</p>
   <div class="tag-list">
@@ -67,8 +68,15 @@
     <div class="tag" [class.active]="toastType == 'progress'" (click)="toastType = 'progress'">Progress</div>
   </div>
   <button class="btn" (click)="showToast()">Cheerz!</button>
+</div>
+
+<div class="panel" style="flex: 0 50%">
+  <h1>Custom UI Components</h1>
+  <p>Here we list all our custom UI components that we can use in the application</p>
   <h3>Progress</h3>
   <progress-bar [maxValue]="100" [value]="progressValue"></progress-bar>
+  <h3>Rating</h3>
+  <rating></rating>
 </div>
 
 <modal [title]="'Modal title'" #modal>
@@ -76,3 +84,8 @@
   <p>The modal will be important when we ask the user things like if he really really really want's to remove a image</p>
   <p>Enjoy!</p>
 </modal>
+
+<modal-confirm [title]="'Confirm Modal Titel'" (onConfirm)="modalConfirm()" (onCancel)="modalCancel()" #confirmModal>
+  <p>This is a confirm modal, that we can use to confirm stuff in the app!</p>
+  <p>Don't think we need to make anymore off these now</p>
+</modal-confirm>

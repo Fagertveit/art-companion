@@ -1,0 +1,31 @@
+rating {
+  display: flex;
+  flex: 1 auto;
+
+  .rating-container {
+    display: flex;
+    flex: 1 auto;
+    height: 30px;
+    min-width: 300px;
+  }
+
+  .star {
+    display: flex;
+    flex: 1 1;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  .star-empty {
+    background-image: url('../assets/svg/empty-star.svg');
+  }
+
+  .star-half {
+    background-image: url('../assets/svg/half-star.svg');
+  }
+
+  .star-full {
+    background-image: url('../assets/svg/full-star.svg');
+  }
+}

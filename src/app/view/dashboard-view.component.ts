@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
 import { ModalComponent } from '../component/modal/modal.component';
+import { ModalConfirmComponent } from '../component/modal/modal-confirm.component';
 
 import { Progress } from '../model';
 
@@ -14,6 +15,7 @@ import { NotificationService } from '../service/notification.service';
 })
 export class DashboardViewComponent {
   @ViewChild(ModalComponent) modal: ModalComponent;
+  @ViewChild(ModalConfirmComponent) confirmModal: ModalConfirmComponent;
 
   public toastType: string = 'success';
   public progressValue: number = 0;
@@ -60,5 +62,13 @@ export class DashboardViewComponent {
       default:
         this.notification.success('Success toast!', 'With a message!');
     }
+  }
+
+  public modalConfirm(): void {
+    this.notification.success('Confirmed!', 'We confirmed the modal action! Yay!');
+  }
+
+  public modalCancel(): void {
+    this.notification.info('Cancelled', 'We have cancelled the modal action!');
   }
 }

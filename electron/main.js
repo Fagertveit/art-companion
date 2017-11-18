@@ -18,6 +18,7 @@ const base64Img = require('base64-img');
 const localShortcut = require('electron-localshortcut');
 // File structure importer
 const importLibrary = require('./list-library');
+const importLib = require('./import-library');
 // regex for supported image formats
 const fileMatch = /(.jpg|.png|.gif|.jpeg|.svg)/gi;
 const async = require('async');
@@ -26,6 +27,7 @@ const async = require('async');
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let libraryPath = app.getAppPath() + '\\assets\\library\\';
+let numImportResource = 0;
 
 function createWindow () {
   // Create the browser window.
@@ -192,6 +194,27 @@ function createWindow () {
   });
 
   electron.ipcMain.on('import-library', (event) => {
+    importLib.startImport(libraryPath, (err, numResource) => {
+      numImportResource = numResource;
+
+      mainWindow.webContents.send('import-start', numResource);
+    });
+  });
+
+  electron.ipcMain.on('import-take-next', (event) => {
+    importLib.takeNext(libraryPath, (err, imageInfo) => {
+      mainWindow.webContents.send('import-file-info', imageInfo);
+    });
+  });
+
+  electron.ipcMain.on('import-thumbnail', (event, data) => {
+    importLib.generateThumbnail(data.url, data.id, libraryPath, 400, 'good', (err, thumbData) => {
+      mainWindow.webContents.send('imported-thumbnail', { url: thumbData.url, id: data.id, size: thumbData.size });
+    });
+  });
+
+  /*
+  electron.ipcMain.on('import-library', (event) => {
     let categories = [];
     let tags = [];
 
@@ -242,6 +265,7 @@ function createWindow () {
       });
     });
   });
+  */
 
   electron.ipcMain.on('list-library', (event) => {
     importLibrary.listFileSystem(libraryPath, (err, result) => {

@@ -51,7 +51,7 @@
     <div class="toast-content">
       <div class="toast-header">
         <strong>{{ notification.title }}</strong>
-        <i class="fa fa-times" (click)="closeToast()"></i>
+        <small>{{ value }} / {{ maxValue }}</small>
       </div>
       <progress-bar [maxValue]="maxValue" [value]="value"></progress-bar>
     </div>

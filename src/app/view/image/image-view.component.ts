@@ -1,7 +1,9 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ElectronService } from 'ngx-electron';
+
+import { ModalConfirmComponent } from '../../component/modal/modal-confirm.component';
 
 import { AssetService, TagService, CategoryService } from '../../service';
 import { Asset, Category, Tag } from '../../model';
@@ -11,6 +13,7 @@ import { Asset, Category, Tag } from '../../model';
   templateUrl: './image.html'
 })
 export class ImageViewComponent {
+  @ViewChild(ModalConfirmComponent) deleteModal: ModalConfirmComponent;
   public asset: Asset;
   public category: Category;
   public tags: Tag[];
@@ -48,6 +51,10 @@ export class ImageViewComponent {
 
   public sanitize(url: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  public confirmDelete(): void {
+    this.deleteModal.open();
   }
 
   public deleteImage(deleteFile: boolean): void {

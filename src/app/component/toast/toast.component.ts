@@ -30,7 +30,6 @@ export class ToastComponent {
 
       if (this.notification.type == NotificationType.PROGRESS) {
         this.progressSub = this.notification.progress.subscribe(values => {
-          console.log('Max Value: ' + values.maxValue + ' Value: ' + values.value);
 
           this.maxValue = values.maxValue;
           this.value = values.value;

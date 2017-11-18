@@ -3,13 +3,13 @@
     <div class="modal">
       <div class="modal-header">
         <h4>{{ title }}</h4>
-        <i class="fa fa-times" (click)="close()"></i>
       </div>
       <div class="modal-body">
         <ng-content></ng-content>
       </div>
       <div class="modal-footer">
-        <button class="btn" (click)="close()">{{ closeBtn }}</button>
+        <button class="btn" (click)="confirm()">{{ confirmBtn }}</button>
+        <button class="btn btn-warning" (click)="cancel()">{{ cancelBtn }}</button>
       </div>
     </div>
   </div>
