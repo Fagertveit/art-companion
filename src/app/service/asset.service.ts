@@ -141,6 +141,15 @@ export class AssetService {
     });
   }
 
+  public setRating(id: string, rating: number): Observable<boolean> {
+    return Observable.create(obs => {
+      this.db.update({ _id: id }, { $set: { rating: rating }}, {}, () => {
+        obs.next(true);
+        obs.complete();
+      });
+    });
+  }
+
   public remove(id: string): Observable<number> {
     return Observable.create(obs => {
       this.db.remove({ _id: id }, {}, (err, numRemoved) => {

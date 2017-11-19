@@ -51,6 +51,11 @@
     </form>
   </div>
 
+  <div class="rating-container">
+    <h4>Rating</h4>
+    <rating [(rating)]="asset.rating"></rating>
+  </div>
+
   <button class="btn save-btn" (click)="storeAsset()">
     Save Image
   </button>

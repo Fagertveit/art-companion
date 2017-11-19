@@ -13,6 +13,7 @@
   color: $color;
   padding: 6px 10px;
   margin: 4px;
+  text-align: center;
 
   &:hover {
     background: lighten($lightBackground, 5%);

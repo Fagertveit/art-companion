@@ -5,7 +5,7 @@
 <ul>
   <li *ngFor="let link of links" (click)="activateRoute(link.route)">
     {{ link.title }}
-    <i [class]="link.icon"></i>
+    <i class="material-icons">{{ link.icon }}</i>
   </li>
   <li class="settings" (click)="activateRoute('settings')">
     Settings

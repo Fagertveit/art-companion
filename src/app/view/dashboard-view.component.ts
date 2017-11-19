@@ -21,6 +21,7 @@ export class DashboardViewComponent {
   public progressValue: number = 0;
   public sub: any;
   public subject: Subject<Progress>;
+  public rating: number = 7;
 
   constructor(private router: Router, private notification: NotificationService) { }
 
@@ -51,7 +52,7 @@ export class DashboardViewComponent {
         this.notification.success('Success toast!', 'With a message!');
         break;
       case 'info':
-        this.notification.info('Info toast!', 'With a message!');
+        this.notification.info('Info toast!', 'Testing the rating component here, current rating is ' + this.rating + '!!!');
         break;
       case 'error':
         this.notification.error('Error toast!', 'With a message!');

@@ -1,11 +1,11 @@
-import { Component, NgZone, ViewChild } from '@angular/core';
+import { Component, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ElectronService } from 'ngx-electron';
 
 import { ModalConfirmComponent } from '../../component/modal/modal-confirm.component';
 
-import { AssetService, TagService, CategoryService } from '../../service';
+import { AssetService, TagService, CategoryService, NotificationService } from '../../service';
 import { Asset, Category, Tag } from '../../model';
 
 @Component({
@@ -14,16 +14,22 @@ import { Asset, Category, Tag } from '../../model';
 })
 export class ImageViewComponent {
   @ViewChild(ModalConfirmComponent) deleteModal: ModalConfirmComponent;
+  @ViewChild(HTMLImageElement) imageRef: HTMLImageElement;
+  @ViewChild(HTMLDivElement) grid: HTMLDivElement
+
   public asset: Asset;
   public category: Category;
   public tags: Tag[];
   public selectedTags: Tag[] = [];
   public showMetadata: boolean = false;
+  public monochrome: boolean = false;
+  public flipHorizontal: boolean = false;
 
   constructor(
     private assetService: AssetService,
     private tagService: TagService,
     private categoryService: CategoryService,
+    private notification: NotificationService,
     private route: ActivatedRoute,
     private router: Router,
     private sanitizer: DomSanitizer,
@@ -39,6 +45,14 @@ export class ImageViewComponent {
 
       this.selectedTags = this.tags.filter(tag => this.asset.tags.indexOf(tag._id) != -1);
     });
+  }
+
+  public toggleMonochrome(): void {
+    this.monochrome = !this.monochrome;
+  }
+
+  public toggleFlipHorizontal(): void {
+    this.flipHorizontal = !this.flipHorizontal;
   }
 
   public gotoCategory(category: Category): void {
@@ -89,5 +103,12 @@ export class ImageViewComponent {
     if (this.electron.isElectronApp) {
       this.electron.ipcRenderer.send('generate-thumbnail', { url: this.asset.url, id: this.asset._id, sizeBase: 400 });
     }
+  }
+
+  public setRating(rating: number) {
+    this.assetService.setRating(this.asset._id, rating).subscribe(result => {
+      this.notification.info('Rating updated!', 'Rating for the image has been updated!');
+      this.asset.rating = rating;
+    })
   }
 }

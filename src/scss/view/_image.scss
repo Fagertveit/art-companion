@@ -108,24 +108,33 @@ ac-image-view {
     flex: 1 auto;
     justify-content: center;
     align-items: center;
+    padding: 5px;
 
     img {
       border: 1px solid #000;
       max-width: 100%;
       max-height: 100%;
+      transform: translate3d(0, 0, 0);
+
+      &.monochrome {
+        filter: grayscale(100%);
+      }
+
+      &.flip {
+        transform: scaleX(-1);
+      }
     }
   }
 
   .metadata-container {
     display: flex;
-    flex: 0 0 320px;
-    margin-right: -280px;
+    flex: 0 0 380px;
+    margin-right: -340px;
     background: $lightBackground;
     border: 1px solid #000;
-    padding: 10px;
-    padding-left: 40px;
+    padding: 0px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
-    flex-direction: column;
+    flex-direction: row;
     transition: margin-right 250ms ease-in-out;
 
     &.open {
@@ -133,8 +142,90 @@ ac-image-view {
     }
   }
 
-  .toggle-metadata {
-    margin-left: -32px;
-    font-size: 28px;
+  .options-column {
+    display: flex;
+    flex: 0 40px;
+    font-size: 32px;
+    border-right: 1px solid #262427;
+    flex-direction: column;
+
+    .toggle-metadata {
+      display: flex;
+      flex: 1 auto;
+      align-self: center;
+      padding: 4px;
+
+      i {
+        display: flex;
+        flex: auto;
+        align-self: center;
+      }
+    }
+
+    .options {
+      border-top: 1px solid #262427;
+      font-size: 24px;
+      align-self: flex-end;
+      padding: 8px;
+      display: flex;
+
+      &.active {
+        color: darken($color, 30%);
+      }
+
+      &:hover {
+        background-color: #262427;
+      }
+    }
+  }
+
+  .metadata-content {
+    display: flex;
+    flex: 0 340px;
+    padding: 10px;
+    flex-direction: column;
+  }
+
+  .metadata-category-well {
+    flex: 0 50px;
+
+    .tag {
+      flex: 1;
+    }
+  }
+
+  .metadata-tags-well, .metadata-collections-well {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .metadata-metadata-well {
+    flex: 0 110px;
+    padding: 1px;
+
+    ul {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      display: flex;
+      flex: 1;
+      justify-content: space-between;
+      padding: 2px 6px;
+      border-bottom: 1px solid #77736b;
+
+      strong {
+
+      }
+
+      span {
+        overflow: hidden;
+      }
+    }
   }
 }

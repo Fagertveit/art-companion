@@ -13,6 +13,10 @@ import { SettingsViewComponent } from './view/settings-view.component';
 import { ImageComponent } from './view/image/image.component';
 import { ImageViewComponent } from './view/image/image-view.component';
 import { ImageCreateViewComponent } from './view/image/image-create-view.component';
+import { CollectionComponent } from './view/collection/collection.component';
+import { CollectionListViewComponent } from './view/collection/collection-list-view.component';
+import { SketchComponent } from './view/sketch/sketch.component';
+import { SketchSetupViewComponent } from './view/sketch/sketch-setup-view.component';
 
 // Component
 import { SidebarComponent } from './component/sidebar/sidebar.component';
@@ -25,6 +29,9 @@ import { RatingComponent } from './component/rating/rating.component';
 
 // Directive
 import { DomAnchor } from './directive/dom-anchor/dom-anchor.directive';
+
+// Pipe
+import { FileSizePipe } from './pipe/file-size.pipe';
 
 // Service
 import { CategoryService } from './service/category.service';
@@ -46,6 +53,10 @@ import { AppRoutingModule } from './app.routes';
     ImageComponent,
     ImageViewComponent,
     ImageCreateViewComponent,
+    CollectionComponent,
+    CollectionListViewComponent,
+    SketchComponent,
+    SketchSetupViewComponent,
     SidebarComponent,
     FileUploadComponent,
     ModalComponent,
@@ -53,7 +64,8 @@ import { AppRoutingModule } from './app.routes';
     ToastComponent,
     ProgressComponent,
     RatingComponent,
-    DomAnchor
+    DomAnchor,
+    FileSizePipe
   ],
   imports: [
     BrowserModule,

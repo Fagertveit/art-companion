@@ -8,7 +8,6 @@ export const ASSET_SEED: Asset[] = [
     category: 'people',
     size: 0,
     dimensions: { width: 800, height: 800 },
-    monochrome: false,
     format: 'png',
     _id: 'people.png'
   },
@@ -19,7 +18,6 @@ export const ASSET_SEED: Asset[] = [
     category: 'animal',
     size: 0,
     dimensions: { width: 800, height: 800 },
-    monochrome: false,
     format: 'png',
     _id: 'animal.png'
   },
@@ -30,7 +28,6 @@ export const ASSET_SEED: Asset[] = [
     category: 'architecture',
     size: 0,
     dimensions: { width: 800, height: 800 },
-    monochrome: false,
     format: 'png',
     _id: 'architecture.png'
   },
@@ -41,7 +38,6 @@ export const ASSET_SEED: Asset[] = [
     category: 'conceptart',
     size: 0,
     dimensions: { width: 800, height: 800 },
-    monochrome: false,
     format: 'png',
     _id: 'conceptart.png'
   },
@@ -52,7 +48,6 @@ export const ASSET_SEED: Asset[] = [
     category: 'design',
     size: 0,
     dimensions: { width: 800, height: 800 },
-    monochrome: false,
     format: 'png',
     _id: 'design.png'
   },
@@ -63,7 +58,6 @@ export const ASSET_SEED: Asset[] = [
     category: 'landscape',
     size: 0,
     dimensions: { width: 800, height: 800 },
-    monochrome: false,
     format: 'png',
     _id: 'landscape.png'
   },
@@ -74,7 +68,6 @@ export const ASSET_SEED: Asset[] = [
     category: 'machinery',
     size: 0,
     dimensions: { width: 800, height: 800 },
-    monochrome: false,
     format: 'png',
     _id: 'machinery.png'
   },
@@ -85,7 +78,6 @@ export const ASSET_SEED: Asset[] = [
     category: 'uncategorized',
     size: 0,
     dimensions: { width: 800, height: 800 },
-    monochrome: false,
     format: 'png',
     _id: 'uncategorized.png'
   },
@@ -96,7 +88,6 @@ export const ASSET_SEED: Asset[] = [
     category: 'vehicle',
     size: 0,
     dimensions: { width: 800, height: 800 },
-    monochrome: false,
     format: 'png',
     _id: 'vehicle.png'
   },
@@ -107,7 +98,6 @@ export const ASSET_SEED: Asset[] = [
     category: 'weapon',
     size: 0,
     dimensions: { width: 800, height: 800 },
-    monochrome: false,
     format: 'png',
     _id: 'weapon.png'
   }

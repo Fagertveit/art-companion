@@ -9,7 +9,7 @@ export interface Asset {
   category: string;
   size?: number;
   dimensions?: Dimension;
-  monochrome?: boolean;
+  rating?: number;
   format?: string;
   _id?: string
 }

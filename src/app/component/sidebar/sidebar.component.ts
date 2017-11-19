@@ -15,18 +15,28 @@ export class SidebarComponent {
   public links: Link[] = [
     {
       route: '/',
-      icon: 'fa fa-heartbeat',
+      icon: 'dashboard',
       title: 'Dashboard'
     },
     {
       route: '/library',
-      icon: 'fa fa-th',
+      icon: 'view_quilt',
       title: 'Library'
     },
     {
       route: '/image/create',
-      icon: 'fa fa-picture-o',
-      title: 'Image'
+      icon: 'save',
+      title: 'Add Image'
+    },
+    {
+      route: '/collection',
+      icon: 'collections',
+      title: 'Collections'
+    },
+    {
+      route: '/sketch',
+      icon: 'gesture',
+      title: 'Sketch Tool'
     }
   ]
 

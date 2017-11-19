@@ -31,7 +31,7 @@ export class ImageCreateViewComponent {
       width: 0,
       height: 0
     },
-    monochrome: false,
+    rating: 5,
     format: ''
   };
   public tag: Tag = {

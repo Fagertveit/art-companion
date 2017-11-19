@@ -30,7 +30,8 @@ export class LibraryService {
         category: file.category.toLowerCase().replace(' ', '_'),
         format: file.format as string,
         dimensions: file.dimensions,
-        monochrome: false,
+        size: file.size,
+        rating: 5,
         tags: []
       };
 
@@ -117,7 +118,6 @@ export class LibraryService {
             format: file.format as string,
             dimensions: file.dimensions,
             size: file.size,
-            monochrome: false,
             tags: []
           };
 
