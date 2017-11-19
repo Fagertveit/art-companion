@@ -3,7 +3,7 @@ ac-sidebar {
   flex-direction: column;
   flex: 0 0 280px;
   width: 280px;
-  margin-left: -230px;
+  margin-left: -235px;
   background: $lightBackground;
   transition: margin-left 250ms ease-in-out;
   border-left: 1px solid #000;
@@ -15,7 +15,7 @@ ac-sidebar {
 
   .menu-toggle {
     font-size: 28px;
-    padding: 8px;
+    padding: 10px;
     padding-top: 20px;
 
     i {

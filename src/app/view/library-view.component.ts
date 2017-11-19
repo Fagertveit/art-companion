@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
-import { AssetService, CategoryService, TagService } from '../service';
+import { AssetService, CategoryService, TagService, NotificationService } from '../service';
 import { Asset, Category, Tag } from '../model';
 
 @Component({
@@ -22,11 +22,15 @@ export class LibraryViewComponent {
   public limit: number = 20;
   public page: number = 0;
   public scrollCooldown: boolean = false;
+  public showRatings: boolean = false;
+  public showSelection: boolean = false;
+  public filterRating: number = 0;
 
   constructor(
     private assetService: AssetService,
     private categoryService: CategoryService,
     private tagService: TagService,
+    private notification: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer
@@ -46,6 +50,14 @@ export class LibraryViewComponent {
     }
   }
 
+  public toggleRatings(): void {
+    this.showRatings = !this.showRatings;
+  }
+
+  public toggleSelection(): void {
+    this.showSelection = !this.showSelection;
+  }
+
   public toggleNavigation(): void {
     this.showNavigation = !this.showNavigation;
   }
@@ -58,6 +70,17 @@ export class LibraryViewComponent {
     this.router.navigate(['image', id]);
   }
 
+  public setRating(id: string, rating: number) {
+    this.assetService.setRating(id, rating).subscribe(result => {
+      this.notification.info('Rating updated!', 'Rating for the image has been updated!');
+    })
+  }
+
+  public setRatingFilter(rating: number): void {
+    this.filterRating = rating;
+    this.refreshAssets();
+  }
+
   public refreshAssets(): void {
     if (this.tagId) {
       this.filter = {
@@ -67,12 +90,26 @@ export class LibraryViewComponent {
           },
           {
             tags: this.tagId
+          },
+          {
+            rating: { $gte: this.filterRating }
+          }
+        ]
+      };
+    } else if(this.selectedCategory) {
+      this.filter = {
+        $and: [
+          {
+            category: this.selectedCategory._id
+          },
+          {
+            rating: { $gte: this.filterRating }
           }
         ]
       };
     } else {
       this.filter = {
-        category: this.selectedCategory._id
+        rating: { $gte: this.filterRating }
       };
     }
 

@@ -24,6 +24,28 @@
       </div>
     </div>
   </div>
+  <div class="filter-options">
+    <div class="well-icon">
+      <i class="fa fa-filter"></i>
+    </div>
+    <div class="filters">
+      <div>
+        <div class="tag" [class.active]="showRatings" (click)="toggleRatings()">Toggle Ratings</div>
+        <div class="tag" [class.active]="showSelection" (click)="toggleSelection()">Toggle Selection</div>
+      </div>
+
+      <div class="filter-rating">
+        <strong>Filter by rating:</strong>
+        <rating [rating]="filterRating" (ratingChange)="setRatingFilter($event)"></rating>
+      </div>
+
+      <div>
+        <div class="tag" (click)="batchTagging()">Batch Tagging</div>
+        <div class="tag" (click)="batchDelete()">Batch Delete</div>
+      </div>
+
+    </div>
+  </div>
   <div class="toggle-nav" (click)="toggleNavigation()">
     <i class="fa" [class.fa-chevron-up]="showNavigation" [class.fa-chevron-down]="!showNavigation"></i>
   </div>
@@ -35,7 +57,15 @@
   [infiniteScrollThrottle]="50"
   [scrollWindow]="false"
   (scrolled)="onScroll()">
-  <div class="asset" *ngFor="let asset of assets" (click)="gotoImage(asset._id)">
-    <img [src]="sanitize(asset.thumbnail)" />
+  <div class="asset" *ngFor="let asset of assets">
+    <div *ngIf="showSelection" class="asset-selection">
+      <input type="checkbox">
+    </div>
+
+    <img *ngIf="asset.thumbnail" [src]="sanitize(asset.thumbnail)" (click)="gotoImage(asset._id)" />
+
+    <div *ngIf="showRatings" class="asset-rating">
+      <rating [rating]="asset.rating" (ratingChange)="setRating(asset._id, $event)"></rating>
+    </div>
   </div>
 </div>

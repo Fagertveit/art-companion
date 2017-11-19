@@ -36,4 +36,15 @@ function takeNext() {
   });
 }
 
-testImport(process.argv[2]);
+function testFileCopy(src, dest) {
+  importLibrary.moveFile(src, dest, (err) => {
+    if (err) {
+      console.error(err);
+    }
+
+    console.log('File copied correctly!');
+  });
+}
+
+testFileCopy(process.argv[2], process.argv[3]);
+//testImport(process.argv[2]);

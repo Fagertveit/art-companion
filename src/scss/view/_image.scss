@@ -194,9 +194,69 @@ ac-image-view {
     }
   }
 
+  .metadata-collection {
+    display: flex;
+    flex: 0 50px;
+  }
+
+  .metadata-actions {
+    display: flex;
+    flex: 0 50px;
+
+    .btn {
+      font-size: 24px;
+      flex: 1 auto;
+    }
+  }
+
   .metadata-tags-well, .metadata-collections-well {
     align-items: flex-start;
     flex-wrap: wrap;
+  }
+
+  .tag-container {
+    display: flex;
+    flex: 1 150px;
+    width: 500px;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+
+  .create-tag {
+    display: flex;
+    flex: 0 0 75px;
+    flex-direction: column;
+    margin-top: 20px;
+
+    form {
+      display: flex;
+      flex: 1;
+    }
+
+    input {
+      display: flex;
+      flex: 1;
+      border: 0px;
+      background: $background;
+      color: $color;
+      margin: 2px;
+      font-size: 18px;
+      padding: 5px 20px;
+    }
+  }
+
+  .tag-btn-list {
+    display: flex;
+    flex: 1 auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .tag {
+      display: flex;
+      flex: 1;
+    }
   }
 
   .metadata-metadata-well {

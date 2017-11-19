@@ -1,6 +1,7 @@
 const path = require('path');
 const glob = require('glob');
 const fs = require('fs');
+const fsExtra = require('fs-extra');
 const nativeImage = require('electron').nativeImage;
 const base64Img = require('base64-img');
 
@@ -115,6 +116,18 @@ module.exports = {
       }
 
       callback(null, { url: imgPath, size: srcSize });
+    });
+  },
+
+  moveFile: function(src, dest, destDir, callback) {
+    fsExtra.ensureDir(destDir).then(() => {
+      fsExtra.move(src, dest).then(() => {
+        callback();
+      }).catch((err) => {
+        callback(err);
+      })
+    }).catch((err) => {
+      callback(err);
     });
   }
 }

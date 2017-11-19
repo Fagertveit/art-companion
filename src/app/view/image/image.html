@@ -31,6 +31,30 @@
 
     </div>
 
+    <h4>Add to Collection</h4>
+    <div class="metadata-collection">
+      <select>
+        <option>Collection 1</option>
+        <option>Cat memes</option>
+        <option>Kewl stuff</option>
+        <option>Collection 1</option>
+        <option>Cat memes</option>
+        <option>Kewl stuff</option>
+        <option>Collection 1</option>
+        <option>Cat memes</option>
+        <option>Kewl stuff</option>
+        <option>Collection 1</option>
+        <option>Cat memes</option>
+        <option>Kewl stuff</option>
+        <option>Collection 1</option>
+        <option>Cat memes</option>
+        <option>Kewl stuff</option>
+      </select>
+      <button class="btn">
+        <i class="material-icons">library_add</i>
+      </button>
+    </div>
+
     <h4>Metadata</h4>
     <div class="well metadata-metadata-well">
       <ul>
@@ -56,13 +80,36 @@
     <h4>Rating</h4>
     <rating [rating]="asset?.rating" (ratingChange)="setRating($event)"></rating>
 
-    <div class="btn">Add to collection</div>
-    <div class="btn">Edit tags</div>
-    <div class="btn btn-warning" (click)="confirmDelete()">Delete Image</div>
-    <div class="btn" (click)="generateThumbnail()">Generate Thumbnail</div>
+    <h4>Actions</h4>
+    <div class="metadata-actions">
+      <div class="btn" (click)="editTags()"><i class="fa fa-tag"></i></div>
+      <div class="btn btn-warning" (click)="confirmDelete()"><i class="fa fa-trash"></i></div>
+      <!--<div class="btn" (click)="generateThumbnail()">Generate Thumbnail</div>-->
+    </div>
   </div>
 </div>
 
-<modal-confirm #deleteModal [title]="'Confirm delete'" (onConfirm)="deleteImage(true)">
+<modal-confirm #deleteModal [title]="'Confirm Delete'" (onConfirm)="deleteImage(true)">
   <p>Do you really want to delete the image?</p>
+</modal-confirm>
+
+<modal-confirm #editTagsModal [title]="'Edit Tags'" [confirmBtn]="'Update Tags'" (onConfirm)="updateAsset()" (onCancel)="cancelEditTags()">
+  <div class="tag-container">
+    <h4>Select tags</h4>
+    <div class="tag-btn-list">
+      <div class="tag active" *ngFor="let tag of selectedTags" (click)="toggleTag(tag)">
+        {{ tag.title }}
+      </div>
+      <div class="tag" *ngFor="let tag of tags" (click)="setTag(tag)">
+        {{ tag.title }}
+      </div>
+    </div>
+  </div>
+
+  <div class="create-tag">
+    <h4>Create tag</h4>
+    <form (ngSubmit)="createTag()">
+      <input class="tag-input" id="tagTitle" name="tagTitle" [(ngModel)]="tag.title" placeholder="title" />
+    </form>
+  </div>
 </modal-confirm>

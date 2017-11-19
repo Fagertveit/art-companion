@@ -65,7 +65,6 @@ export class ImageCreateViewComponent {
       this.importedData = this.assetService.getImportedData();
       this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.importedData.base64);
       this.path = this.importedData.url;
-      console.log('Imported data: ', this.importedData);
     }
   }
 

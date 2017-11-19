@@ -34,7 +34,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({
       width: 1600,
       height: 900,
-      minWidth: 800,
+      minWidth: 1100,
       minHeight: 600,
       backgroundColor: '#262427'
   });
@@ -130,10 +130,22 @@ function createWindow () {
   });
 
   electron.ipcMain.on('update-resource', (event, data) => {
-    console.log('Copy file ' + data.src + ' to ' + data.dest);
+    importLib.moveFile(data.src, data.dest, data.destDir, (err) => {
+      if (err) {
+        console.error(err);
+      }
 
-    fs.copyFile(data.src, data.dest, (err) => {
       mainWindow.webContents.send('resource-updated', { destination: data.dest });
+    });
+    /*console.log('Copy file ' + data.src + ' to ' + data.dest);
+    let dest = path.resolve(data.dest);
+
+    fs.copyFile(data.src, dest, (err) => {
+      if (err) {
+        console.error(err);
+      }
+
+
 
       // Unlink src
       fs.unlink(data.src, (err) => {
@@ -141,7 +153,7 @@ function createWindow () {
           console.error(err);
         }
       });
-    });
+    });*/
   });
 
   electron.ipcMain.on('generate-thumbnail', (event, data) => {

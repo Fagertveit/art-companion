@@ -29,9 +29,10 @@
     "core-js": "^2.4.1",
     "electron-localshortcut": "^2.0.2",
     "font-awesome-sass": "^4.7.0",
+    "fs-extra": "^4.0.2",
     "glob": "^7.1.2",
     "nedb": "^1.8.0",
-    "ngx-electron": "^1.0.3",
+    "ngx-electron": "1.0.3",
     "ngx-infinite-scroll": "^0.6.1",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"
