@@ -28,29 +28,24 @@
 
     <h4>Collections</h4>
     <div class="well metadata-collections-well">
-
+      <table>
+        <tbody>
+          <tr *ngFor="let collection of collections">
+            <td>{{ collection.title }}</td>
+            <td>
+              <button class="btn btn-warning" (click)="removeFromCollection(collection)"><i class="material-icons">delete</i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <h4>Add to Collection</h4>
     <div class="metadata-collection">
-      <select>
-        <option>Collection 1</option>
-        <option>Cat memes</option>
-        <option>Kewl stuff</option>
-        <option>Collection 1</option>
-        <option>Cat memes</option>
-        <option>Kewl stuff</option>
-        <option>Collection 1</option>
-        <option>Cat memes</option>
-        <option>Kewl stuff</option>
-        <option>Collection 1</option>
-        <option>Cat memes</option>
-        <option>Kewl stuff</option>
-        <option>Collection 1</option>
-        <option>Cat memes</option>
-        <option>Kewl stuff</option>
+      <select placeholder="Add Collection" [(ngModel)]="selectedCollection">
+        <option *ngFor="let collection of availableCollections" [ngValue]="collection">{{ collection.title }}</option>
       </select>
-      <button class="btn">
+      <button class="btn" (click)="addToCollection(collection)">
         <i class="material-icons">library_add</i>
       </button>
     </div>

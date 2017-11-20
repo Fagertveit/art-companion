@@ -6,8 +6,8 @@ import { ElectronService } from 'ngx-electron';
 import { ModalConfirmComponent } from '../../component/modal/modal-confirm.component';
 import { ModalComponent } from '../../component/modal/modal.component';
 
-import { AssetService, TagService, CategoryService, SettingsService, NotificationService } from '../../service';
-import { Asset, Category, Tag } from '../../model';
+import { AssetService, TagService, CategoryService, SettingsService, NotificationService, CollectionService } from '../../service';
+import { Asset, Category, Tag, Collection } from '../../model';
 
 @Component({
   selector: 'ac-image-view',
@@ -28,6 +28,10 @@ export class ImageViewComponent {
     title: '',
   };
   public selectedTags: Tag[] = [];
+  public collections: Collection[] = [];
+  public availableCollections: Collection[] = [];
+  public collectionList: Collection[] = [];
+  public selectedCollection: Collection;
   public showMetadata: boolean = false;
   public monochrome: boolean = false;
   public flipHorizontal: boolean = false;
@@ -40,6 +44,7 @@ export class ImageViewComponent {
     private categoryService: CategoryService,
     private notification: NotificationService,
     private settingsService: SettingsService,
+    private collectionService: CollectionService,
     private route: ActivatedRoute,
     private router: Router,
     private sanitizer: DomSanitizer,
@@ -53,10 +58,12 @@ export class ImageViewComponent {
       this.category = data[0].category;
       this.allTags = data[0].tags;
       this.tags = data[0].tags;
+      this.collectionList = data[0].collections;
 
       this.selectedTags = this.tags.filter(tag => this.asset.tags.indexOf(tag._id) != -1);
       this.tagId = this.asset.tags[this.asset.tags.length - 1];
       this.getTags();
+      this.getCollections();
     });
   }
 
@@ -163,6 +170,38 @@ export class ImageViewComponent {
     });
   }
 
+  public getCollections(): void {
+    this.collectionService.filter({ assets: this.asset._id }).subscribe(result => {
+      this.collections = result;
+
+      this.availableCollections = this.collectionList.filter(collection => {
+        return this.collections.find(col => col._id == collection._id) == null;
+      });
+
+      if (this.availableCollections.length > 0) {
+        this.selectedCollection = this.availableCollections[0];
+      }
+    });
+  }
+
+  public removeFromCollection(collection: Collection): void {
+    let index = collection.assets.indexOf(this.asset._id);
+
+    collection.assets.splice(index, 1);
+
+    this.collectionService.update(collection).subscribe(result => {
+      this.getCollections();
+    });
+  }
+
+  public addToCollection(collection: Collection): void {
+    this.selectedCollection.assets.push(this.asset._id);
+
+    this.collectionService.update(this.selectedCollection).subscribe(result => {
+      this.getCollections();
+    });
+  }
+
   public createTag(): void {
     if (this.tagId) {
       this.tag.parentTag = this.tagId;
@@ -174,6 +213,9 @@ export class ImageViewComponent {
 
     this.tagService.create(this.tag).subscribe(result => {
       this.selectedTags.push(result);
+      this.tagId = result._id;
+      // We don't have any subtags of newly created tags, so we can reset the array
+      this.tags = [];
       this.tag = {
         title: '',
         parentCategory: '',

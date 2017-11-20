@@ -5,5 +5,6 @@ import { SettingsService } from './settings.service';
 import { GlobalEventService } from './global-event.service';
 import { NotificationService } from './notification.service';
 import { LibraryService } from './library.service';
+import { CollectionService } from './collection.service';
 
-export { AssetService, TagService, CategoryService, SettingsService, GlobalEventService, NotificationService, LibraryService };
+export { AssetService, TagService, CategoryService, SettingsService, GlobalEventService, NotificationService, LibraryService, CollectionService };

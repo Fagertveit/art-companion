@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
-import { CategoryService, TagService, AssetService }  from '../../service';
-import { Asset, Category, Tag } from '../../model';
+import { CategoryService, TagService, AssetService, CollectionService }  from '../../service';
+import { Asset, Category, Tag, Collection } from '../../model';
 
 @Injectable()
 export class ImageViewResolve implements Resolve<any> {
@@ -11,6 +11,7 @@ export class ImageViewResolve implements Resolve<any> {
     private categoryService: CategoryService,
     private tagService: TagService,
     private assetService: AssetService,
+    private collectionService: CollectionService,
     private router: Router
   ) {}
 
@@ -19,7 +20,8 @@ export class ImageViewResolve implements Resolve<any> {
       let data = {
         asset: null,
         category: null,
-        tags: null
+        tags: null,
+        collections: null
       };
 
       let id = route.params['id'];
@@ -29,10 +31,12 @@ export class ImageViewResolve implements Resolve<any> {
 
         Observable.forkJoin([
           this.categoryService.get(asset.category),
-          this.tagService.list()
+          this.tagService.list(),
+          this.collectionService.list()
         ]).subscribe(results => {
           data.category = results[0];
           data.tags = results[1];
+          data.collections = results[2];
 
           resolve(data);
         });

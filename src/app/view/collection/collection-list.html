@@ -1,3 +1,33 @@
-<div class="panel">
-  <h3>Collection Listing</h3>
+<div class="panel collection-panel">
+  <h4>Collection Listing</h4>
+
+  <div class="well collection-well">
+    <table class="collection-table">
+      <thead>
+        <tr>
+          <th>Collection</th>
+          <th>Images</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let collection of collections">
+          <td (click)="gotoCollection(collection)">{{ collection.title }}</td>
+          <td>{{ collection.assets.length }}</td>
+          <td>
+            <button class="btn"><i class="material-icons">edit</i></button>
+            <button class="btn btn-warning"><i class="material-icons">delete</i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="create-collection">
+    <h4>Create Collection</h4>
+    <form (ngSubmit)="createCollection()">
+      <input type="text" placeholder="Collection Title" [(ngModel)]="collection.title" name="collectionTitle" id="collectionTitle">
+      <button class="btn">Create New Collection</button>
+    </form>
+  </div>
 </div>

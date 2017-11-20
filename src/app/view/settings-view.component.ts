@@ -3,9 +3,10 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 
-import { AssetService, CategoryService, SettingsService, TagService, LibraryService } from '../service';
-import { Asset, Category, Tag } from '../model';
+import { AssetService, CategoryService, SettingsService, TagService, LibraryService, CollectionService } from '../service';
+import { Asset, Category, Tag, Collection } from '../model';
 
+import { COLLECTION_SEED } from '../model/collection.seed';
 import { CATEGORY_SEED } from '../model/category.seed';
 import { ASSET_SEED } from '../model/asset.seed';
 import { TAG_SEED } from '../model/tag.seed';
@@ -23,7 +24,8 @@ export class SettingsViewComponent {
     private settingsService: SettingsService,
     private tagService: TagService,
     private electron: ElectronService,
-    private libraryService: LibraryService
+    private libraryService: LibraryService,
+    private collectionService: CollectionService
   ) { }
 
   public ngOnInit() {
@@ -44,6 +46,12 @@ export class SettingsViewComponent {
 
   public listCategories(): void {
     this.categoryService.list().subscribe(result => {
+      console.table(result);
+    });
+  }
+
+  public listCollections(): void {
+    this.collectionService.list().subscribe(result => {
       console.table(result);
     });
   }
@@ -89,6 +97,18 @@ export class SettingsViewComponent {
 
     for (let tag of TAG_SEED) {
       observables.push(this.tagService.create(tag));
+    }
+
+    Observable.forkJoin(observables).subscribe(result => {
+      console.table(result);
+    });
+  }
+
+  public seedCollections(): void {
+    let observables = [];
+
+    for (let collection of COLLECTION_SEED) {
+      observables.push(this.collectionService.create(collection));
     }
 
     Observable.forkJoin(observables).subscribe(result => {

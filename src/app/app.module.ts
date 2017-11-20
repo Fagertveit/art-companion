@@ -41,6 +41,7 @@ import { SettingsService} from './service/settings.service';
 import { NotificationService } from './service/notification.service';
 import { GlobalEventService } from './service/global-event.service';
 import { LibraryService } from './service/library.service';
+import { CollectionService } from './service/collection.service';
 
 import { AppRoutingModule } from './app.routes';
 
@@ -82,7 +83,8 @@ import { AppRoutingModule } from './app.routes';
     SettingsService,
     NotificationService,
     GlobalEventService,
-    LibraryService
+    LibraryService,
+    CollectionService
   ],
   bootstrap: [AppComponent]
 })

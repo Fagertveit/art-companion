@@ -134,6 +134,9 @@ export class ImageCreateViewComponent {
 
     this.tagService.create(this.tag).subscribe(result => {
       this.selectedTags.push(result);
+      this.tagId = result._id;
+      // We don't have any subtags of newly created tags, so we can reset the array
+      this.tags = [];
       this.tag = {
         title: '',
         parentCategory: '',
