@@ -1,0 +1,40 @@
+<div class="navigation" [class.active]="showNavigation">
+  <div class="filter-options">
+    <div class="filters">
+      <div *ngIf="collection" class="library-title">
+        <h4>{{ collection.title }}</h4>
+      </div>
+
+      <div>
+        <div class="tag" [class.active]="showRatings" (click)="toggleRatings()">Toggle Ratings</div>
+        <div class="tag" [class.active]="showSelection" (click)="toggleSelection()">Toggle Selection</div>
+      </div>
+
+      <div class="filter-rating">
+        <strong>Filter by rating:</strong>
+        <rating [rating]="filterRating" (ratingChange)="setRatingFilter($event)"></rating>
+      </div>
+
+      <div>
+        <div class="tag" (click)="batchDelete()">Batch Delete</div>
+      </div>
+    </div>
+  </div>
+  <div class="toggle-nav" (click)="toggleNavigation()">
+    <i class="fa" [class.fa-chevron-up]="showNavigation" [class.fa-chevron-down]="!showNavigation"></i>
+  </div>
+</div>
+
+<div class="library-container">
+  <div class="asset" *ngFor="let asset of assets">
+    <div *ngIf="showSelection" class="asset-selection">
+      <input type="checkbox">
+    </div>
+
+    <img *ngIf="asset.thumbnail" [src]="sanitize(asset.thumbnail)" (click)="gotoImage(asset._id)" />
+
+    <div *ngIf="showRatings" class="asset-rating">
+      <rating [rating]="asset.rating" (ratingChange)="setRating(asset._id, $event)"></rating>
+    </div>
+  </div>
+</div>

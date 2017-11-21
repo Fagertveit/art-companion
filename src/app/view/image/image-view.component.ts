@@ -202,6 +202,10 @@ export class ImageViewComponent {
     });
   }
 
+  public gotoCollection(collection: Collection): void {
+    this.router.navigate(['/collection', collection._id]);
+  }
+
   public createTag(): void {
     if (this.tagId) {
       this.tag.parentTag = this.tagId;

@@ -1,3 +1,77 @@
-<div class="panel">
-  <h3>Sketch Setup</h3>
+<div class="panel sketch-panel">
+  <h4>Sketch Setup</h4>
+
+  <div class="well sketch-well">
+    <table class="sketch-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Series</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sketch of sketches">
+          <td>{{ sketch.title }}</td>
+          <td>{{ sketch.series.length }}</td>
+          <td>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="create-sketch-setup">
+    <button class="btn" (click)="openCreateSketch()">Create New Sketch Setup</button>
+  </div>
 </div>
+
+<modal-confirm #createSketch [title]="'Create Sketch'">
+  <div class="create-modal">
+    <input type="text" placeholder="Sketch title" />
+
+    <h4>Source</h4>
+    <div class="source-selection">
+      <div class="select-source-buttons">
+        <button class="tag" [class.active]="newSketch.assetSource == 0" (click)="setSourceType(0)">Category / Tag</button>
+        <button class="tag" [class.active]="newSketch.assetSource == 2" (click)="setSourceType(2)">Collection</button>
+      </div>
+      <div *ngIf="newSketch.assetSource == 0 || newSketch.assetSource == 1" class="well source-well">
+
+      </div>
+
+      <div class="collection-selection" *ngIf="newSketch.assetSource == 2">
+        <select [(ngModel)]="newSketch.assetSourceId">
+          <option>- Choose Collection -</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h4>Series</h4>
+      <div class="well series-well">
+
+      </div>
+
+      <div class="series-inputs">
+        <div class="input-container">
+          <i class="material-icons">timer</i>
+          <input type="number" placeholder="Seconds">
+        </div>
+
+        <div class="input-container">
+          <i class="material-icons">photo_library</i>
+          <input type="number" placeholder="Amount of assets">
+        </div>
+      </div>
+
+      <h4>Filter</h4>
+      <div class="input-container">
+        <div class="tag">Flip Horizontal</div>
+        <div class="tag">Monochrome</div>
+        <div class="tag">Grid</div>
+      </div>
+    </div>
+  </div>
+</modal-confirm>

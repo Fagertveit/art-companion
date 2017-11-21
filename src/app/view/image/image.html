@@ -31,7 +31,7 @@
       <table>
         <tbody>
           <tr *ngFor="let collection of collections">
-            <td>{{ collection.title }}</td>
+            <td (click)="gotoCollection(collection)">{{ collection.title }}</td>
             <td>
               <button class="btn btn-warning" (click)="removeFromCollection(collection)"><i class="material-icons">delete</i></button>
             </td>

@@ -9,6 +9,7 @@ import { ImageViewComponent } from './view/image/image-view.component';
 import { ImageCreateViewComponent } from './view/image/image-create-view.component';
 import { CollectionComponent } from './view/collection/collection.component';
 import { CollectionListViewComponent } from './view/collection/collection-list-view.component';
+import { CollectionLibraryViewComponent } from './view/collection/collection-library-view.component';
 import { SketchComponent } from './view/sketch/sketch.component';
 import { SketchSetupViewComponent } from './view/sketch/sketch-setup-view.component';
 
@@ -55,6 +56,10 @@ const appRoutes: Routes = [
       {
         path: '',
         component: CollectionListViewComponent
+      },
+      {
+        path: ':id',
+        component: CollectionLibraryViewComponent
       }
     ]
   },

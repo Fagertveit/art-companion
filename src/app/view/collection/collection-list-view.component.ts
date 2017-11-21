@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Collection } from '../../model';
 import { CollectionService } from '../../service';
@@ -14,7 +15,10 @@ export class CollectionListViewComponent {
     assets: []
   };
 
-  constructor(private collectionService: CollectionService) { }
+  constructor(
+    private collectionService: CollectionService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.getCollections();
@@ -34,6 +38,6 @@ export class CollectionListViewComponent {
   }
 
   public gotoCollection(collection: Collection): void {
-    console.log('Goto collection: ', collection);
+    this.router.navigate(['/collection', collection._id]);
   }
 }

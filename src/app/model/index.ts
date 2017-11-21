@@ -6,5 +6,21 @@ import { Notification, NotificationType } from './Notification';
 import { FileSystem, File } from './FileSystem';
 import { Progress } from './Progress';
 import { Collection } from './Collection';
+import { SketchSeries } from './SketchSeries';
+import { Sketch } from './Sketch';
 
-export { Asset, Dimension, Tag, Category, ImportedData, Notification, NotificationType, FileSystem, File, Progress, Collection };
+export {
+  Asset,
+  Dimension,
+  Tag,
+  Category,
+  ImportedData,
+  Notification,
+  NotificationType,
+  FileSystem,
+  File,
+  Progress,
+  Collection,
+  SketchSeries,
+  Sketch
+};
