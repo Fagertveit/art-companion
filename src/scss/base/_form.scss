@@ -3,11 +3,13 @@ input {
   flex: 1;
   border: 0px;
   background: darken($lightBackground, 5%);
-  border-bottom: 2px solid $background;
+  border: 1px solid #000;
+  box-shadow: 0 0 3px #000 inset, 1px 1px 1px #4a463e;
   color: $color;
   margin: 2px;
   font-size: 18px;
   padding: 5px 20px;
+  height: 37px;
   font-family: fontinSans;
 
   &::placeholder {
@@ -28,14 +30,38 @@ select {
   flex: 1;
   border: 0px;
   background: darken($lightBackground, 5%);
-  border-bottom: 2px solid $background;
+  border: 1px solid #000;
+  box-shadow: 1px 0 3px #000 inset, 1px 1px 1px #4a463e;
   color: $color;
   margin: 2px;
   font-size: 18px;
   padding: 5px 20px;
+  height: 37px;
   font-family: fontinSans;
 
   &:focus {
     outline: 0;
+  }
+}
+
+.icon-input {
+  flex: 1 auto;
+  display: flex;
+  flex-direction: row;
+  margin: 4px 0px;
+
+  i {
+    border: 1px solid #000;
+    box-shadow: 1px 1px 1px #4a463e inset, 1px 1px 1px #4a463e;
+    border-right: none;
+    padding: 6px;
+    display: flex;
+    flex: 0 32px;
+  }
+
+  input, select {
+    margin: 0;
+    border: 1px solid #000;
+    box-shadow: 1px 0 3px #000 inset, 1px 1px 1px #4a463e;
   }
 }

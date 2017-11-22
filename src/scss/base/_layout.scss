@@ -18,6 +18,21 @@
   background: $lightBackground;
 }
 
+.sub-panel {
+  margin-top: 15px;
+  box-shadow: 1px 1px 1px #4a463e inset, 1px 1px 1px #4a463e;
+}
+
+.panel-header {
+  margin-top: -25px;
+  background-color: $lightBackground;
+  font-size: 18px;
+  flex: 0 25px;
+  align-self: flex-start;
+  display: flex;
+  padding: 4px 4px;
+}
+
 .well {
   display: flex;
   flex: 1 auto;

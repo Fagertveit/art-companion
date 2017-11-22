@@ -42,6 +42,7 @@ modal, modal-confirm {
   .modal-footer {
     display: flex;
     flex: 0 40px;
+    padding: 0 10px;
     border-top: 1px solid $background;
     justify-content: flex-end;
   }

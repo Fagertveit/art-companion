@@ -33,6 +33,7 @@ import { DomAnchor } from './directive/dom-anchor/dom-anchor.directive';
 
 // Pipe
 import { FileSizePipe } from './pipe/file-size.pipe';
+import { DurationPipe } from './pipe/duration.pipe';
 
 // Service
 import { CategoryService } from './service/category.service';
@@ -68,7 +69,8 @@ import { AppRoutingModule } from './app.routes';
     ProgressComponent,
     RatingComponent,
     DomAnchor,
-    FileSizePipe
+    FileSizePipe,
+    DurationPipe
   ],
   imports: [
     BrowserModule,

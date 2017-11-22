@@ -6,21 +6,28 @@
 
 .btn {
   font-family: fontinSans;
-  border: 1px solid #000;
-  border-top-color: lighten($lightBackground, 5%);
-  border-left-color: lighten($lightBackground, 5%);
-  background: $lightBackground;
+  box-shadow: 1px 1px 1px lighten($lightBackground, 5%) inset, 1px 1px 1px lighten($lightBackground, 5%);
+  border: 1px solid $background;
+  background: lighten($lightBackground, 2%);
   color: $color;
   padding: 6px 10px;
   margin: 4px;
   text-align: center;
+  height: 32px;
 
   &:hover {
+    border: 1px solid #000;
+    padding: 6px 10px;
     background: lighten($lightBackground, 5%);
   }
 
   &:focus {
     outline: 0;
+  }
+
+  &.active {
+    background: darken($lightBackground, 2%);
+    box-shadow: 0 0 1px rgba(0, 0, 0, .66) inset, 1px 1px 1px lighten($lightBackground, 5%);
   }
 }
 
@@ -55,10 +62,12 @@
 
     &:hover {
       box-shadow: 0 0 1px #000 inset;
+      background: darken(#464540, 5%);
     }
   }
 
   &:hover {
     box-shadow: 0 0 1px #000;
+    background: lighten(#464540, 2%);
   }
 }
