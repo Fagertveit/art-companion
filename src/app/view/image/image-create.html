@@ -12,6 +12,15 @@
 </div>
 
 <div class="panel">
+  <div class="create-category">
+    <div class="panel sub-panel">
+      <span class="panel-header">Create category</span>
+      <form (ngSubmit)="createCategory()">
+        <input class="category-input" id="categoryTitle" name="categoryTitle" [(ngModel)]="category.title" placeholder="title" />
+      </form>
+    </div>
+  </div>
+
   <div class="category-container">
     <div class="panel sub-panel">
       <span class="panel-header">Selection category</span>
@@ -25,15 +34,6 @@
           {{ category.title }}
         </div>
       </div>
-    </div>
-  </div>
-
-  <div class="create-category">
-    <div class="panel sub-panel">
-      <span class="panel-header">Create category</span>
-      <form (ngSubmit)="createCategory()">
-        <input class="category-input" id="categoryTitle" name="categoryTitle" [(ngModel)]="category.title" placeholder="title" />
-      </form>
     </div>
   </div>
 

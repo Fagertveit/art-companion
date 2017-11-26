@@ -1,6 +1,6 @@
 import { Component, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeStyle } from '@angular/platform-browser';
 import { ElectronService } from 'ngx-electron';
 
 import { ModalConfirmComponent } from '../../component/modal/modal-confirm.component';
@@ -32,11 +32,12 @@ export class ImageViewComponent {
   public availableCollections: Collection[] = [];
   public collectionList: Collection[] = [];
   public selectedCollection: Collection;
-  public showMetadata: boolean = false;
+  public showMetadata: boolean = true;
   public monochrome: boolean = false;
   public flipHorizontal: boolean = false;
   public tagId: string;
   public tmpTagId: string;
+  public sanitizedImageUrl: SafeStyle;
 
   constructor(
     private assetService: AssetService,
@@ -60,6 +61,7 @@ export class ImageViewComponent {
       this.tags = data[0].tags;
       this.collectionList = data[0].collections;
 
+      this.sanitizedImageUrl = this.sanitizeStyle(this.asset.url);
       this.selectedTags = this.tags.filter(tag => this.asset.tags.indexOf(tag._id) != -1);
       this.tagId = this.asset.tags[this.asset.tags.length - 1];
       this.getTags();
@@ -85,6 +87,11 @@ export class ImageViewComponent {
 
   public sanitize(url: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  public sanitizeStyle(url: string): SafeStyle {
+    let styleUrl = "url('" + url.replace(/\\/g, '/') + "')";
+    return this.sanitizer.bypassSecurityTrustStyle(styleUrl);
   }
 
   public editTags(): void {

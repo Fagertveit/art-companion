@@ -104,7 +104,18 @@ ac-image-view {
     flex: 1 auto;
     justify-content: center;
     align-items: center;
-    padding: 5px;
+    margin: 5px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    &.monochrome {
+      filter: grayscale(100%);
+    }
+
+    &.flip {
+      transform: scaleX(-1);
+    }
 
     img {
       border: 1px solid #000;

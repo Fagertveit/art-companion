@@ -66,8 +66,8 @@ function createWindow () {
     }
 
     if (url.match('file:///')) {
-      let imgPath = url.substr(8, url.length).replace('%20', ' ');
-      let filename = Date.now() + '-' + path.parse(url).base;
+      let imgPath = url.substr(8, url.length).replace(/%20/g, ' ');
+      let filename = Date.now() + '-' + path.parse(url).base.replace(/%20/g, ' ');
 
       base64Img.base64(imgPath, (err, data) => {
         if (err) {
