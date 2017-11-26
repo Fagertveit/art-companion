@@ -31,8 +31,18 @@
   }
 }
 
+.btn-large {
+  height: 48px;
+  font-size: 28px;
+
+  i {
+    font-size: 32px;
+  }
+}
+
 .btn-warning {
-  background-color: #502c29;
+  background-color: #502c29; //783e39
+  box-shadow: 1px 1px 1px lighten(#5b3633, 5%) inset, 1px 1px 1px lighten($lightBackground, 5%);
 
   &:hover {
     background: lighten(#502c29, 5%);

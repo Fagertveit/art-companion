@@ -1,7 +1,10 @@
+// Core
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
+// Third party modules
 import { NgxElectronModule } from 'ngx-electron';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
@@ -18,6 +21,7 @@ import { CollectionListViewComponent } from './view/collection/collection-list-v
 import { CollectionLibraryViewComponent } from './view/collection/collection-library-view.component';
 import { SketchComponent } from './view/sketch/sketch.component';
 import { SketchSetupViewComponent } from './view/sketch/sketch-setup-view.component';
+import { SketchPlayerViewComponent } from './view/sketch/sketch-player-view.component';
 
 // Component
 import { SidebarComponent } from './component/sidebar/sidebar.component';
@@ -27,6 +31,7 @@ import { ModalConfirmComponent } from './component/modal/modal-confirm.component
 import { ToastComponent } from './component/toast/toast.component';
 import { ProgressComponent } from './component/progress/progress.component';
 import { RatingComponent } from './component/rating/rating.component';
+import { SketchFormComponent } from './view/sketch/sketch-form.component';
 
 // Directive
 import { DomAnchor } from './directive/dom-anchor/dom-anchor.directive';
@@ -34,6 +39,7 @@ import { DomAnchor } from './directive/dom-anchor/dom-anchor.directive';
 // Pipe
 import { FileSizePipe } from './pipe/file-size.pipe';
 import { DurationPipe } from './pipe/duration.pipe';
+import { TotalTimePipe } from './pipe/total-time.pipe';
 
 // Service
 import { CategoryService } from './service/category.service';
@@ -44,7 +50,9 @@ import { NotificationService } from './service/notification.service';
 import { GlobalEventService } from './service/global-event.service';
 import { LibraryService } from './service/library.service';
 import { CollectionService } from './service/collection.service';
+import { SketchService } from './service/sketch.service';
 
+// Routes
 import { AppRoutingModule } from './app.routes';
 
 @NgModule({
@@ -61,6 +69,7 @@ import { AppRoutingModule } from './app.routes';
     CollectionLibraryViewComponent,
     SketchComponent,
     SketchSetupViewComponent,
+    SketchPlayerViewComponent,
     SidebarComponent,
     FileUploadComponent,
     ModalComponent,
@@ -68,9 +77,11 @@ import { AppRoutingModule } from './app.routes';
     ToastComponent,
     ProgressComponent,
     RatingComponent,
+    SketchFormComponent,
     DomAnchor,
     FileSizePipe,
-    DurationPipe
+    DurationPipe,
+    TotalTimePipe
   ],
   imports: [
     BrowserModule,
@@ -88,7 +99,8 @@ import { AppRoutingModule } from './app.routes';
     NotificationService,
     GlobalEventService,
     LibraryService,
-    CollectionService
+    CollectionService,
+    SketchService
   ],
   bootstrap: [AppComponent]
 })

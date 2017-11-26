@@ -26,7 +26,7 @@ const async = require('async');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
-let libraryPath = app.getAppPath() + '\\assets\\library\\';
+let libraryPath = app.getAppPath() + path.sep + 'assets' + path.sep + 'library';
 let numImportResource = 0;
 
 function createWindow () {
@@ -77,7 +77,7 @@ function createWindow () {
         mainWindow.webContents.send('import-resource', { url: url, base64: data, filename: filename});
       });
     } else {
-      let filename = Date.now() + '-' + url.split('/').pop();
+      let filename = Date.now() + '-' + url.split(path.sep).pop();
 
       base64Img.requestBase64(url, (err, res, body) => {
         if (err) {
@@ -137,23 +137,6 @@ function createWindow () {
 
       mainWindow.webContents.send('resource-updated', { destination: data.dest });
     });
-    /*console.log('Copy file ' + data.src + ' to ' + data.dest);
-    let dest = path.resolve(data.dest);
-
-    fs.copyFile(data.src, dest, (err) => {
-      if (err) {
-        console.error(err);
-      }
-
-
-
-      // Unlink src
-      fs.unlink(data.src, (err) => {
-        if (err) {
-          console.error(err);
-        }
-      });
-    });*/
   });
 
   electron.ipcMain.on('generate-thumbnail', (event, data) => {
@@ -169,8 +152,6 @@ function createWindow () {
   });
 
   electron.ipcMain.on('remove-resource', (event, src) => {
-    console.log('Unlinking file ' + src);
-
     fs.unlink(src, (err) => {
       if (err) {
         return console.error(err);
@@ -193,15 +174,6 @@ function createWindow () {
 
       libraryPath = libPath[0];
       mainWindow.webContents.send('set-library-path', { libraryPath: libPath[0] });
-      /*
-      importLibrary.listFileSystem(libPath[0], (err, result) => {
-        if (err) {
-          console.error(err);
-        }
-
-        mainWindow.webContents.send('set-library-path', { fs: result, libraryPath: libPath[0] });
-      });
-      */
     });
   });
 
@@ -224,60 +196,6 @@ function createWindow () {
       mainWindow.webContents.send('imported-thumbnail', { url: thumbData.url, id: data.id, size: thumbData.size });
     });
   });
-
-  /*
-  electron.ipcMain.on('import-library', (event) => {
-    let categories = [];
-    let tags = [];
-
-    let categoryObjects = [];
-    let tagObjects = [];
-
-    importLibrary.getFileList(libraryPath, (err, fileList) => {
-      if (err) {
-        console.error(err.message);
-      }
-
-      async.eachSeries(fileList, (file, callback) => {
-        importLibrary.getFileInfo(file, (err, fileObj) => {
-          if (err) {
-            return callback(err);
-          }
-
-          if (fileObj.category != 'thumbnails') {
-            if (categories.indexOf(fileObj.category) == -1) {
-              categoryObjects.push({
-                title: fileObj.category,
-                _id: fileObj.category.toLowerCase().replace(' ', '_'),
-                icon: ''
-              });
-
-              categories.push(fileObj.category);
-            }
-
-            for (let tag of fileObj.tags) {
-              if (tags.indexOf(tag._id) == -1) {
-                tagObjects.push(tag);
-                tags.push(tag._id);
-              }
-            }
-
-            mainWindow.webContents.send('import-image', fileObj);
-          }
-
-          callback();
-        });
-      }, (err) => {
-        if (err) {
-          return console.error(err.message);
-        }
-
-        mainWindow.webContents.send('import-categories', categoryObjects);
-        mainWindow.webContents.send('import-tags', tagObjects);
-      });
-    });
-  });
-  */
 
   electron.ipcMain.on('list-library', (event) => {
     importLibrary.listFileSystem(libraryPath, (err, result) => {
@@ -322,7 +240,6 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
 function generateThumbnail(data, callback) {
   let srcImage = nativeImage.createFromPath(data.url);
   let srcSize = srcImage.getSize();

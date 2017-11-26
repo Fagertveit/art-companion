@@ -12,6 +12,7 @@ import { CollectionListViewComponent } from './view/collection/collection-list-v
 import { CollectionLibraryViewComponent } from './view/collection/collection-library-view.component';
 import { SketchComponent } from './view/sketch/sketch.component';
 import { SketchSetupViewComponent } from './view/sketch/sketch-setup-view.component';
+import { SketchPlayerViewComponent } from './view/sketch/sketch-player-view.component';
 
 import { ImageCreateResolve } from './view/image/image-create.resolve';
 import { ImageViewResolve } from './view/image/image-view.resolve';
@@ -70,6 +71,10 @@ const appRoutes: Routes = [
       {
         path: '',
         component: SketchSetupViewComponent
+      },
+      {
+        path: ':id',
+        component: SketchPlayerViewComponent
       }
     ]
   }

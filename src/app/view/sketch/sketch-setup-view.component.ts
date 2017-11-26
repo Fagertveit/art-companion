@@ -1,24 +1,22 @@
 import { Component, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { ModalConfirmComponent } from '../../component/modal/modal-confirm.component';
-import { Category, Tag, Collection, Sketch, SketchSeries } from '../../model';
-import { CategoryService, TagService, CollectionService } from '../../service';
+import { SketchFormComponent } from './sketch-form.component';
+
+import { Sketch } from '../../model';
+import { SketchService } from '../../service';
 
 @Component({
   selector: 'sketch-setup',
   templateUrl: './sketch-setup.html'
 })
 export class SketchSetupViewComponent {
-  @ViewChild('createSketch') createSketch: ModalConfirmComponent;
+  @ViewChild('createSketchModal') createSketchModal: ModalConfirmComponent;
+  @ViewChild('editSketchModal') editSketchModal: ModalConfirmComponent;
+  @ViewChild('createSketchForm') createSketchForm: SketchFormComponent;
+  @ViewChild('editSketchForm') editSketchForm: SketchFormComponent;
 
-  public collections: Collection[] = [];
-  public categories: Category[] = [];
-  public tags: Tag[] = [];
-  public selectedTag: Tag;
-  public selectedTags: Tag[] = [];
-  public selectedCategory: Category;
-  public tagId: string;
-  public categoryId: string;
   public sketches: Sketch[] = [];
   public newSketch: Sketch = {
     title: '',
@@ -26,131 +24,66 @@ export class SketchSetupViewComponent {
     assetSourceId: null,
     series: []
   };
-  public newSeries: SketchSeries = {
-    timePerAsset: 30,
-    numberAssets: 3,
-    flipHorizontal: false,
-    monochrome: false,
-    grid: false
-  };
+  public editSketch: Sketch;
 
   constructor(
-    private categoryService: CategoryService,
-    private collectionService: CollectionService,
-    private tagService: TagService
+    private sketchService: SketchService,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this.getCollections();
-    this.getCategories();
+    this.getSketches();
   }
 
-  private getCollections(): void {
-    this.collectionService.list().subscribe(result => {
-      this.collections = result;
+  public getSketches(): void {
+    this.sketchService.list().subscribe(result => {
+      this.sketches = result;
     });
   }
 
-  private getCategories(): void {
-    this.categoryService.list().subscribe(result => {
-      this.categories = result;
-    });
+  public clearSketch(): void {
+    this.newSketch = {
+      title: '',
+      assetSource: 0,
+      assetSourceId: null,
+      series: []
+    };
+
+    delete this.newSketch._id;
   }
 
-  public setCategory(category: Category): void {
-    this.selectedTags = [];
-    this.tagId = null;
-    this.selectedCategory = category;
-    this.getTags();
+  public clearEditSketch(): void {
+    this.editSketch = null;
   }
 
-  public setTag(tag: Tag): void {
-    this.selectedTags.push(tag);
-    this.tagId = tag._id;
-    this.getTags();
-  }
-
-  public getTags(): void {
-    let filter;
-
-    this.tags = [];
-
-    if (this.tagId) {
-      filter = {
-        parentTag: this.tagId
-      };
-    } else {
-      filter = {
-        parentCategory: this.selectedCategory._id
-      };
-    }
-
-    this.tagService.filter(filter).subscribe(result => {
-      this.tags = result;
-    });
-  }
-
-  public toggleTag(selectedTag: Tag): void {
-    this.selectedTags = this.selectedTags.splice(0, this.selectedTags.indexOf(selectedTag));
-
-    if (this.selectedTags.length > 0) {
-      this.tagId = this.selectedTags[this.selectedTags.length - 1]._id;
-    } else {
-      this.tagId = null;
-    }
-
-    this.getTags();
-  }
-
-  public toggleCategory(selectedCategory: Category): void {
-    this.selectedTags = [];
-    this.tagId = null;
-    this.selectedCategory = null;
+  public openEditSketch(sketch: Sketch): void {
+    this.editSketch = sketch;
+    this.editSketchModal.open();
   }
 
   public openCreateSketch(): void {
-    this.createSketch.open();
+    this.createSketchModal.open();
   }
 
-  public setSourceType(type: number): void {
-    this.newSketch.assetSource = type;
-    this.newSketch.assetSourceId = null;
-    this.tags = [];
-    this.selectedTags = [];
-    this.tagId = null;
-    this.selectedCategory = null;
-    this.categoryId = null;
+  public createSketch(sketch: Sketch): void {
+    this.sketchService.create(sketch).subscribe(result => {
+      this.getSketches();
+    });
   }
 
-  public toggleFlipHorizontal(): void {
-    this.newSeries.flipHorizontal = !this.newSeries.flipHorizontal;
+  public updateSketch(sketch: Sketch): void {
+    this.sketchService.update(sketch).subscribe(result => {
+      this.getSketches();
+    });
   }
 
-  public toggleMonochrome(): void {
-    this.newSeries.monochrome = !this.newSeries.monochrome;
+  public deleteSketch(sketch: Sketch): void {
+    this.sketchService.remove(sketch._id).subscribe(result => {
+      this.getSketches();
+    });
   }
 
-  public toggleGrid(): void {
-    this.newSeries.grid = !this.newSeries.grid;
-  }
-
-  public addSeries(): void {
-    let series: SketchSeries = {
-      timePerAsset: this.newSeries.timePerAsset,
-      numberAssets: this.newSeries.numberAssets,
-      flipHorizontal: this.newSeries.flipHorizontal,
-      monochrome: this.newSeries.monochrome,
-      grid: this.newSeries.grid
-    };
-
-    this.newSketch.series.push(this.newSeries);
-
-    this.newSeries = {
-      timePerAsset: 30,
-      numberAssets: 3,
-      flipHorizontal: false,
-      monochrome: false,
-      grid: false
-    }
+  public gotoSketch(sketch: Sketch): void {
+    this.router.navigate(['/sketch', sketch._id]);
   }
 }

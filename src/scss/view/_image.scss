@@ -45,14 +45,16 @@ ac-image-create-view {
     display: flex;
     flex: 1 auto;
     flex-direction: column;
-    margin-top: 20px;
+  }
+
+  .rating-container {
+
   }
 
   .create-tag, .create-category {
     display: flex;
-    flex: 0 0 75px;
+    flex: 0 auto;
     flex-direction: column;
-    margin-top: 20px;
 
     form {
       display: flex;
@@ -60,19 +62,13 @@ ac-image-create-view {
     }
 
     input {
-      display: flex;
-      flex: 1;
-      border: 0px;
-      background: $background;
-      color: $color;
-      margin: 2px;
-      font-size: 18px;
-      padding: 5px 20px;
+      margin: 4px 0;
     }
   }
 
-  .save-btn {
-    flex: 0 0 75px;
+  .btn-save {
+    margin: 2px;
+    margin-top: 10px;
   }
 
   .category-btn-list, .tag-btn-list {
@@ -184,6 +180,8 @@ ac-image-view {
     flex: 0 340px;
     padding: 10px;
     flex-direction: column;
+    max-width: 340px;
+    box-shadow: 1px 0 1px #4a463e inset;
   }
 
   .metadata-category-well {
@@ -196,7 +194,28 @@ ac-image-view {
 
   .metadata-collection {
     display: flex;
-    flex: 0 50px;
+    flex: 0 auto;
+    margin-top: 6px;
+
+    select {
+      max-width: 244px;
+      font-size: 16px;
+      margin-left: 0px;
+      padding-left: 6px;
+      margin-right: 0px;
+      margin-bottom: 0px;
+
+      option:first-child {
+        color: darken($color, 30%);
+      }
+    }
+
+    .btn {
+      margin-top: 2px;
+      height: 37px;
+      margin-left: 0px;
+      margin-right: 1px;
+    }
   }
 
   .metadata-collections-well {
@@ -247,7 +266,6 @@ ac-image-view {
     flex: 0 50px;
 
     .btn {
-      font-size: 24px;
       flex: 1 auto;
     }
   }
@@ -255,6 +273,10 @@ ac-image-view {
   .metadata-tags-well, .metadata-collections-well {
     align-items: flex-start;
     flex-wrap: wrap;
+  }
+
+  .panel-tags, .panel-collections {
+    flex: 1 auto;
   }
 
   .tag-container {
@@ -305,6 +327,7 @@ ac-image-view {
   .metadata-metadata-well {
     flex: 0 110px;
     padding: 1px;
+    max-width: 289px;
 
     ul {
       display: flex;
@@ -313,6 +336,7 @@ ac-image-view {
       list-style: none;
       margin: 0;
       padding: 0;
+      max-width: 287px;
     }
 
     li {
@@ -323,11 +347,17 @@ ac-image-view {
       border-bottom: 1px solid #77736b;
 
       strong {
-
+        margin-right: 5px;
+        line-height: 22px;
       }
 
       span {
         overflow: hidden;
+        line-height: 22px;
+      }
+
+      &:last-child {
+        border-bottom: none;
       }
     }
   }

@@ -14,6 +14,7 @@ export class CollectionListViewComponent {
     title: '',
     assets: []
   };
+  public editMode: boolean = false;
 
   constructor(
     private collectionService: CollectionService,
@@ -35,6 +36,37 @@ export class CollectionListViewComponent {
       this.collection.title = '';
       this.getCollections();
     });
+  }
+
+  public updateCollection(collection: Collection): void {
+    this.collectionService.update(this.collection).subscribe(result => {
+      this.collection.title = '';
+      this.collection.assets = [];
+
+      delete this.collection._id;
+
+      this.getCollections();
+    });
+  }
+
+  public deleteCollection(collection: Collection): void {
+    this.collectionService.remove(collection._id).subscribe(result => {
+      this.getCollections();
+    });
+  }
+
+  public editCollection(collection: Collection): void {
+    this.collection = collection;
+    this.editMode = true;
+  }
+
+  public cancelEdit(): void {
+    this.collection.title = '';
+    this.collection.assets = [];
+
+    delete this.collection._id;
+
+    this.editMode = false;
   }
 
   public gotoCollection(collection: Collection): void {

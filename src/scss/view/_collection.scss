@@ -66,9 +66,7 @@ collection-list {
 
 .create-collection {
   display: flex;
-  flex: 0 0 100px;
-  flex-direction: column;
-  margin-top: 20px;
+  flex-direction: row;
 
   form {
     display: flex;
@@ -76,14 +74,12 @@ collection-list {
   }
 
   input {
-    display: flex;
-    flex: 1;
-    border: 0px;
-    background: $background;
-    color: $color;
-    margin: 2px;
-    font-size: 18px;
-    padding: 5px 20px;
+    margin-right: 0px;
+  }
+
+  .btn {
+    height: 37px;
+    margin: 2px 0;
   }
 }
 

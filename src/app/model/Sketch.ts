@@ -5,4 +5,5 @@ export interface Sketch {
   assetSource: number;
   assetSourceId: string;
   series: SketchSeries[];
+  _id?: string
 }

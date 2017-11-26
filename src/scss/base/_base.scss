@@ -6,6 +6,7 @@ body, html {
   padding: 0;
   font-family: fontinSans;
   font-size: $sizeBase;
+  overflow: hidden;
 }
 
 * {
@@ -41,4 +42,34 @@ app-root {
 
 .rotating {
   animation: rotating 2s linear infinite;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-fill {
+  display: flex;
+  flex: 1 auto;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-start {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
 }

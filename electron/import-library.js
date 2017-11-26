@@ -87,7 +87,7 @@ module.exports = {
       fileObj.tags.push(tempTag);
     }
 
-    fileObj.destination = 'library' + '/' + fileObj.category + '/' + sections.join('/') + fileObj.filename;
+    fileObj.destination = 'library' + path.sep + fileObj.category + path.sep + sections.join(path.sep) + fileObj.filename;
     fileObj.url = file;
     fileObj.format = parsed.ext;
 

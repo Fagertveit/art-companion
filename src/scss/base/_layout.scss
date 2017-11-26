@@ -1,13 +1,3 @@
-.ac-card {
-  display: flex;
-  flex-direction: column;
-  margin: 5px;
-  padding: 5px;
-  border: 1px solid #000;
-  box-shadow: 0 0 1px darken($color, 20%) inset;
-  background: $lightBackground;
-}
-
 .panel {
   display: flex;
   flex-direction: column;
@@ -31,6 +21,10 @@
   align-self: flex-start;
   display: flex;
   padding: 4px 4px;
+
+  &.center {
+    align-self: center;
+  }
 }
 
 .well {

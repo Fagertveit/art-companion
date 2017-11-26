@@ -15,19 +15,25 @@
           <td (click)="gotoCollection(collection)">{{ collection.title }}</td>
           <td>{{ collection.assets.length }}</td>
           <td>
-            <button class="btn"><i class="material-icons">edit</i></button>
-            <button class="btn btn-warning"><i class="material-icons">delete</i></button>
+            <button class="btn" (click)="editCollection(collection)"><i class="material-icons">edit</i></button>
+            <button class="btn btn-warning" (click)="deleteCollection(collection)"><i class="material-icons">delete</i></button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div class="create-collection">
-    <h4>Create Collection</h4>
-    <form (ngSubmit)="createCollection()">
+  <div class="panel sub-panel">
+    <span class="panel-header">Create collection</span>
+    <form class="create-collection" (ngSubmit)="createCollection()">
       <input type="text" placeholder="Collection Title" [(ngModel)]="collection.title" name="collectionTitle" id="collectionTitle">
-      <button class="btn">Create New Collection</button>
+      <div *ngIf="!editMode">
+        <button class="btn">Create New Collection</button>
+      </div>
+      <div *ngIf="editMode">
+        <button class="btn btn-warning" (click)="cancelEdit()">Cancel</button>
+        <button class="btn" (click)="updateCollection(collection)">Update Collection</button>
+      </div>
     </form>
   </div>
 </div>

@@ -16,70 +16,83 @@
   </div>
 
   <div class="metadata-content">
-    <h4>Category</h4>
-    <div class="well metadata-category-well">
-      <div class="tag" (click)="gotoCategory(category)">{{ category.title }}</div>
+    <div class="panel sub-panel">
+      <span class="panel-header">Category</span>
+      <div class="well metadata-category-well">
+        <div class="tag" (click)="gotoCategory(category)">{{ category.title }}</div>
+      </div>
     </div>
 
-    <h4>Tags</h4>
-    <div class="well metadata-tags-well">
-      <div class="tag" *ngFor="let tag of selectedTags">{{ tag.title }}</div>
+    <div class="panel panel-tags sub-panel">
+      <span class="panel-header">Tags</span>
+      <div class="well metadata-tags-well">
+        <div class="tag" *ngFor="let tag of selectedTags">{{ tag.title }}</div>
+      </div>
     </div>
 
-    <h4>Collections</h4>
-    <div class="well metadata-collections-well">
-      <table>
-        <tbody>
-          <tr *ngFor="let collection of collections">
-            <td (click)="gotoCollection(collection)">{{ collection.title }}</td>
-            <td>
-              <button class="btn btn-warning" (click)="removeFromCollection(collection)"><i class="material-icons">delete</i></button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="panel panel-collections sub-panel">
+      <span class="panel-header">Collections</span>
+      <div class="well metadata-collections-well">
+        <table>
+          <tbody>
+            <tr *ngFor="let collection of collections">
+              <td (click)="gotoCollection(collection)">{{ collection.title }}</td>
+              <td>
+                <button class="btn btn-warning" (click)="removeFromCollection(collection)"><i class="material-icons">delete</i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="metadata-collection">
+        <select placeholder="Add Collection" [(ngModel)]="selectedCollection">
+          <option [ngValue]="null">Add to collection</option>
+          <option *ngFor="let collection of availableCollections" [ngValue]="collection">{{ collection.title }}</option>
+        </select>
+        <button class="btn" (click)="addToCollection(collection)">
+          <i class="material-icons">library_add</i>
+        </button>
+      </div>
     </div>
 
-    <h4>Add to Collection</h4>
-    <div class="metadata-collection">
-      <select placeholder="Add Collection" [(ngModel)]="selectedCollection">
-        <option *ngFor="let collection of availableCollections" [ngValue]="collection">{{ collection.title }}</option>
-      </select>
-      <button class="btn" (click)="addToCollection(collection)">
-        <i class="material-icons">library_add</i>
-      </button>
+    <div class="panel sub-panel">
+      <span class="panel-header">Metadata</span>
+      <div class="well metadata-metadata-well">
+        <ul>
+          <li>
+            <strong>Filename</strong>
+            <!--<span>{{ asset?.title }}</span>-->
+            <span>tumblr_lo8fd7qch61qb1t2go1_500</span>
+          </li>
+          <li>
+            <strong>Format</strong>
+            <span>{{ asset?.format }}</span>
+          </li>
+          <li>
+            <strong>Dimensions</strong>
+            <span>{{ asset?.dimensions?.width }} x {{ asset?.dimensions?.height }}</span>
+          </li>
+          <li>
+            <strong>File size</strong>
+            <span>{{ asset?.size | fileSize }}</span>
+          </li>
+        </ul>
+      </div>
     </div>
 
-    <h4>Metadata</h4>
-    <div class="well metadata-metadata-well">
-      <ul>
-        <li>
-          <strong>Filename</strong>
-          <span>{{ asset?.title }}</span>
-        </li>
-        <li>
-          <strong>Format</strong>
-          <span>{{ asset?.format }}</span>
-        </li>
-        <li>
-          <strong>Dimensions</strong>
-          <span>{{ asset?.dimensions?.width }} x {{ asset?.dimensions?.height }}</span>
-        </li>
-        <li>
-          <strong>File size</strong>
-          <span>{{ asset?.size | fileSize }}</span>
-        </li>
-      </ul>
+    <div class="panel sub-panel">
+      <span class="panel-header">Rating</span>
+      <rating [rating]="asset?.rating" (ratingChange)="setRating($event)"></rating>
     </div>
 
-    <h4>Rating</h4>
-    <rating [rating]="asset?.rating" (ratingChange)="setRating($event)"></rating>
-
-    <h4>Actions</h4>
-    <div class="metadata-actions">
-      <div class="btn" (click)="editTags()"><i class="fa fa-tag"></i></div>
-      <div class="btn btn-warning" (click)="confirmDelete()"><i class="fa fa-trash"></i></div>
-      <!--<div class="btn" (click)="generateThumbnail()">Generate Thumbnail</div>-->
+    <div class="panel sub-panel">
+      <span class="panel-header">Actions</span>
+      <div class="metadata-actions">
+        <div class="btn btn-large" (click)="editTags()"><i class="fa fa-tag"></i></div>
+        <div class="btn btn-large btn-warning" (click)="confirmDelete()"><i class="fa fa-trash"></i></div>
+        <!--<div class="btn" (click)="generateThumbnail()">Generate Thumbnail</div>-->
+      </div>
     </div>
   </div>
 </div>

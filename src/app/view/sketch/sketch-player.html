@@ -1,0 +1,57 @@
+<div #sketchPlayer class="sketch-player" (window:keydown)="handleKey($event)">
+  <div *ngIf="current" class="sketch-image" [style.background-image]="currentUrl" [class.monochrome]="monochrome" [class.flip]="flipHorizontal"></div>
+
+  <div class="panel sketch-controller flex-column" [class.active]="showControl" (mouseover)="showControl = true" (mouseout)="showControl = false">
+    <div class="timer flex-fill">
+      <progress-bar [value]="currentTime" [maxValue]="currentTimer"></progress-bar>
+    </div>
+
+    <div class="flex-row">
+      <div class="panel sub-panel sketch-control-panel">
+        <span class="panel-header center">Sketch Info</span>
+        <ul *ngIf="sketch">
+          <li>
+            Title: {{ sketch.title }}
+          </li>
+          <li>
+            Images: {{ sketchAssetList.length }}
+          </li>
+        </ul>
+      </div>
+      <div class="panel sub-panel sketch-control-panel">
+        <span class="panel-header center">Player Controls</span>
+        <div class="flex-row flex-center">
+          <div class="btn btn-large" (click)="previousAsset()">
+            <i class="material-icons">skip_previous</i>
+          </div>
+          <div *ngIf="paused" class="btn btn-large" (click)="play()">
+            <i class="material-icons">play_arrow</i>
+          </div>
+          <div *ngIf="!paused" class="btn btn-large" (click)="pause()">
+            <i class="material-icons">pause</i>
+          </div>
+          <div class="btn btn-large" (click)="nextAsset()">
+            <i class="material-icons">skip_next</i>
+          </div>
+        </div>
+      </div>
+      <div class="panel sub-panel sketch-control-panel">
+        <span class="panel-header center">Options</span>
+        <div class="flex-row flex-end">
+          <div class="btn btn-large" (click)="gotoCurrent()">
+            <i class="material-icons">photo</i>
+          </div>
+          <div *ngIf="!fullscreen" class="btn btn-large" (click)="enterFullscreen()">
+            <i class="material-icons">fullscreen</i>
+          </div>
+          <div *ngIf="fullscreen" class="btn btn-large" (click)="exitFullscreen()">
+            <i class="material-icons">fullscreen_exit</i>
+          </div>
+          <div class="btn btn-large btn-warning" (click)="exitSketch()">
+            <i class="material-icons">exit_to_app</i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
