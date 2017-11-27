@@ -9,7 +9,8 @@ import { Collection } from '../model';
 export class CollectionService {
   private db: any;
   private options: Nedb.DataStoreOptions = {
-    filename: './db/collection.db'
+    filename: './collection.db',
+    timestampData: true
   };
 
   constructor() {

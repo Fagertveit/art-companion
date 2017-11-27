@@ -12,6 +12,11 @@ export const CATEGORY_SEED: Category[] = [
     _id: 'animal'
   },
   {
+    title: 'Nature',
+    icon: 'assets/library/Nature/icon.png',
+    _id: 'nature'
+  },
+  {
     title: 'Landscape',
     icon: 'assets/library/Landscape/icon.png',
     _id: 'landscape'

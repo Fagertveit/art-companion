@@ -37,6 +37,15 @@
     </div>
   </div>
 
+  <div class="create-tag">
+    <div class="panel sub-panel">
+      <span class="panel-header">Create tag</span>
+      <form (ngSubmit)="createTag()">
+        <input class="tag-input" id="tagTitle" name="tagTitle" [(ngModel)]="tag.title" placeholder="title" />
+      </form>
+    </div>
+  </div>
+
   <div class="tag-container">
     <div class="panel sub-panel">
       <span class="panel-header">Select tags</span>
@@ -48,15 +57,6 @@
           {{ tag.title }}
         </div>
       </div>
-    </div>
-  </div>
-
-  <div class="create-tag">
-    <div class="panel sub-panel">
-      <span class="panel-header">Create tag</span>
-      <form (ngSubmit)="createTag()">
-        <input class="tag-input" id="tagTitle" name="tagTitle" [(ngModel)]="tag.title" placeholder="title" />
-      </form>
     </div>
   </div>
 

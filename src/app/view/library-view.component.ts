@@ -3,14 +3,14 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { AssetService, CategoryService, TagService, NotificationService } from '../service';
-import { Asset, Category, Tag } from '../model';
+import { Asset, Category, Tag, Selectable } from '../model';
 
 @Component({
   selector: 'ac-library',
   templateUrl: './library.html'
 })
 export class LibraryViewComponent {
-  public assets: Asset[] = [];
+  public assets: Selectable<Asset>[] = [];
   public categories: Category[] = [];
   public tags: Tag[] = [];
   public selectedCategory: Category;
@@ -62,12 +62,47 @@ export class LibraryViewComponent {
     this.showNavigation = !this.showNavigation;
   }
 
+  public batchTagging(): void {
+    console.log('Batch tagging the following assets: ', this.assets.filter(asset => asset.selected));
+  }
+
+  public batchDelete(): void {
+    console.log('Batch deleting the following assets: ', this.assets.filter(asset => asset.selected));
+    /*
+    if (this.electron.isElectronApp) {
+      this.electron.ipcRenderer.once('resource-removed', (event, data) => {
+        this.zone.runOutsideAngular(() => {
+          console.log('Image removed, proceeding to remove db');
+
+          this.zone.runTask(() => {
+            this.assetService.remove(asset._id);
+          });
+        });
+      });
+
+      this.electron.ipcRenderer.send('remove-resource', [asset.url, asset.thumbnail]);
+    }
+    */
+  }
+
+  public batchBookmark(): void {
+
+  }
+
+  public batchCollection(): void {
+
+  }
+
   public sanitize(url: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  public gotoImage(id: string): void {
-    this.router.navigate(['image', id]);
+  public gotoImage(asset: Selectable<Asset>): void {
+    if (this.showSelection) {
+      asset.selected = !asset.selected;
+    } else {
+      this.router.navigate(['image', asset.item._id]);
+    }
   }
 
   public setRating(id: string, rating: number) {
@@ -130,7 +165,10 @@ export class LibraryViewComponent {
 
   public getAssets(): void {
     this.assetService.filterPage(this.filter, this.page, this.limit).subscribe(result => {
-      this.assets = this.assets.concat(result);
+      this.assets = this.assets.concat(result.map(asset => {
+        return {item: asset, selected: false}
+      }));
+
       this.scrollCooldown = false;
     });
   }
@@ -141,7 +179,6 @@ export class LibraryViewComponent {
 
       if (this.categoryId) {
         this.setCategory(this.categories.find(category => category._id == this.categoryId));
-        this.refreshAssets();
       }
     });
   }
@@ -151,6 +188,13 @@ export class LibraryViewComponent {
     this.tagId = null;
     this.selectedCategory = category;
     this.getTags();
+    this.refreshAssets();
+  }
+
+  public clearCategory(): void {
+    this.selectedTags = [];
+    this.tagId = null;
+    this.selectedCategory = null;
     this.refreshAssets();
   }
 

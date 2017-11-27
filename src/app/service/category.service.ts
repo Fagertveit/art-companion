@@ -9,7 +9,7 @@ import { Category } from '../model';
 export class CategoryService {
   private db: any;
   private options: Nedb.DataStoreOptions = {
-    filename: './db/categories.db'
+    filename: './categories.db'
   };
 
   constructor() {

@@ -9,7 +9,8 @@ import { Sketch } from '../model';
 export class SketchService {
   private db: any;
   private options: Nedb.DataStoreOptions = {
-    filename: './db/sketch.db'
+    filename: './sketch.db',
+    timestampData: true
   };
 
   constructor() {

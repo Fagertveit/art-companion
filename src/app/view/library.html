@@ -1,51 +1,57 @@
 <div class="navigation" [class.active]="showNavigation">
-  <div class="category-selection">
-    <div class="well-icon">
-      <i class="fa fa-folder"></i>
-    </div>
-    <div class="well">
-      <div class="tag" [class.active]="category == selectedCategory" *ngFor="let category of categories" (click)="setCategory(category)">
-        {{ category.title }}
+  <div class="panel sub-panel">
+    <span class="panel-header center">Filter</span>
+
+    <div class="well filter-well">
+      <div *ngIf="!selectedCategory">
+        <div class="tag" *ngFor="let category of categories" (click)="setCategory(category)">
+          {{ category.title }}
+        </div>
+      </div>
+
+      <div *ngIf="selectedCategory">
+        <div class="tag active" (click)="clearCategory()">
+          {{ selectedCategory.title }}
+        </div>
+
+        <div class="tag active" *ngFor="let tag of selectedTags" (click)="toggleTag(tag)">
+          {{ tag.title }}
+        </div>
+
+        <div class="tag" *ngFor="let tag of tags" (click)="setTag(tag)">
+          {{ tag.title }}
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="tag-selection">
-    <div class="well-icon">
-      <i class="fa fa-tag"></i>
+  <div class="filters">
+    <div class="panel sub-panel">
+      <span class="panel-header center">View Options</span>
+      <div class="btn-group flex-start">
+        <div class="btn" [class.active]="showRatings" (click)="toggleRatings()">Toggle Ratings</div>
+        <div class="btn" [class.active]="showSelection" (click)="toggleSelection()">Toggle Selection</div>
+      </div>
+
     </div>
-    <div class="well">
-      <div class="tag active" *ngFor="let tag of selectedTags" (click)="toggleTag(tag)">
-        {{ tag.title }}
-      </div>
 
-      <div class="tag" *ngFor="let tag of tags" (click)="setTag(tag)">
-        {{ tag.title }}
-      </div>
+    <div class="panel sub-panel">
+      <span class="panel-header center">Filter by Rating</span>
+      <rating [rating]="filterRating" (ratingChange)="setRatingFilter($event)"></rating>
     </div>
-  </div>
-  <div class="filter-options">
-    <div class="well-icon">
-      <i class="fa fa-filter"></i>
-    </div>
-    <div class="filters">
-      <div>
-        <div class="tag" [class.active]="showRatings" (click)="toggleRatings()">Toggle Ratings</div>
-        <div class="tag" [class.active]="showSelection" (click)="toggleSelection()">Toggle Selection</div>
-      </div>
 
-      <div class="filter-rating">
-        <strong>Filter by rating:</strong>
-        <rating [rating]="filterRating" (ratingChange)="setRatingFilter($event)"></rating>
+    <div class="panel sub-panel">
+      <span class="panel-header center">Batch Operations</span>
+      <div class="btn-group flex-end">
+        <div class="btn btn-batch"><i class="material-icons">collections_bookmark</i></div>
+        <div class="btn btn-batch"><i class="material-icons">collections</i></div>
+        <div class="btn btn-batch" (click)="batchTagging()"><i class="fa fa-tag"></i></div>
+        <div class="btn btn-batch"><i class="fa fa-file-archive-o"></i></div>
+        <div class="btn btn-batch btn-warning" (click)="batchDelete()"><i class="fa fa-trash"></i></div>
       </div>
-
-      <div>
-        <div class="tag" (click)="batchTagging()">Batch Tagging</div>
-        <div class="tag" (click)="batchDelete()">Batch Delete</div>
-      </div>
-
     </div>
   </div>
+
   <div class="toggle-nav" (click)="toggleNavigation()">
     <i class="fa" [class.fa-chevron-up]="showNavigation" [class.fa-chevron-down]="!showNavigation"></i>
   </div>
@@ -57,15 +63,17 @@
   [infiniteScrollThrottle]="50"
   [scrollWindow]="false"
   (scrolled)="onScroll()">
+
   <div class="asset" *ngFor="let asset of assets">
     <div *ngIf="showSelection" class="asset-selection">
-      <input type="checkbox">
+      <input [ngModel]="asset.selected" type="checkbox">
     </div>
 
-    <img *ngIf="asset.thumbnail" [src]="sanitize(asset.thumbnail)" (click)="gotoImage(asset._id)" />
+    <img *ngIf="asset.item.thumbnail" [src]="sanitize(asset.item.thumbnail)" (click)="gotoImage(asset)"/>
 
     <div *ngIf="showRatings" class="asset-rating">
-      <rating [rating]="asset.rating" (ratingChange)="setRating(asset._id, $event)"></rating>
+      <rating [rating]="asset.item.rating" (ratingChange)="setRating(asset.item._id, $event)"></rating>
     </div>
   </div>
+
 </div>

@@ -125,7 +125,7 @@ export class ImageViewComponent {
           });
         });
 
-        this.electron.ipcRenderer.send('remove-resource', this.asset.url);
+        this.electron.ipcRenderer.send('remove-resource', [this.asset.url, this.asset.thumbnail]);
       }
     }
   }

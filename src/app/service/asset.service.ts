@@ -9,7 +9,8 @@ import { Asset, ImportedData } from '../model';
 export class AssetService {
   private db: any;
   private options: Nedb.DataStoreOptions = {
-    filename: './db/assets.db'
+    filename: './assets.db',
+    timestampData: true
   };
   private tempImport: ImportedData;
 
@@ -49,7 +50,7 @@ export class AssetService {
 
   public listPage(page: number, limit: number): Observable<Asset[]> {
     return Observable.create(obs => {
-      this.db.find({}).skip(page * limit).limit(limit).exec((err, assets) => {
+      this.db.find({}).sort({ updatedAt: -1 }).skip(page * limit).limit(limit).exec((err, assets) => {
         if (err) {
           obs.complete(err);
         } else {
@@ -75,7 +76,7 @@ export class AssetService {
 
   public filterPage(filter: any, page: number, limit: number): Observable<Asset[]> {
     return Observable.create(obs => {
-      this.db.find(filter).skip(page * limit).limit(limit).exec((err, assets) => {
+      this.db.find(filter).sort({ updatedAt: -1 }).skip(page * limit).limit(limit).exec((err, assets) => {
         if (err) {
           obs.complete(err);
         } else {

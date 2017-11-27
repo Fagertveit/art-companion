@@ -35,7 +35,7 @@ function createWindow () {
       width: 1600,
       height: 900,
       minWidth: 1100,
-      minHeight: 600,
+      minHeight: 700,
       backgroundColor: '#262427'
   });
 
@@ -151,8 +151,16 @@ function createWindow () {
     });
   });
 
-  electron.ipcMain.on('remove-resource', (event, src) => {
-    fs.unlink(src, (err) => {
+  electron.ipcMain.on('remove-resource', (event, srcArr) => {
+    async.each(srcArr, (src, callback) => {
+      fs.unlink(src, (err) => {
+        if (err) {
+          callback(err);
+        }
+
+        callback(null);
+      });
+    }, (err) => {
       if (err) {
         return console.error(err);
       }

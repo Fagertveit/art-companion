@@ -8,6 +8,7 @@ import { Progress } from './Progress';
 import { Collection } from './Collection';
 import { SketchSeries } from './SketchSeries';
 import { Sketch } from './Sketch';
+import { Selectable } from './Selectable';
 
 export {
   Asset,
@@ -22,5 +23,6 @@ export {
   Progress,
   Collection,
   SketchSeries,
-  Sketch
+  Sketch,
+  Selectable
 };

@@ -6,10 +6,10 @@ ac-library {
   .navigation {
     background: $lightBackground;
     display: flex;
-    flex: 0 0 240px;
+    flex: 0 0 230px;
     flex-direction: column;
-    margin-top: -200px;
-    justify-content: space-between;
+    margin-top: -190px;
+    justify-content: flex-start;
     transition: margin-top 250ms ease-in-out;
     border-bottom: 2px solid #000;
     padding-right: 10px;
@@ -20,8 +20,26 @@ ac-library {
     }
   }
 
-  .well-icon {
-    font-size: 24px;
+  .filter-well {
+    flex: 1 78px;
+  }
+
+  .btn-group {
+    display: flex;
+    flex: 1 auto;
+
+    .btn {
+      display: flex;
+      flex: 1 auto;
+    }
+
+    .btn-batch {
+      padding: 2px 20px;
+
+      i {
+        font-size: 24px;
+      }
+    }
   }
 
   .category-selection {

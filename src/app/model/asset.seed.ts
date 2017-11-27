@@ -38,6 +38,18 @@ export const ASSET_SEED: Asset[] = [
     rating: 5
   },
   {
+    url: 'assets/library/Nature/icon.png',
+    thumbnail: 'assets/library/Nature/icon.png',
+    title: 'nature.png',
+    tags: [],
+    category: 'nature',
+    size: 0,
+    dimensions: { width: 800, height: 800 },
+    format: 'png',
+    _id: 'nature.png',
+    rating: 5
+  },
+  {
     url: 'assets/library/Concept%20Art/icon.png',
     thumbnail:  'assets/library/Concept%20Art/icon.png',
     title: 'conceptart.png',

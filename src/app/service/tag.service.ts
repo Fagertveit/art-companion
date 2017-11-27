@@ -9,7 +9,7 @@ import { Tag } from '../model';
 export class TagService {
   private db: any;
   private options: Nedb.DataStoreOptions = {
-    filename: './db/tags.db'
+    filename: './tags.db'
   };
 
   constructor() {
