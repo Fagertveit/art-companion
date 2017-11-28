@@ -1,0 +1,47 @@
+<div class="container" [class.hidden]="hidden$ | async">
+  <div class="library">
+    <div class="value-container">
+      <i class="material-icons">collections</i>
+      <div class="value">
+        {{ libraryCount$ | async }}
+      </div>
+    </div>
+
+    <div class="value-container">
+      <i class="fa fa-tag"></i>
+      <div class="value">
+        {{ areaCount$ | async }}
+      </div>
+    </div>
+
+    <div class="seperator"></div>
+
+    <div class="value-container">
+      <span>View Options</span>
+      <div class="btn">
+        Toggle Ratings
+      </div>
+      <div class="btn">
+        Toggle Selection
+      </div>
+    </div>
+
+    <div class="seperator"></div>
+
+    <div class="value-container">
+      <span>Filter by rating: </span>
+      <rating></rating>
+    </div>
+
+    <div class="seperator"></div>
+
+    <div class="value-container">
+      <span>Batch Operations</span>
+      <div class="btn" (click)="testAsset()"><i class="material-icons">collections_bookmark</i></div>
+      <div class="btn"><i class="material-icons">collections</i></div>
+      <div class="btn" (click)="batchTagging()"><i class="fa fa-tag"></i></div>
+      <div class="btn"><i class="fa fa-file-archive-o"></i></div>
+      <div class="btn btn-warning" (click)="batchDelete()"><i class="fa fa-trash"></i></div>
+    </div>
+  </div>
+</div>

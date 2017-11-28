@@ -1,30 +1,30 @@
-<div class="navigation" [class.active]="showNavigation">
-  <div class="panel sub-panel">
-    <span class="panel-header center">Filter</span>
+<div class="filter">
+  <div class="well filter-well">
+    <div *ngIf="!selectedCategory">
+      <div class="tag" *ngFor="let category of categories" (click)="setCategory(category)">
+        {{ category.title }}
+      </div>
+    </div>
 
-    <div class="well filter-well">
-      <div *ngIf="!selectedCategory">
-        <div class="tag" *ngFor="let category of categories" (click)="setCategory(category)">
-          {{ category.title }}
-        </div>
+    <div *ngIf="selectedCategory">
+      <div class="tag active" (click)="clearCategory()">
+        {{ selectedCategory.title }}
       </div>
 
-      <div *ngIf="selectedCategory">
-        <div class="tag active" (click)="clearCategory()">
-          {{ selectedCategory.title }}
-        </div>
+      <div class="tag active" *ngFor="let tag of selectedTags" (click)="toggleTag(tag)">
+        {{ tag.title }}
+      </div>
 
-        <div class="tag active" *ngFor="let tag of selectedTags" (click)="toggleTag(tag)">
-          {{ tag.title }}
-        </div>
-
-        <div class="tag" *ngFor="let tag of tags" (click)="setTag(tag)">
-          {{ tag.title }}
-        </div>
+      <div class="tag" *ngFor="let tag of tags" (click)="setTag(tag)">
+        {{ tag.title }}
       </div>
     </div>
   </div>
+  <!--
 
+  <div class="panel sub-panel">
+    <span class="panel-header center">Filter</span>
+  </div>
   <div class="filters">
     <div class="panel sub-panel">
       <span class="panel-header center">View Options</span>
@@ -43,7 +43,7 @@
     <div class="panel sub-panel">
       <span class="panel-header center">Batch Operations</span>
       <div class="btn-group flex-end">
-        <div class="btn btn-batch"><i class="material-icons">collections_bookmark</i></div>
+        <div class="btn btn-batch" (click)="testAsset()"><i class="material-icons">collections_bookmark</i></div>
         <div class="btn btn-batch"><i class="material-icons">collections</i></div>
         <div class="btn btn-batch" (click)="batchTagging()"><i class="fa fa-tag"></i></div>
         <div class="btn btn-batch"><i class="fa fa-file-archive-o"></i></div>
@@ -55,6 +55,7 @@
   <div class="toggle-nav" (click)="toggleNavigation()">
     <i class="fa" [class.fa-chevron-up]="showNavigation" [class.fa-chevron-down]="!showNavigation"></i>
   </div>
+  -->
 </div>
 
 <div class="library-container"

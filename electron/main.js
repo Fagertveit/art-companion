@@ -36,7 +36,8 @@ function createWindow () {
       height: 900,
       minWidth: 1100,
       minHeight: 700,
-      backgroundColor: '#262427'
+      backgroundColor: '#262427',
+      frame: false
   });
 
   mainWindow.setMenu(null);
@@ -55,7 +56,31 @@ function createWindow () {
     mainWindow = null;
   });
 
+  mainWindow.on('maximize', () => {
+    mainWindow.webContents.send('app-maximized');
+  });
+
+  mainWindow.on('unmaximize', () => {
+    mainWindow.webContents.send('app-unmaximized');
+  });
+
   // Register ipc listeners
+  electron.ipcMain.on('app-maximize-window', (event) => {
+    mainWindow.maximize();
+  });
+
+  electron.ipcMain.on('app-minimize-window', (event) => {
+    mainWindow.minimize();
+  });
+
+  electron.ipcMain.on('app-restore-window', (event) => {
+    mainWindow.unmaximize();
+  });
+
+  electron.ipcMain.on('app-quit', (event) => {
+    mainWindow.close();
+  });
+
   mainWindow.webContents.on('will-navigate', (event, url) => {
     event.preventDefault();
     console.log('Wants to navigate to ' + url);

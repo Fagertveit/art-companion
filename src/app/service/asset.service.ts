@@ -48,6 +48,19 @@ export class AssetService {
     });
   }
 
+  public count(): Observable<number> {
+    return Observable.create(obs => {
+      this.db.count({}, (err, count) => {
+        if (err) {
+          obs.complete(err);
+        } else {
+          obs.next(count);
+          obs.complete();
+        }
+      });
+    });
+  }
+
   public listPage(page: number, limit: number): Observable<Asset[]> {
     return Observable.create(obs => {
       this.db.find({}).sort({ updatedAt: -1 }).skip(page * limit).limit(limit).exec((err, assets) => {
@@ -68,6 +81,19 @@ export class AssetService {
           obs.complete(err);
         } else {
           obs.next(assets);
+          obs.complete();
+        }
+      });
+    });
+  }
+
+  public filterCount(filter: any): Observable<number> {
+    return Observable.create(obs => {
+      this.db.count(filter, (err, count) => {
+        if (err) {
+          obs.complete(err);
+        } else {
+          obs.next(count);
           obs.complete();
         }
       });

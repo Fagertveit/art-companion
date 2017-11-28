@@ -32,6 +32,7 @@ import { ToastComponent } from './component/toast/toast.component';
 import { ProgressComponent } from './component/progress/progress.component';
 import { RatingComponent } from './component/rating/rating.component';
 import { SketchFormComponent } from './view/sketch/sketch-form.component';
+import { StatusBarComponent } from './component/status-bar/status-bar.component';
 
 // Directive
 import { DomAnchor } from './directive/dom-anchor/dom-anchor.directive';
@@ -51,6 +52,7 @@ import { GlobalEventService } from './service/global-event.service';
 import { LibraryService } from './service/library.service';
 import { CollectionService } from './service/collection.service';
 import { SketchService } from './service/sketch.service';
+import { StatusBarService } from './service/status-bar.service';
 
 // Routes
 import { AppRoutingModule } from './app.routes';
@@ -78,6 +80,7 @@ import { AppRoutingModule } from './app.routes';
     ProgressComponent,
     RatingComponent,
     SketchFormComponent,
+    StatusBarComponent,
     DomAnchor,
     FileSizePipe,
     DurationPipe,
@@ -100,7 +103,8 @@ import { AppRoutingModule } from './app.routes';
     GlobalEventService,
     LibraryService,
     CollectionService,
-    SketchService
+    SketchService,
+    StatusBarService
   ],
   bootstrap: [AppComponent]
 })

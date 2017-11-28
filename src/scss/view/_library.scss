@@ -3,6 +3,15 @@ ac-library {
   flex: 1 auto;
   flex-direction: column;
 
+  .filter {
+    background: $lightBackground;
+    display: flex;
+    flex: 0 0 auto;
+    padding: 10px;
+    border-bottom: 2px solid #000;
+    justify-content: flex-start;
+  }
+
   .navigation {
     background: $lightBackground;
     display: flex;
@@ -18,10 +27,6 @@ ac-library {
     &.active {
       margin-top: 0;
     }
-  }
-
-  .filter-well {
-    flex: 1 78px;
   }
 
   .btn-group {

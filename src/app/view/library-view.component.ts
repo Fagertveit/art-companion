@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Observable } from 'rxjs';
 
-import { AssetService, CategoryService, TagService, NotificationService } from '../service';
+import { AssetService, CategoryService, TagService, NotificationService, StatusBarService } from '../service';
 import { Asset, Category, Tag, Selectable } from '../model';
 
 @Component({
@@ -19,8 +20,9 @@ export class LibraryViewComponent {
   public tagId: string;
   public showNavigation: boolean = true;
   public filter: any = {};
-  public limit: number = 20;
+  public limit: number = 30;
   public page: number = 0;
+  public totalAssets: number = 0;
   public scrollCooldown: boolean = false;
   public showRatings: boolean = false;
   public showSelection: boolean = false;
@@ -31,6 +33,7 @@ export class LibraryViewComponent {
     private categoryService: CategoryService,
     private tagService: TagService,
     private notification: NotificationService,
+    private statusBarService: StatusBarService,
     private router: Router,
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer
@@ -43,11 +46,21 @@ export class LibraryViewComponent {
       }
     });
 
+    this.statusBarService.setHidden(false);
+
+    this.assetService.count().subscribe(result => {
+      this.statusBarService.setLibraryCount(result);
+    });
+
     this.getCategories();
 
     if (!this.categoryId) {
       this.getAssets();
     }
+  }
+
+  ngOnDestroy() {
+    this.statusBarService.setHidden(true);
   }
 
   public toggleRatings(): void {
@@ -163,6 +176,10 @@ export class LibraryViewComponent {
     }
   }
 
+  public testAsset(): void {
+
+  }
+
   public getAssets(): void {
     this.assetService.filterPage(this.filter, this.page, this.limit).subscribe(result => {
       this.assets = this.assets.concat(result.map(asset => {
@@ -170,6 +187,10 @@ export class LibraryViewComponent {
       }));
 
       this.scrollCooldown = false;
+    });
+
+    this.assetService.filterCount(this.filter).subscribe(result => {
+      this.statusBarService.setAreaCount(result);
     });
   }
 

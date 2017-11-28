@@ -7,6 +7,7 @@ import { NotificationService } from './notification.service';
 import { LibraryService } from './library.service';
 import { CollectionService } from './collection.service';
 import { SketchService } from './sketch.service';
+import { StatusBarService } from './status-bar.service';
 
 export {
   AssetService,
@@ -17,5 +18,6 @@ export {
   NotificationService,
   LibraryService,
   CollectionService,
-  SketchService
+  SketchService,
+  StatusBarService
 };

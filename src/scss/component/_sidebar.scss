@@ -6,7 +6,6 @@ ac-sidebar {
   margin-left: -235px;
   background: $lightBackground;
   transition: margin-left 250ms ease-in-out;
-  border-left: 1px solid #000;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
 
   &.open {
