@@ -1,0 +1,13 @@
+<div class="coverflow-container">
+  <div class="nav prev" (click)="previous()">
+    <i class="material-icons">chevron_left</i>
+  </div>
+  <div class="coverflow-content">
+    <div class="content" *ngFor="let asset of viewAssets">
+      <img [src]="sanitize(asset.url)" />
+    </div>
+  </div>
+  <div class="nav next" (click)="next()">
+    <i class="material-icons">chevron_right</i>
+  </div>
+</div>

@@ -5,9 +5,9 @@ import { Observable, Subject } from 'rxjs';
 import { ModalComponent } from '../component/modal/modal.component';
 import { ModalConfirmComponent } from '../component/modal/modal-confirm.component';
 
-import { Progress } from '../model';
+import { Progress, Asset } from '../model';
 
-import { NotificationService } from '../service/notification.service';
+import { NotificationService, AssetService } from '../service';
 
 @Component({
   selector: 'ac-dashboard',
@@ -22,10 +22,16 @@ export class DashboardViewComponent {
   public sub: any;
   public subject: Subject<Progress>;
   public rating: number = 7;
+  public assets$: Observable<Asset[]>;
 
-  constructor(private router: Router, private notification: NotificationService) { }
+  constructor(
+    private router: Router,
+    private notification: NotificationService,
+    private assetService: AssetService
+  ) { }
 
   ngOnInit() {
+    this.assets$ = this.assetService.list();
     this.subject = new Subject();
     this.sub = Observable.interval(1000).subscribe(() => {
       if (this.progressValue < 100) {

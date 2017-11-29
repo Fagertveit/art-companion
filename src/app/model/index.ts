@@ -9,6 +9,7 @@ import { Collection } from './Collection';
 import { SketchSeries } from './SketchSeries';
 import { Sketch } from './Sketch';
 import { Selectable } from './Selectable';
+import { Tooltip } from './Tooltip';
 
 export {
   Asset,
@@ -24,5 +25,6 @@ export {
   Collection,
   SketchSeries,
   Sketch,
-  Selectable
+  Selectable,
+  Tooltip
 };

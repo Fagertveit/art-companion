@@ -33,9 +33,13 @@ import { ProgressComponent } from './component/progress/progress.component';
 import { RatingComponent } from './component/rating/rating.component';
 import { SketchFormComponent } from './view/sketch/sketch-form.component';
 import { StatusBarComponent } from './component/status-bar/status-bar.component';
+import { CoverflowComponent } from './component/coverflow/coverflow.component';
 
 // Directive
 import { DomAnchor } from './directive/dom-anchor/dom-anchor.directive';
+import { TooltipDirective } from './directive/tooltip/tooltip.directive';
+import { TooltipService } from './directive/tooltip/tooltip.service';
+import { TooltipComponent } from './directive/tooltip/tooltip.component';
 
 // Pipe
 import { FileSizePipe } from './pipe/file-size.pipe';
@@ -81,7 +85,10 @@ import { AppRoutingModule } from './app.routes';
     RatingComponent,
     SketchFormComponent,
     StatusBarComponent,
+    CoverflowComponent,
     DomAnchor,
+    TooltipDirective,
+    TooltipComponent,
     FileSizePipe,
     DurationPipe,
     TotalTimePipe
@@ -104,7 +111,8 @@ import { AppRoutingModule } from './app.routes';
     LibraryService,
     CollectionService,
     SketchService,
-    StatusBarService
+    StatusBarService,
+    TooltipService
   ],
   bootstrap: [AppComponent]
 })

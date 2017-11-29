@@ -1,14 +1,14 @@
 <div class="container" [class.hidden]="hidden$ | async">
   <div class="library">
     <div class="value-container">
-      <i class="material-icons">collections</i>
+      <i class="material-icons" tooltip [tooltipText]="'Image count for library.'">collections</i>
       <div class="value">
         {{ libraryCount$ | async }}
       </div>
     </div>
 
     <div class="value-container">
-      <i class="fa fa-tag"></i>
+      <i class="fa fa-tag" tooltip [tooltipText]="'Image count for selected area.'"></i>
       <div class="value">
         {{ areaCount$ | async }}
       </div>

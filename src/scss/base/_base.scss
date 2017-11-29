@@ -88,6 +88,31 @@ app-root {
   animation: rotating 2s linear infinite;
 }
 
+@keyframes hide {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.tooltip {
+  background: $background;
+  border: 1px solid $color;
+  color: $color;
+  font-size: 12px;
+  padding: 2px 4px;
+  position: fixed;
+  z-index: 10;
+  font-family: arial;
+  letter-spacing: 1px;
+
+  &.hidden {
+    animation: hide 100ms ease-in forwards;
+  }
+}
+
 .flex-row {
   display: flex;
   flex-direction: row;
