@@ -1,9 +1,9 @@
-ac-image {
+art-image {
   display: flex;
   flex: 1;
 }
 
-ac-image-create-view {
+image-create-view {
   display: flex;
   flex: 1;
   padding: 10px;
@@ -93,7 +93,7 @@ ac-image-create-view {
   }
 }
 
-ac-image-view {
+image-view {
   display: flex;
   flex: 1;
   flex-direction: row;

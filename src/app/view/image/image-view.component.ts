@@ -10,7 +10,7 @@ import { AssetService, TagService, CategoryService, SettingsService, Notificatio
 import { Asset, Category, Tag, Collection } from '../../model';
 
 @Component({
-  selector: 'ac-image-view',
+  selector: 'image-view',
   templateUrl: './image.html'
 })
 export class ImageViewComponent {

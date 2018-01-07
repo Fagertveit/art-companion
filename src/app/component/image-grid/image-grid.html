@@ -1,0 +1,20 @@
+<div class="image-grid-container"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  [scrollWindow]="false"
+  (scrolled)="onScroll()">
+
+  <div class="asset" *ngFor="let asset of assets">
+    <div *ngIf="showSelection" class="asset-selection">
+      <input [ngModel]="asset.selected" type="checkbox">
+    </div>
+
+    <img *ngIf="asset.item.thumbnail" [src]="sanitize(asset.item.thumbnail)" (click)="gotoImage(asset)"/>
+
+    <div *ngIf="showRatings" class="asset-rating">
+      <rating [rating]="asset.item.rating" (ratingChange)="setRating(asset.item._id, $event)"></rating>
+    </div>
+  </div>
+
+</div>

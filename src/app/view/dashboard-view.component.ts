@@ -10,7 +10,7 @@ import { Progress, Asset } from '../model';
 import { NotificationService, AssetService } from '../service';
 
 @Component({
-  selector: 'ac-dashboard',
+  selector: 'dashboard',
   templateUrl: './dashboard.html'
 })
 export class DashboardViewComponent {

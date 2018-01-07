@@ -34,6 +34,7 @@ import { RatingComponent } from './component/rating/rating.component';
 import { SketchFormComponent } from './view/sketch/sketch-form.component';
 import { StatusBarComponent } from './component/status-bar/status-bar.component';
 import { CoverflowComponent } from './component/coverflow/coverflow.component';
+import { ImageGridComponent } from './component/image-grid/image-grid.component';
 
 // Directive
 import { DomAnchor } from './directive/dom-anchor/dom-anchor.directive';
@@ -86,6 +87,7 @@ import { AppRoutingModule } from './app.routes';
     SketchFormComponent,
     StatusBarComponent,
     CoverflowComponent,
+    ImageGridComponent,
     DomAnchor,
     TooltipDirective,
     TooltipComponent,

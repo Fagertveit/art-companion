@@ -21,11 +21,10 @@
 </div>
 
 <div class="container">
-  <ac-sidebar (navigate)="navigateTo($event)" class="open"></ac-sidebar>
+  <sidebar (navigate)="navigateTo($event)"></sidebar>
 
   <div class="content">
     <router-outlet></router-outlet>
-    <status-bar></status-bar>
   </div>
 
   <toast></toast>

@@ -4,6 +4,7 @@ const app = electron.app;
 const clipboard = electron.clipboard;
 const dialog = electron.dialog;
 const nativeImage = electron.nativeImage;
+const Tray = electron.Tray;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 // Module for file download
@@ -22,6 +23,7 @@ const importLib = require('./import-library');
 // regex for supported image formats
 const fileMatch = /(.jpg|.png|.gif|.jpeg|.svg)/gi;
 const async = require('async');
+//const appIcon = new Tray();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -31,13 +33,16 @@ let numImportResource = 0;
 
 function createWindow () {
   // Create the browser window.
+
+
   mainWindow = new BrowserWindow({
       width: 1600,
       height: 900,
       minWidth: 1100,
       minHeight: 700,
       backgroundColor: '#262427',
-      frame: false
+      frame: false,
+      icon: __dirname + '\\assets\\img\\icon.png'
   });
 
   mainWindow.setMenu(null);

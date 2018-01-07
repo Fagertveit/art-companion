@@ -1,42 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
-import { AssetService, CategoryService, TagService, NotificationService, StatusBarService } from '../service';
+import { ImageGridComponent } from '../component/image-grid/image-grid.component';
+import { AssetService, CategoryService, TagService, NotificationService } from '../service';
 import { Asset, Category, Tag, Selectable } from '../model';
 
 @Component({
-  selector: 'ac-library',
+  selector: 'library',
   templateUrl: './library.html'
 })
 export class LibraryViewComponent {
-  public assets: Selectable<Asset>[] = [];
+  @ViewChild('library') library: ImageGridComponent;
   public categories: Category[] = [];
   public tags: Tag[] = [];
   public selectedCategory: Category;
   public selectedTags: Tag[] = [];
   public categoryId: string;
   public tagId: string;
-  public showNavigation: boolean = true;
-  public filter: any = {};
-  public limit: number = 30;
-  public page: number = 0;
-  public totalAssets: number = 0;
-  public scrollCooldown: boolean = false;
-  public showRatings: boolean = false;
-  public showSelection: boolean = false;
+  public filter$: Observable<any>;
+  public libraryCount: number = 0;
+  public areaCount: number = 0;
   public filterRating: number = 0;
+
+  private filter: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
   constructor(
     private assetService: AssetService,
     private categoryService: CategoryService,
     private tagService: TagService,
     private notification: NotificationService,
-    private statusBarService: StatusBarService,
     private router: Router,
-    private route: ActivatedRoute,
-    private sanitizer: DomSanitizer
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -46,41 +41,23 @@ export class LibraryViewComponent {
       }
     });
 
-    this.statusBarService.setHidden(false);
-
     this.assetService.count().subscribe(result => {
-      this.statusBarService.setLibraryCount(result);
+      this.libraryCount = result;
     });
 
     this.getCategories();
 
     if (!this.categoryId) {
-      this.getAssets();
+      this.filter$ = this.filter.asObservable();
     }
   }
 
-  ngOnDestroy() {
-    this.statusBarService.setHidden(true);
-  }
-
-  public toggleRatings(): void {
-    this.showRatings = !this.showRatings;
-  }
-
-  public toggleSelection(): void {
-    this.showSelection = !this.showSelection;
-  }
-
-  public toggleNavigation(): void {
-    this.showNavigation = !this.showNavigation;
-  }
-
   public batchTagging(): void {
-    console.log('Batch tagging the following assets: ', this.assets.filter(asset => asset.selected));
+    //console.log('Batch tagging the following assets: ', this.assets.filter(asset => asset.selected));
   }
 
   public batchDelete(): void {
-    console.log('Batch deleting the following assets: ', this.assets.filter(asset => asset.selected));
+    //console.log('Batch deleting the following assets: ', this.assets.filter(asset => asset.selected));
     /*
     if (this.electron.isElectronApp) {
       this.electron.ipcRenderer.once('resource-removed', (event, data) => {
@@ -106,22 +83,8 @@ export class LibraryViewComponent {
 
   }
 
-  public sanitize(url: string): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
-
-  public gotoImage(asset: Selectable<Asset>): void {
-    if (this.showSelection) {
-      asset.selected = !asset.selected;
-    } else {
-      this.router.navigate(['image', asset.item._id]);
-    }
-  }
-
-  public setRating(id: string, rating: number) {
-    this.assetService.setRating(id, rating).subscribe(result => {
-      this.notification.info('Rating updated!', 'Rating for the image has been updated!');
-    })
+  public gotoImage(id: string): void {
+    this.router.navigate(['image', id]);
   }
 
   public setRatingFilter(rating: number): void {
@@ -130,8 +93,9 @@ export class LibraryViewComponent {
   }
 
   public refreshAssets(): void {
+    let filter: any;
     if (this.tagId) {
-      this.filter = {
+      filter = {
         $and: [
           {
             category: this.selectedCategory._id
@@ -145,7 +109,7 @@ export class LibraryViewComponent {
         ]
       };
     } else if(this.selectedCategory) {
-      this.filter = {
+      filter = {
         $and: [
           {
             category: this.selectedCategory._id
@@ -156,42 +120,12 @@ export class LibraryViewComponent {
         ]
       };
     } else {
-      this.filter = {
+      filter = {
         rating: { $gte: this.filterRating }
       };
     }
 
-    this.page = 0;
-    this.assets = [];
-
-    this.getAssets();
-  }
-
-  public onScroll(): void {
-    if (!this.scrollCooldown) {
-      this.scrollCooldown = true;
-      this.page += 1;
-
-      this.getAssets();
-    }
-  }
-
-  public testAsset(): void {
-
-  }
-
-  public getAssets(): void {
-    this.assetService.filterPage(this.filter, this.page, this.limit).subscribe(result => {
-      this.assets = this.assets.concat(result.map(asset => {
-        return {item: asset, selected: false}
-      }));
-
-      this.scrollCooldown = false;
-    });
-
-    this.assetService.filterCount(this.filter).subscribe(result => {
-      this.statusBarService.setAreaCount(result);
-    });
+    this.filter.next(filter);
   }
 
   public getCategories(): void {
@@ -199,6 +133,7 @@ export class LibraryViewComponent {
       this.categories = result;
 
       if (this.categoryId) {
+        this.filter$ = this.filter.asObservable().delay(250);
         this.setCategory(this.categories.find(category => category._id == this.categoryId));
       }
     });

@@ -7,7 +7,7 @@ export interface Link {
 }
 
 @Component({
-  selector: 'ac-sidebar',
+  selector: 'sidebar',
   templateUrl: './sidebar.html'
 })
 export class SidebarComponent {
@@ -16,7 +16,7 @@ export class SidebarComponent {
     {
       route: '/',
       icon: 'dashboard',
-      title: 'Dashboard'
+      title: 'Dashboard',
     },
     {
       route: '/library',

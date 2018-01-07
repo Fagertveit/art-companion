@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'ac-image',
+  selector: 'art-image',
   template: '<router-outlet></router-outlet>'
 })
 export class ImageComponent {

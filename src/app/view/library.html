@@ -20,61 +20,52 @@
       </div>
     </div>
   </div>
-  <!--
-
-  <div class="panel sub-panel">
-    <span class="panel-header center">Filter</span>
-  </div>
-  <div class="filters">
-    <div class="panel sub-panel">
-      <span class="panel-header center">View Options</span>
-      <div class="btn-group flex-start">
-        <div class="btn" [class.active]="showRatings" (click)="toggleRatings()">Toggle Ratings</div>
-        <div class="btn" [class.active]="showSelection" (click)="toggleSelection()">Toggle Selection</div>
-      </div>
-
-    </div>
-
-    <div class="panel sub-panel">
-      <span class="panel-header center">Filter by Rating</span>
-      <rating [rating]="filterRating" (ratingChange)="setRatingFilter($event)"></rating>
-    </div>
-
-    <div class="panel sub-panel">
-      <span class="panel-header center">Batch Operations</span>
-      <div class="btn-group flex-end">
-        <div class="btn btn-batch" (click)="testAsset()"><i class="material-icons">collections_bookmark</i></div>
-        <div class="btn btn-batch"><i class="material-icons">collections</i></div>
-        <div class="btn btn-batch" (click)="batchTagging()"><i class="fa fa-tag"></i></div>
-        <div class="btn btn-batch"><i class="fa fa-file-archive-o"></i></div>
-        <div class="btn btn-batch btn-warning" (click)="batchDelete()"><i class="fa fa-trash"></i></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="toggle-nav" (click)="toggleNavigation()">
-    <i class="fa" [class.fa-chevron-up]="showNavigation" [class.fa-chevron-down]="!showNavigation"></i>
-  </div>
-  -->
 </div>
 
-<div class="library-container"
-  infiniteScroll
-  [infiniteScrollDistance]="2"
-  [infiniteScrollThrottle]="50"
-  [scrollWindow]="false"
-  (scrolled)="onScroll()">
+<image-grid #library [filter]="filter$ | async" (onNavigate)="gotoImage($event)" (onSelect)="selectedAssets = $event" (totalAssets)="areaCount = $event"></image-grid>
 
-  <div class="asset" *ngFor="let asset of assets">
-    <div *ngIf="showSelection" class="asset-selection">
-      <input [ngModel]="asset.selected" type="checkbox">
-    </div>
-
-    <img *ngIf="asset.item.thumbnail" [src]="sanitize(asset.item.thumbnail)" (click)="gotoImage(asset)"/>
-
-    <div *ngIf="showRatings" class="asset-rating">
-      <rating [rating]="asset.item.rating" (ratingChange)="setRating(asset.item._id, $event)"></rating>
+<div class="status-bar">
+  <div class="value-container">
+    <i class="material-icons" tooltip [tooltipText]="'Image count for library'">collections</i>
+    <div class="value">
+      {{ libraryCount }}
     </div>
   </div>
 
+  <div class="value-container">
+    <i class="fa fa-tag" tooltip [tooltipText]="'Image count for selected area'"></i>
+    <div class="value">
+      {{ areaCount }}
+    </div>
+  </div>
+
+  <div class="seperator"></div>
+
+  <div class="value-container">
+    <span>View Options</span>
+    <div class="btn" (click)="library.toggleRatings()">
+      Toggle Ratings
+    </div>
+    <div class="btn" (click)="library.toggleSelection()">
+      Toggle Selection
+    </div>
+  </div>
+
+  <div class="seperator"></div>
+
+  <div class="value-container">
+    <span>Filter by rating: </span>
+    <rating [rating]="filterRating" (ratingChange)="setRatingFilter($event)"></rating>
+  </div>
+
+  <div class="seperator"></div>
+
+  <div class="value-container">
+    <span>Batch Operations</span>
+    <div class="btn" (click)="testAsset()" tooltip [tooltipText]="'Add selected images to quick collection'"><i class="material-icons">collections_bookmark</i></div>
+    <div class="btn"><i class="material-icons" tooltip [tooltipText]="'Add images to collection'">collections</i></div>
+    <div class="btn" (click)="batchTagging()" tooltip [tooltipText]="'Set tags for selected images'"><i class="fa fa-tag"></i></div>
+    <div class="btn" tooltip [tooltipText]="'Save images to archived file'"><i class="fa fa-file-archive-o"></i></div>
+    <div class="btn btn-warning" (click)="batchDelete()" tooltip [tooltipText]="'Delete images'"><i class="fa fa-trash"></i></div>
+  </div>
 </div>

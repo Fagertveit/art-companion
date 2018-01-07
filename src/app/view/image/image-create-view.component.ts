@@ -9,7 +9,7 @@ import { TagService } from '../../service/tag.service';
 import { Category, Tag, Asset, ImportedData, Dimension } from '../../model';
 
 @Component({
-  selector: 'ac-image-create-view',
+  selector: 'image-create-view',
   templateUrl: './image-create.html'
 })
 export class ImageCreateViewComponent {

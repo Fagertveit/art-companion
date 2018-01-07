@@ -12,7 +12,7 @@ import { ASSET_SEED } from '../model/asset.seed';
 import { TAG_SEED } from '../model/tag.seed';
 
 @Component({
-  selector: 'ac-settings',
+  selector: 'settings',
   templateUrl: './settings.html'
 })
 export class SettingsViewComponent {

@@ -19,14 +19,12 @@ export class TooltipDirective {
       posY: Math.floor(pos.top) + this.relativeY
     };
 
-    console.log('Tooltip: ', tooltip);
     this.tooltipService.setTooltip(tooltip);
   }
+
   @HostListener('mouseleave') onMouseLeave(): void {
     this.tooltipService.setTooltip(null);
   }
 
   constructor(private tooltipService: TooltipService, private el: ElementRef) { }
-
-
 }

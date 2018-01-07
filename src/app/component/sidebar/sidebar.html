@@ -1,14 +1,10 @@
-<div class="menu-toggle" (click)="toggle()">
-  <i class="fa fa-bars"></i>
-</div>
-
 <ul>
   <li *ngFor="let link of links" (click)="activateRoute(link.route)">
     {{ link.title }}
-    <i class="material-icons">{{ link.icon }}</i>
+    <i tooltip [tooltipText]="link.title" [relativeX]="45" [relativeY]="18" class="material-icons">{{ link.icon }}</i>
   </li>
   <li class="settings" (click)="activateRoute('settings')">
     Settings
-    <i class="fa fa-cog"></i>
+    <i tooltip [tooltipText]="'Settings'" [relativeX]="45" [relativeY]="18" class="fa fa-cog"></i>
   </li>
 </ul>
