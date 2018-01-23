@@ -5,6 +5,7 @@ import { ElectronService } from 'ngx-electron';
 
 import { ModalConfirmComponent } from '../../component/modal/modal-confirm.component';
 import { ModalComponent } from '../../component/modal/modal.component';
+import { ImageRendererComponent } from '../../component/image-renderer/image-renderer.component';
 
 import { AssetService, TagService, CategoryService, SettingsService, NotificationService, CollectionService } from '../../service';
 import { Asset, Category, Tag, Collection } from '../../model';
@@ -16,6 +17,7 @@ import { Asset, Category, Tag, Collection } from '../../model';
 export class ImageViewComponent {
   @ViewChild('deleteModal') deleteModal: ModalConfirmComponent;
   @ViewChild('editTagsModal') editTagsModal: ModalConfirmComponent;
+  @ViewChild('imageRenderer') imageRenderer: ImageRendererComponent;
 
   @ViewChild(HTMLImageElement) imageRef: HTMLImageElement;
   @ViewChild(HTMLDivElement) grid: HTMLDivElement
@@ -38,6 +40,7 @@ export class ImageViewComponent {
   public tagId: string;
   public tmpTagId: string;
   public sanitizedImageUrl: SafeStyle;
+  public hasPhotoshop: boolean;
 
   constructor(
     private assetService: AssetService,
@@ -67,6 +70,8 @@ export class ImageViewComponent {
       this.getTags();
       this.getCollections();
     });
+
+    this.hasPhotoshop = this.settingsService.getPhotoshopPath() != '';
   }
 
   public toggleMonochrome(): void {
@@ -77,12 +82,27 @@ export class ImageViewComponent {
     this.flipHorizontal = !this.flipHorizontal;
   }
 
+  public openInPhotoshop(): void {
+    if (this.electron.isElectronApp) {
+      let options = {
+        photoshopPath: this.settingsService.getPhotoshopPath(),
+        filePath: this.asset.url
+      };
+
+      this.electron.ipcRenderer.send('open-in-photoshop', options);
+    }
+  }
+
   public gotoCategory(category: Category): void {
     this.router.navigate(['/library', category._id]);
   }
 
   public toggleMetadata(): void {
     this.showMetadata = !this.showMetadata;
+
+    setTimeout(() => {
+      this.imageRenderer.resize(this.showMetadata);
+    }, 250);
   }
 
   public sanitize(url: string): SafeResourceUrl {

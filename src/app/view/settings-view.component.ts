@@ -17,6 +17,7 @@ import { TAG_SEED } from '../model/tag.seed';
 })
 export class SettingsViewComponent {
   public libraryPath: string;
+  public photoshopPath: string;
 
   constructor(
     private assetService: AssetService,
@@ -30,6 +31,7 @@ export class SettingsViewComponent {
 
   public ngOnInit() {
     this.libraryPath = this.settingsService.getLibraryPath();
+    this.photoshopPath = this.settingsService.getPhotoshopPath();
   }
 
   public listTags(): void {
@@ -114,6 +116,19 @@ export class SettingsViewComponent {
     Observable.forkJoin(observables).subscribe(result => {
       console.table(result);
     });
+  }
+
+  public setPhotoshopPath(): void {
+    if (this.electron.isElectronApp) {
+      this.electron.ipcRenderer.once('set-photoshop-path', (event, data) => {
+        if (data && data.photoshopPath) {
+          this.settingsService.setPhotoshopPath(data.photoshopPath);
+          this.photoshopPath = data.photoshopPath;
+        }
+      });
+
+      this.electron.ipcRenderer.send('find-photoshop');
+    }
   }
 
   public setLibraryPath(): void {

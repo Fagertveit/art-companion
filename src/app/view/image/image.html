@@ -1,3 +1,8 @@
+<!--
+<div class="image-container">
+  <image-renderer #imageRenderer [asset]="asset"></image-renderer>
+</div>
+-->
 <div class="image-container" [style.background-image]="sanitizedImageUrl" [class.monochrome]="monochrome" [class.flip]="flipHorizontal">
   <!--<img [src]="sanitize(asset.url)" [class.monochrome]="monochrome" [class.flip]="flipHorizontal">-->
 </div>
@@ -6,6 +11,9 @@
   <div class="options-column">
     <div class="toggle-metadata" (click)="toggleMetadata()">
       <i class="fa" [class.fa-chevron-left]="!showMetadata" [class.fa-chevron-right]="showMetadata"></i>
+    </div>
+    <div class="options" (click)="openInPhotoshop()">
+      <i class="material-icons">open_in_new</i>
     </div>
     <div class="options" [class.active]="flipHorizontal" (click)="toggleFlipHorizontal()">
       <i class="material-icons">flip</i>

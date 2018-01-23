@@ -3,6 +3,7 @@ $fa-font-path: '~font-awesome-sass/assets/fonts/font-awesome/';
 @import "~font-awesome-sass/assets/stylesheets/font-awesome";
 @import "../assets/font/material-icons.css";
 
+// Base styles
 @import "base/variables";
 @import "base/typography";
 @import "base/form";
@@ -11,6 +12,7 @@ $fa-font-path: '~font-awesome-sass/assets/fonts/font-awesome/';
 @import "base/table";
 @import "base/button";
 
+// Component styles
 @import "component/sidebar";
 @import "component/modal";
 @import "component/toast";
@@ -19,7 +21,10 @@ $fa-font-path: '~font-awesome-sass/assets/fonts/font-awesome/';
 @import "component/status-bar";
 @import "component/coverflow";
 @import "component/image-grid";
+@import "component/image-renderer";
+@import "component/slider";
 
+// View styles
 @import "view/app";
 @import "view/category";
 @import "view/tag";

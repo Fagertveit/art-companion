@@ -35,6 +35,8 @@ import { SketchFormComponent } from './view/sketch/sketch-form.component';
 import { StatusBarComponent } from './component/status-bar/status-bar.component';
 import { CoverflowComponent } from './component/coverflow/coverflow.component';
 import { ImageGridComponent } from './component/image-grid/image-grid.component';
+import { ImageRendererComponent } from './component/image-renderer/image-renderer.component';
+import { SliderComponent } from './component/slider/slider.component';
 
 // Directive
 import { DomAnchor } from './directive/dom-anchor/dom-anchor.directive';
@@ -88,6 +90,8 @@ import { AppRoutingModule } from './app.routes';
     StatusBarComponent,
     CoverflowComponent,
     ImageGridComponent,
+    ImageRendererComponent,
+    SliderComponent,
     DomAnchor,
     TooltipDirective,
     TooltipComponent,

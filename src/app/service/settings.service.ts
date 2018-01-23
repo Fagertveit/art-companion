@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 export interface Settings {
   libraryPath: string;
+  photoshopPath: string;
 }
 
 const LS_ITEM = 'ac-settings';
@@ -9,7 +10,8 @@ const LS_ITEM = 'ac-settings';
 @Injectable()
 export class SettingsService {
   private settings: Settings = {
-    libraryPath: './'
+    libraryPath: './',
+    photoshopPath: ''
   };
 
   constructor() { }
@@ -22,6 +24,16 @@ export class SettingsService {
   public getLibraryPath(): string {
     this.loadSettings();
     return this.settings.libraryPath;
+  }
+
+  public setPhotoshopPath(path: string): void {
+    this.settings.photoshopPath = path;
+    this.saveSettings();
+  }
+
+  public getPhotoshopPath(): string {
+    this.loadSettings();
+    return this.settings.photoshopPath;
   }
 
   private loadSettings(): void {

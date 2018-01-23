@@ -23,6 +23,7 @@ const importLib = require('./import-library');
 // regex for supported image formats
 const fileMatch = /(.jpg|.png|.gif|.jpeg|.svg)/gi;
 const async = require('async');
+const { exec } = require('child_process');
 //const appIcon = new Tray();
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -213,6 +214,28 @@ function createWindow () {
       libraryPath = libPath[0];
       mainWindow.webContents.send('set-library-path', { libraryPath: libPath[0] });
     });
+  });
+
+  electron.ipcMain.on('find-photoshop', (event, data) => {
+    let options = {
+      title: 'Select photoshop executable',
+      message: 'Please specify the path to your photoshop executable (photoshop.exe).',
+      buttonLabel: 'Save path',
+      properties: ['openFile'],
+      filters: [
+        { name: 'Photoshop executable', extensions: ['exe', 'app'] }
+      ]
+    }
+
+    dialog.showOpenDialog(options, (photoshopPath) => {
+      mainWindow.webContents.send('set-photoshop-path', { photoshopPath: photoshopPath[0] });
+    });
+  });
+
+  electron.ipcMain.on('open-in-photoshop', (event, data) => {
+    console.log('Exec: ', data.photoshopPath + ' ' + data.filePath);
+
+    exec('"' + data.photoshopPath + '" "' + data.filePath + '"');
   });
 
   electron.ipcMain.on('import-library', (event) => {
